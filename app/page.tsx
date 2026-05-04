@@ -1,5 +1,5 @@
-import ExchangeQuiz from './components/ExchangeQuiz';
 'use client';
+import ExchangeQuiz from './components/ExchangeQuiz';
 import CryptoPrices from "./components/CryptoPrices";
 import TradingCounter from "./components/TradingCounter";
 import WhatIfCalculator from "./components/WhatIfCalculator";
