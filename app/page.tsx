@@ -1,3 +1,4 @@
+import FearGreedIndex from './components/FearGreedIndex';
 'use client';
 import ExchangeQuiz from './components/ExchangeQuiz';
 import CryptoPrices from "./components/CryptoPrices";
@@ -64,7 +65,8 @@ export default function Home() {
           ))}
         </div>
         <CryptoPrices />
-        <WhatIfCalculator />
+        <FearGreedIndex />
+      <WhatIfCalculator />
       <ExchangeQuiz />
         <SubscribeForm />
       </main>
