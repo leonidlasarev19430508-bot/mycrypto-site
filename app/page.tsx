@@ -1,5 +1,5 @@
-import FearGreedIndex from './components/FearGreedIndex';
 'use client';
+import FearGreedIndex from './components/FearGreedIndex';
 import ExchangeQuiz from './components/ExchangeQuiz';
 import CryptoPrices from "./components/CryptoPrices";
 import TradingCounter from "./components/TradingCounter";
