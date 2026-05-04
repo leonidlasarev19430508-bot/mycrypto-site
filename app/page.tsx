@@ -1,3 +1,4 @@
+import ExchangeQuiz from './components/ExchangeQuiz';
 'use client';
 import CryptoPrices from "./components/CryptoPrices";
 import TradingCounter from "./components/TradingCounter";
@@ -64,6 +65,7 @@ export default function Home() {
         </div>
         <CryptoPrices />
         <WhatIfCalculator />
+      <ExchangeQuiz />
         <SubscribeForm />
       </main>
     </>
