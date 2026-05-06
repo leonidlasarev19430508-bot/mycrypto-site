@@ -6,11 +6,8 @@ export const revalidate = 0;
 
 async function getNews() {
   const client = new Client({
-    host: process.env.DB_HOST || 'postgres',
-    port: 5432,
-    user: process.env.DB_USER || 'admin',
-    password: process.env.DB_PASSWORD || 'supersecret',
-    database: process.env.DB_NAME || 'n8n',
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false },
   });
 
   try {
@@ -24,7 +21,7 @@ async function getNews() {
     return result.rows;
   } catch (error) {
     console.error('Помилка підключення до БД:', error);
-    await client.end();
+    try { await client.end(); } catch {}
     throw error;
   }
 }
@@ -64,7 +61,7 @@ function RecommendationBadge({ recommendation }: { recommendation: string }) {
 }
 
 export default async function NewsPage() {
-  let news = [];
+  let news: any[] = [];
   let error = null;
 
   try {
@@ -84,12 +81,6 @@ export default async function NewsPage() {
           <pre className="bg-red-100 p-3 rounded text-sm overflow-auto">
             {error.message || String(error)}
           </pre>
-          <p className="mt-4 text-gray-600">Перевірте:</p>
-          <ul className="list-disc list-inside text-gray-600 ml-4">
-            <li>Чи працює PostgreSQL контейнер</li>
-            <li>Чи правильні змінні середовища DB_HOST, DB_USER, DB_PASSWORD</li>
-            <li>Чи існує таблиця ai_news</li>
-          </ul>
         </div>
       </div>
     );
