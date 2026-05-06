@@ -1,80 +1,108 @@
 import { NextResponse } from 'next/server';
+import Anthropic from '@anthropic-ai/sdk';
 import pool from '@/app/lib/db';
+
+const anthropic = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY,
+});
+
+const COIN_MAP: Record<string, string> = {
+  bitcoin: 'bitcoin', btc: 'bitcoin',
+  ethereum: 'ethereum', eth: 'ethereum',
+  solana: 'solana', sol: 'solana',
+  ripple: 'ripple', xrp: 'ripple',
+  cardano: 'cardano', ada: 'cardano',
+  dogecoin: 'dogecoin', doge: 'dogecoin',
+  dai: 'dai',
+};
+
+function detectCoin(message: string): string {
+  const lower = message.toLowerCase();
+  for (const [key, value] of Object.entries(COIN_MAP)) {
+    if (lower.includes(key)) return value;
+  }
+  return 'bitcoin';
+}
 
 export async function POST(request: Request) {
   try {
-    const { message, history } = await request.json();
+    const { message, history = [] } = await request.json();
 
     if (!message) {
       return NextResponse.json({ reply: 'Будь ласка, введіть питання.' });
     }
 
-    // Визначаємо, про яку монету питають
-    let coin = 'bitcoin';
-    const lowerMessage = message.toLowerCase();
-    if (lowerMessage.includes('ethereum') || lowerMessage.includes('eth')) coin = 'ethereum';
-    else if (lowerMessage.includes('solana') || lowerMessage.includes('sol')) coin = 'solana';
-    else if (lowerMessage.includes('ripple') || lowerMessage.includes('xrp')) coin = 'ripple';
-    else if (lowerMessage.includes('cardano') || lowerMessage.includes('ada')) coin = 'cardano';
-    else if (lowerMessage.includes('dogecoin') || lowerMessage.includes('doge')) coin = 'dogecoin';
-    else if (lowerMessage.includes('bitcoin') || lowerMessage.includes('btc')) coin = 'bitcoin';
+    // Отримуємо новини з БД
+    const coin = detectCoin(message);
+    let newsContext = '';
 
-    let news = [];
     try {
-      // Отримуємо останні новини по монеті з БД
       const newsResult = await pool.query(`
-        SELECT title, summary, sentiment, recommendation 
-        FROM ai_news 
-        WHERE coin_slug = $1 
-        ORDER BY created_at DESC 
-        LIMIT 5
-      `, [coin]);
-      news = newsResult.rows;
+        SELECT title, summary, sentiment, recommendation, source_name
+        FROM ai_news
+        ORDER BY created_at DESC
+        LIMIT 10
+      `);
+
+      if (newsResult.rows.length > 0) {
+        newsContext = '\n\nОСТАННІ НОВИНИ З БАЗИ ДАНИХ:\n';
+        newsResult.rows.forEach((n, i) => {
+          newsContext += `${i + 1}. [${n.sentiment?.toUpperCase()}] ${n.title}\n`;
+          newsContext += `   ${n.summary?.slice(0, 150)}...\n`;
+          newsContext += `   Рекомендація: ${n.recommendation}\n\n`;
+        });
+      }
     } catch (dbError) {
       console.error('DB Error:', dbError);
-      // Якщо БД недоступна, використовуємо тестові дані
-      news = [];
     }
 
-    // Формуємо відповідь
-    let reply = `📊 **Аналіз по ${coin.toUpperCase()}**\n\n`;
+    // Формуємо історію для Claude
+    const claudeHistory = history
+      .slice(-8)
+      .map((msg: { role: string; content: string }) => ({
+        role: msg.role as 'user' | 'assistant',
+        content: msg.content,
+      }));
 
-    if (news.length > 0) {
-      reply += `📰 **Останні новини:**\n`;
-      for (const n of news) {
-        const sentimentEmoji = n.sentiment === 'positive' ? '📈' : n.sentiment === 'negative' ? '📉' : '⚖️';
-        reply += `${sentimentEmoji} ${n.title}\n`;
-        reply += `   ${n.summary?.slice(0, 100)}...\n\n`;
-      }
-      
-      const positiveCount = news.filter(n => n.sentiment === 'positive').length;
-      const negativeCount = news.filter(n => n.sentiment === 'negative').length;
-      
-      if (positiveCount > negativeCount) {
-        reply += `📈 **Загальний настрій:** ПОЗИТИВНИЙ\n`;
-        reply += `💡 **Рекомендація:** Розглянути покупку.`;
-      } else if (negativeCount > positiveCount) {
-        reply += `📉 **Загальний настрій:** НЕГАТИВНИЙ\n`;
-        reply += `💡 **Рекомендація:** Утриматися від покупки або розглянути продаж.`;
-      } else {
-        reply += `⚖️ **Загальний настрій:** НЕЙТРАЛЬНИЙ\n`;
-        reply += `💡 **Рекомендація:** Тримати, спостерігати за ринком.`;
-      }
-    } else {
-      reply += `ℹ️ Наразі немає свіжих новин по ${coin.toUpperCase()} у базі даних.\n\n`;
-      reply += `💡 **Порада:** Зайдіть на сторінку новин, щоб побачити останні оновлення.`;
-      reply += `\n\nА поки що, ось що я знаю про ${coin.toUpperCase()}:\n`;
-      reply += `- Це одна з найпопулярніших криптовалют\n`;
-      reply += `- Слідкуйте за новинами для прийняття рішень\n`;
-      reply += `- Завжди робіть власне дослідження перед інвестиціями`;
-    }
+    // Додаємо поточне повідомлення
+    claudeHistory.push({ role: 'user', content: message });
+
+    const systemPrompt = `Ти — CryptoBot, експертний AI-консультант з криптовалют на сайті CryptoNavigator.
+Ти допомагаєш користувачам розібратися в крипторинку, вибрати біржу та прийняти зважені рішення.
+
+ТВОЯ РОЛЬ:
+- Аналізуй новини та давай практичні поради
+- Пояснюй складне простими словами
+- Будь чесним про ризики
+- Якщо питають про біржу — порівнюй Binance, Bybit, WhiteBIT, OKX
+- Відповідай УКРАЇНСЬКОЮ мовою
+- Будь лаконічним (3-5 речень), але інформативним
+- Використовуй емодзі де доречно
+
+ДОСТУПНІ БІРЖІ (з реферальними посиланнями — згадуй їх природно):
+- Binance: https://www.binance.com/register?ref=GRO_28502_BIO0R
+- WhiteBIT: https://whitebit.com/referral/54626c3b-5240-4d39-9784-8e3eda5736de
+
+ВАЖЛИВО: Не давай конкретних фінансових порад типу "купуй зараз". Завжди нагадуй про DYOR (Do Your Own Research).
+${newsContext}`;
+
+    const response = await anthropic.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 500,
+      system: systemPrompt,
+      messages: claudeHistory,
+    });
+
+    const reply = response.content[0].type === 'text'
+      ? response.content[0].text
+      : 'Вибачте, не вдалося отримати відповідь.';
 
     return NextResponse.json({ reply });
-  } catch (error) {
+
+  } catch (error: any) {
     console.error('Chat API error:', error);
-    // Повертаємо дружню відповідь замість помилки
-    return NextResponse.json({ 
-      reply: '🤖 Привіт! Я ваш AI-консультант. Зараз я навчаюся, але ви можете запитати про Bitcoin, Ethereum або інші монети. Спробуйте щось на кшталт: "Що думаєш про Bitcoin?" або "Які новини по Ethereum?"' 
+    return NextResponse.json({
+      reply: '🤖 Вибачте, сталася помилка. Спробуйте ще раз або запитайте щось інше!'
     });
   }
 }
