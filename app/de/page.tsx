@@ -65,7 +65,7 @@ export default function DEPage() {
           ))}
         </div>
         <CryptoPrices />
-        <FearGreedIndex />
+        <FearGreedIndex locale="de" />
         <WhatIfCalculator locale="de" />
         <SubscribeForm />
       </main>

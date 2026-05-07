@@ -65,7 +65,7 @@ export default function PLPage() {
           ))}
         </div>
         <CryptoPrices />
-        <FearGreedIndex />
+        <FearGreedIndex locale="pl" />
         <WhatIfCalculator locale="pl" />
         <SubscribeForm />
       </main>
