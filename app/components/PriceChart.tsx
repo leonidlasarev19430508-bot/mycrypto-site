@@ -83,7 +83,7 @@ export default function PriceChart() {
           maintainAspectRatio: false,
           plugins: { legend: { display: false }, tooltip: {
             callbacks: {
-              label: (ctx) => ` $${ctx.parsed.y.toLocaleString("en-US", { maximumFractionDigits: 2 })}`,
+              label: (ctx) => ` $${(ctx.parsed.y ?? 0).toLocaleString("en-US", { maximumFractionDigits: 2 })}`,
             }
           }},
           scales: {
