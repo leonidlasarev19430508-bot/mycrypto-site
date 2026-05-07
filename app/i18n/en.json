@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "title": "Best Crypto Exchanges 2026 | CryptoNavigator",
+    "description": "Compare Binance, Bybit, OKX. Best crypto exchanges with AI analysis."
+  },
+  "nav": {
+    "home": "Home",
+    "markets": "Markets",
+    "news": "AI News",
+    "assistant": "AI Assistant"
+  },
+  "hero": {
+    "title": "Best Crypto Exchanges",
+    "subtitle": "Compare exchanges and start trading today"
+  },
+  "exchanges": {
+    "badge_popular": "Most Popular",
+    "cta": "Start Trading on"
+  },
+  "offers": [
+    {
+      "name": "Binance",
+      "id": "binance",
+      "description": "The world's largest exchange with the lowest fees",
+      "features": ["Low fees 0.1%", "Fast registration", "Reliable platform"],
+      "badge": "Most Popular"
+    },
+    {
+      "name": "Bybit",
+      "id": "bybit",
+      "description": "Perfect for active traders with advanced tools",
+      "features": ["Up to 100x leverage", "High liquidity", "24/7 support"],
+      "badge": null
+    },
+    {
+      "name": "OKX",
+      "id": "okx",
+      "description": "Modern platform with Web3 integration and staking",
+      "features": ["Web3 Wallet", "Staking up to 20%", "Low fees"],
+      "badge": null
+    }
+  ],
+  "subscribe": {
+    "title": "Get daily crypto digest",
+    "subtitle": "Daily crypto news with AI analysis",
+    "placeholder": "Your email",
+    "button": "Subscribe",
+    "sending": "Subscribing...",
+    "success": "Successfully subscribed!",
+    "error": "Error. Please try again later."
+  },
+  "calculator": {
+    "badge": "Calculator",
+    "title": "What if you bought",
+    "subtitle": "Find out how much you would have earned",
+    "amount_label": "Investment amount",
+    "date_label": "Purchase date",
+    "calculate": "Calculate →",
+    "loading": "Fetching data...",
+    "error_amount": "Please enter amount greater than 0",
+    "error_date": "Please select a date",
+    "error_price": "No price for this date. Try another one.",
+    "error_current": "Could not fetch current price.",
+    "error_generic": "Error. Please try again later.",
+    "result_label": "Would now be worth",
+    "gain": "It's not too late to start. Register on",
+    "loss": "Long-term strategy always wins. Open an account on",
+    "register": "Register on",
+    "footer": "Data: CoinGecko API · Not financial advice",
+    "quick_dates": [
+      { "label": "6 mo.", "months": 6 },
+      { "label": "1 year", "months": 12 },
+      { "label": "2 years", "months": 24 },
+      { "label": "3 years", "months": 36 },
+      { "label": "5 years", "months": 60 }
+    ],
+    "ago": "ago",
+    "details": {
+      "investment": "Investment",
+      "price_then": "Price then",
+      "coins_bought": "Coins bought",
+      "price_now": "Current price",
+      "profit": "Profit / Loss"
+    }
+  },
+  "footer": "© 2026 CryptoNavigator. AI-powered crypto insights.",
+  "chatbot": {
+    "title": "CryptoBot",
+    "subtitle": "AI powered by Claude",
+    "greeting": "Hi! I'm CryptoBot — your AI crypto advisor.\n\nI can help:\n• Choose an exchange\n• Explain news\n• Answer crypto questions\n\nAsk me anything!",
+    "placeholder": "Ask about crypto...",
+    "quick": [
+      "🔥 Which exchange to choose?",
+      "📈 Bitcoin forecast?",
+      "💡 What is staking?",
+      "🛡️ How to safely store crypto?"
+    ]
+  }
+}

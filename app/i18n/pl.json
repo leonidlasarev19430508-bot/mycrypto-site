@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "title": "Najlepsze Giełdy Kryptowalut 2026 | CryptoNavigator",
+    "description": "Porównaj Binance, Bybit, OKX. Najlepsze giełdy krypto dla Polaków."
+  },
+  "nav": {
+    "home": "Strona główna",
+    "markets": "Rynki",
+    "news": "AI Wiadomości",
+    "assistant": "AI Asystent"
+  },
+  "hero": {
+    "title": "Najlepsze Giełdy Kryptowalut",
+    "subtitle": "Porównaj giełdy i zacznij handlować już dziś"
+  },
+  "exchanges": {
+    "badge_popular": "Najpopularniejsza",
+    "cta": "Zarejestruj się na"
+  },
+  "offers": [
+    {
+      "name": "Binance",
+      "id": "binance",
+      "description": "Największa giełda na świecie z najniższymi prowizjami",
+      "features": ["Niskie prowizje 0.1%", "Szybka rejestracja", "Polska obsługa klienta"],
+      "badge": "Najpopularniejsza"
+    },
+    {
+      "name": "Bybit",
+      "id": "bybit",
+      "description": "Idealna dla aktywnych traderów z zaawansowanymi narzędziami",
+      "features": ["Dźwignia do 100x", "Wysoka płynność", "Wsparcie 24/7"],
+      "badge": null
+    },
+    {
+      "name": "WhiteBIT",
+      "id": "whitebit",
+      "description": "Europejska giełda z wypłatami w PLN",
+      "features": ["Wypłaty w PLN", "Europejskie prawo", "Prosta obsługa"],
+      "badge": "🇵🇱 Popularna w PL"
+    }
+  ],
+  "subscribe": {
+    "title": "Otrzymuj codzienny digest",
+    "subtitle": "Codzienny wybór wiadomości krypto z analizą AI",
+    "placeholder": "Twój email",
+    "button": "Zapisz się",
+    "sending": "Zapisuję...",
+    "success": "Zapisano pomyślnie!",
+    "error": "Błąd. Spróbuj później."
+  },
+  "calculator": {
+    "badge": "Kalkulator",
+    "title": "Gdybyś kupił",
+    "subtitle": "Sprawdź ile byś dziś zarobił",
+    "amount_label": "Kwota inwestycji",
+    "date_label": "Data zakupu",
+    "calculate": "Oblicz →",
+    "loading": "Pobieranie danych...",
+    "error_amount": "Podaj kwotę większą niż 0",
+    "error_date": "Wybierz datę",
+    "error_price": "Brak ceny dla tej daty. Spróbuj innej.",
+    "error_current": "Nie udało się pobrać aktualnej ceny.",
+    "error_generic": "Błąd. Spróbuj później.",
+    "result_label": "Teraz byłoby warte",
+    "gain": "Jeszcze nie za późno. Zarejestruj się na",
+    "loss": "Długoterminowa strategia zawsze wygrywa. Otwórz konto na",
+    "register": "Zarejestruj się na",
+    "footer": "Dane: CoinGecko API · Nie jest poradą finansową",
+    "quick_dates": [
+      { "label": "6 mies.", "months": 6 },
+      { "label": "1 rok", "months": 12 },
+      { "label": "2 lata", "months": 24 },
+      { "label": "3 lata", "months": 36 },
+      { "label": "5 lat", "months": 60 }
+    ],
+    "ago": "temu",
+    "details": {
+      "investment": "Inwestycja",
+      "price_then": "Cena wtedy",
+      "coins_bought": "Kupione monety",
+      "price_now": "Aktualna cena",
+      "profit": "Zysk / strata"
+    }
+  },
+  "footer": "© 2026 CryptoNavigator. Analiza krypto oparta na AI.",
+  "chatbot": {
+    "title": "CryptoBot",
+    "subtitle": "AI oparte na Claude",
+    "greeting": "Cześć! Jestem CryptoBot — Twój AI-doradca kryptowalutowy.\n\nMogę pomóc:\n• Wybrać giełdę\n• Wyjaśnić wiadomości\n• Odpowiedzieć na pytania o krypto\n\nZapytaj o cokolwiek!",
+    "placeholder": "Zapytaj o krypto...",
+    "quick": [
+      "🔥 Którą giełdę wybrać?",
+      "📈 Prognoza Bitcoin?",
+      "💡 Co to jest staking?",
+      "🛡️ Jak bezpiecznie przechowywać krypto?"
+    ]
+  }
+}

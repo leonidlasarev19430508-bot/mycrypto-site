@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "title": "Beste Krypto Börsen 2026 | CryptoNavigator Deutschland",
+    "description": "Vergleiche Binance, Bybit, OKX. Die besten Kryptobörsen für Deutsche."
+  },
+  "nav": {
+    "home": "Startseite",
+    "markets": "Märkte",
+    "news": "AI Nachrichten",
+    "assistant": "AI Assistent"
+  },
+  "hero": {
+    "title": "Beste Krypto Börsen Deutschland",
+    "subtitle": "Vergleiche Börsen und starte noch heute mit dem Handel"
+  },
+  "exchanges": {
+    "badge_popular": "Beliebteste Börse",
+    "cta": "Bei registrieren"
+  },
+  "offers": [
+    {
+      "name": "Binance",
+      "id": "binance",
+      "description": "Die größte Kryptobörse der Welt mit den niedrigsten Gebühren",
+      "features": ["Niedrige Gebühren 0.1%", "Schnelle Registrierung", "Deutsche Benutzeroberfläche"],
+      "badge": "Beliebteste Börse"
+    },
+    {
+      "name": "Bybit",
+      "id": "bybit",
+      "description": "Ideal für aktive Trader mit fortgeschrittenen Werkzeugen",
+      "features": ["Hebel bis 100x", "Hohe Liquidität", "24/7 Support"],
+      "badge": null
+    },
+    {
+      "name": "OKX",
+      "id": "okx",
+      "description": "Moderne Plattform mit Web3 Integration und Staking",
+      "features": ["Web3 Wallet", "Staking bis 20%", "Niedrige Gebühren"],
+      "badge": "🇪🇺 EU reguliert"
+    }
+  ],
+  "subscribe": {
+    "title": "Täglichen Digest erhalten",
+    "subtitle": "Tägliche Krypto-News mit KI-Analyse",
+    "placeholder": "Deine E-Mail",
+    "button": "Abonnieren",
+    "sending": "Wird gespeichert...",
+    "success": "Erfolgreich abonniert!",
+    "error": "Fehler. Bitte versuche es später."
+  },
+  "calculator": {
+    "badge": "Rechner",
+    "title": "Was wäre wenn du gekauft hättest",
+    "subtitle": "Finde heraus wie viel du heute hätten würdest",
+    "amount_label": "Investitionsbetrag",
+    "date_label": "Kaufdatum",
+    "calculate": "Berechnen →",
+    "loading": "Daten werden geladen...",
+    "error_amount": "Bitte Betrag größer als 0 eingeben",
+    "error_date": "Bitte Datum auswählen",
+    "error_price": "Kein Preis für dieses Datum. Versuche ein anderes.",
+    "error_current": "Aktueller Preis konnte nicht abgerufen werden.",
+    "error_generic": "Fehler. Bitte später versuchen.",
+    "result_label": "Jetzt wäre es wert",
+    "gain": "Es ist noch nicht zu spät. Registriere dich bei",
+    "loss": "Langfristige Strategie gewinnt immer. Eröffne ein Konto bei",
+    "register": "Registrieren bei",
+    "footer": "Daten: CoinGecko API · Keine Finanzberatung",
+    "quick_dates": [
+      { "label": "6 Mon.", "months": 6 },
+      { "label": "1 Jahr", "months": 12 },
+      { "label": "2 Jahre", "months": 24 },
+      { "label": "3 Jahre", "months": 36 },
+      { "label": "5 Jahre", "months": 60 }
+    ],
+    "ago": "vor",
+    "details": {
+      "investment": "Investition",
+      "price_then": "Preis damals",
+      "coins_bought": "Gekaufte Münzen",
+      "price_now": "Aktueller Preis",
+      "profit": "Gewinn / Verlust"
+    }
+  },
+  "footer": "© 2026 CryptoNavigator. KI-gestützte Krypto-Einblicke.",
+  "chatbot": {
+    "title": "CryptoBot",
+    "subtitle": "KI basierend auf Claude",
+    "greeting": "Hallo! Ich bin CryptoBot — dein KI-Krypto-Berater.\n\nIch kann helfen:\n• Eine Börse auswählen\n• Nachrichten erklären\n• Fragen zu Krypto beantworten\n\nFrag mich einfach!",
+    "placeholder": "Frag nach Krypto...",
+    "quick": [
+      "🔥 Welche Börse wählen?",
+      "📈 Bitcoin Prognose?",
+      "💡 Was ist Staking?",
+      "🛡️ Wie sicher Krypto aufbewahren?"
+    ]
+  }
+}
