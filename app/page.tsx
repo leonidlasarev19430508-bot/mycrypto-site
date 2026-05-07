@@ -2,6 +2,7 @@
 import FearGreedIndex from './components/FearGreedIndex';
 import ExchangeQuiz from './components/ExchangeQuiz';
 import CryptoPrices from "./components/CryptoPrices";
+import PriceChart from "./components/PriceChart";
 import TradingCounter from "./components/TradingCounter";
 import WhatIfCalculator from "./components/WhatIfCalculator";
 import WhaleAlertTicker from "./components/WhaleAlertTicker";
@@ -63,6 +64,7 @@ export default function Home() {
           ))}
         </div>
         <CryptoPrices />
+        <PriceChart />
         <FearGreedIndex />
         <WhatIfCalculator locale="uk" />
         <ExchangeQuiz />
