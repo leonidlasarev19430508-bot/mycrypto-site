@@ -3,8 +3,11 @@ import ChatWidget from './components/ChatWidget';
 import "./globals.css";
 
 export const metadata = {
-  title: "Crypto Navigator",
-  description: "Find the best crypto exchanges",
+  title: "CryptoNavigator — Кращі Крипто-Біржі 2026",
+  description: "Порівняй Binance, Bybit, OKX. AI-аналіз новин, live ціни, Fear & Greed Index.",
+  verification: {
+    google: "TlsKtc6ADSMKIRsPoP6Cenvenlw5TsN16Kly2lpSFmo",
+  },
 };
 
 export default function RootLayout({
