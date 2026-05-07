@@ -40,7 +40,6 @@ function ExchangeCTA({ type }: { type: 'binance' | 'whitebit' | 'both' }) {
     <div className="mt-2 space-y-2">
       {items.map((ex) => (
         <a
-        
           key={ex.name}
           href={ex.url}
           target="_blank"
