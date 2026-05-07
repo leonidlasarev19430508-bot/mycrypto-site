@@ -39,3 +39,4 @@ export const LOCALE_HREFS: Record<Locale, string> = {
   de: '/de',
   en: '/en',
 };
+
