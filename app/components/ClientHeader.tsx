@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { LOCALES, LOCALE_FLAGS, LOCALE_NAMES, LOCALE_HREFS, getTranslation, type Locale } from '../lib/i18n';
 
 const TRANSLATIONS = {
   uk: { home: 'Головна', markets: 'Ринки', news: 'AI Новини', assistant: 'AI Асистент', homeHref: '/' },

@@ -1,7 +1,7 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useTranslation, type Locale } from '../lib/i18n';
 
-// ── Affiliate посилання — замінити після отримання реальних ──────
 const AFFILIATE = {
   bitcoin:  process.env.NEXT_PUBLIC_AFFILIATE_BINANCE  || '#',
   ethereum: process.env.NEXT_PUBLIC_AFFILIATE_BINANCE  || '#',
@@ -11,25 +11,17 @@ const AFFILIATE = {
 };
 
 const COINS = [
-  { id: 'bitcoin',  symbol: 'BTC', label: 'BTC',  exchange: 'Binance' },
-  { id: 'ethereum', symbol: 'ETH', label: 'ETH',  exchange: 'Binance' },
-  { id: 'solana',   symbol: 'SOL', label: 'SOL',  exchange: 'Bybit'   },
-  { id: 'bnb',      symbol: 'BNB', label: 'BNB',  exchange: 'Binance' },
-  { id: 'xrp',      symbol: 'XRP', label: 'XRP',  exchange: 'Bybit'   },
-];
-
-const QUICK_DATES: { label: string; months: number }[] = [
-  { label: '6 міс.', months: 6  },
-  { label: '1 рік',  months: 12 },
-  { label: '2 роки', months: 24 },
-  { label: '3 роки', months: 36 },
-  { label: '5 років',months: 60 },
+  { id: 'bitcoin',  symbol: 'BTC', exchange: 'Binance' },
+  { id: 'ethereum', symbol: 'ETH', exchange: 'Binance' },
+  { id: 'solana',   symbol: 'SOL', exchange: 'Bybit'   },
+  { id: 'bnb',      symbol: 'BNB', exchange: 'Binance' },
+  { id: 'xrp',      symbol: 'XRP', exchange: 'Bybit'   },
 ];
 
 function fmt(n: number): string {
   if (n >= 1_000_000) return '$' + (n / 1_000_000).toFixed(2) + 'M';
-  if (n >= 1_000)     return '$' + Math.round(n).toLocaleString('uk-UA');
-  return '$' + n.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  if (n >= 1_000)     return '$' + Math.round(n).toLocaleString();
+  return '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 function fmtCoins(n: number, sym: string): string {
@@ -54,7 +46,14 @@ interface Result {
   isGain: boolean;
 }
 
-export default function WhatIfCalculator() {
+interface Props {
+  locale?: Locale;
+}
+
+export default function WhatIfCalculator({ locale = 'uk' }: Props) {
+  const t = useTranslation(locale);
+  const c = t.calculator;
+
   const [coin, setCoin] = useState(COINS[0]);
   const [amount, setAmount] = useState(1000);
   const [date, setDate] = useState(getDateNMonthsAgo(12));
@@ -71,8 +70,8 @@ export default function WhatIfCalculator() {
   async function calculate() {
     setError('');
     setResult(null);
-    if (!amount || amount <= 0) { setError('Введи суму більше 0'); return; }
-    if (!date) { setError('Обери дату'); return; }
+    if (!amount || amount <= 0) { setError(c.error_amount); return; }
+    if (!date) { setError(c.error_date); return; }
 
     setLoading(true);
     try {
@@ -90,17 +89,17 @@ export default function WhatIfCalculator() {
       const priceThen = hist?.market_data?.current_price?.usd;
       const priceNow  = now?.[coin.id]?.usd;
 
-      if (!priceThen) throw new Error('Немає ціни для цієї дати. Спробуй іншу.');
-      if (!priceNow)  throw new Error('Не вдалося отримати поточну ціну.');
+      if (!priceThen) throw new Error(c.error_price);
+      if (!priceNow)  throw new Error(c.error_current);
 
-      const coins     = amount / priceThen;
-      const nowValue  = coins * priceNow;
-      const profit    = nowValue - amount;
+      const coins      = amount / priceThen;
+      const nowValue   = coins * priceNow;
+      const profit     = nowValue - amount;
       const multiplier = nowValue / amount;
 
       setResult({ priceThen, priceNow, coins, nowValue, profit, multiplier, isGain: profit >= 0 });
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'Помилка. Спробуй пізніше.');
+      setError(e instanceof Error ? e.message : c.error_generic);
     } finally {
       setLoading(false);
     }
@@ -108,33 +107,30 @@ export default function WhatIfCalculator() {
 
   return (
     <section className="mt-12 max-w-2xl mx-auto">
-      {/* Header */}
       <div className="text-center mb-6">
         <span className="inline-block bg-orange-100 text-orange-700 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wide mb-3">
-          Калькулятор
+          {c.badge}
         </span>
         <h2 className="text-3xl font-bold text-gray-900">
-          Якби ти купив {coin.symbol}...
+          {c.title} {coin.symbol}...
         </h2>
-        <p className="text-gray-500 mt-1 text-sm">
-          Дізнайся скільки б ти заробив
-        </p>
+        <p className="text-gray-500 mt-1 text-sm">{c.subtitle}</p>
       </div>
 
       <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
         {/* Coin selector */}
         <div className="flex gap-2 mb-5 bg-gray-50 p-1 rounded-xl">
-          {COINS.map(c => (
+          {COINS.map(co => (
             <button
-              key={c.id}
-              onClick={() => { setCoin(c); setResult(null); }}
+              key={co.id}
+              onClick={() => { setCoin(co); setResult(null); }}
               className={`flex-1 py-2 text-sm font-semibold rounded-lg transition-all ${
-                coin.id === c.id
+                coin.id === co.id
                   ? 'bg-white text-gray-900 shadow-sm border border-gray-200'
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              {c.label}
+              {co.symbol}
             </button>
           ))}
         </div>
@@ -142,7 +138,7 @@ export default function WhatIfCalculator() {
         {/* Amount */}
         <div className="mb-4">
           <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
-            Сума інвестиції
+            {c.amount_label}
           </label>
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-medium">$</span>
@@ -152,7 +148,7 @@ export default function WhatIfCalculator() {
               onChange={e => setAmount(Number(e.target.value))}
               min={1}
               step={100}
-              className="w-full pl-7 pr-4 py-3 border border-gray-200 rounded-xl text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+              className="w-full pl-7 pr-4 py-3 border border-gray-200 rounded-xl text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
           </div>
         </div>
@@ -160,7 +156,7 @@ export default function WhatIfCalculator() {
         {/* Date */}
         <div className="mb-4">
           <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
-            Дата покупки
+            {c.date_label}
           </label>
           <input
             type="date"
@@ -168,16 +164,16 @@ export default function WhatIfCalculator() {
             onChange={e => setDate(e.target.value)}
             min="2013-01-01"
             max={maxDate}
-            className="w-full px-4 py-3 border border-gray-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl text-base focus:outline-none focus:ring-2 focus:ring-orange-400"
           />
           <div className="flex gap-2 mt-2 flex-wrap">
-            {QUICK_DATES.map(q => (
+            {c.quick_dates.map((q) => (
               <button
                 key={q.months}
                 onClick={() => setDate(getDateNMonthsAgo(q.months))}
                 className="text-xs px-3 py-1.5 rounded-full border border-gray-200 text-gray-500 hover:border-orange-400 hover:text-orange-600 transition-colors"
               >
-                {q.label} тому
+                {q.label} {c.ago}
               </button>
             ))}
           </div>
@@ -187,7 +183,7 @@ export default function WhatIfCalculator() {
         <button
           onClick={calculate}
           disabled={loading}
-          className="w-full py-3.5 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-bold rounded-xl transition-colors text-base"
+          className="w-full py-3.5 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-bold rounded-xl transition-colors"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">
@@ -195,12 +191,11 @@ export default function WhatIfCalculator() {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.37 0 0 5.37 0 12h4z"/>
               </svg>
-              Отримую дані...
+              {c.loading}
             </span>
-          ) : 'Порахувати →'}
+          ) : c.calculate}
         </button>
 
-        {/* Error */}
         {error && (
           <p className="mt-3 text-sm text-red-600 bg-red-50 px-4 py-2 rounded-lg">{error}</p>
         )}
@@ -208,9 +203,8 @@ export default function WhatIfCalculator() {
         {/* Result */}
         {result && (
           <div className="mt-5 border border-gray-100 rounded-xl overflow-hidden">
-            {/* Big number */}
             <div className={`px-5 py-4 ${result.isGain ? 'bg-green-50' : 'bg-red-50'}`}>
-              <p className="text-xs text-gray-500 mb-1">Зараз коштувало б</p>
+              <p className="text-xs text-gray-500 mb-1">{c.result_label}</p>
               <p className={`text-4xl font-black ${result.isGain ? 'text-green-600' : 'text-red-600'}`}>
                 {fmt(result.nowValue)}
               </p>
@@ -219,18 +213,17 @@ export default function WhatIfCalculator() {
               }`}>
                 {result.isGain
                   ? `×${result.multiplier.toFixed(2)} — +${((result.multiplier - 1) * 100).toFixed(0)}%`
-                  : `−${(100 - result.multiplier * 100).toFixed(0)}% від вкладеного`}
+                  : `−${(100 - result.multiplier * 100).toFixed(0)}%`}
               </span>
             </div>
 
-            {/* Details */}
             <div className="divide-y divide-gray-100">
               {[
-                ['Інвестиція', fmt(amount)],
-                [`Ціна ${coin.symbol} тоді`, fmt(result.priceThen)],
-                ['Куплено монет', fmtCoins(result.coins, coin.symbol)],
-                [`Поточна ціна ${coin.symbol}`, fmt(result.priceNow)],
-                ['Прибуток / збиток', (result.isGain ? '+' : '') + fmt(result.profit)],
+                [c.details.investment, fmt(amount)],
+                [`${c.details.price_then} ${coin.symbol}`, fmt(result.priceThen)],
+                [c.details.coins_bought, fmtCoins(result.coins, coin.symbol)],
+                [`${c.details.price_now} ${coin.symbol}`, fmt(result.priceNow)],
+                [c.details.profit, (result.isGain ? '+' : '') + fmt(result.profit)],
               ].map(([label, value]) => (
                 <div key={label} className="flex justify-between items-center px-5 py-3 bg-white">
                   <span className="text-sm text-gray-500">{label}</span>
@@ -239,12 +232,9 @@ export default function WhatIfCalculator() {
               ))}
             </div>
 
-            {/* CTA */}
             <div className="px-5 py-4 bg-blue-50 border-t border-blue-100">
               <p className="text-sm text-gray-600 mb-3">
-                {result.isGain
-                  ? `Ще не пізно почати. Зареєструйся на ${coin.exchange} і торгуй вже сьогодні.`
-                  : `Довгострокова стратегія завжди виграє. Відкрий акаунт на ${coin.exchange}.`}
+                {result.isGain ? `${c.gain} ${coin.exchange}.` : `${c.loss} ${coin.exchange}.`}
               </p>
               <a
                 href={AFFILIATE[coin.id as keyof typeof AFFILIATE]}
@@ -252,16 +242,14 @@ export default function WhatIfCalculator() {
                 rel="noopener noreferrer"
                 className="block text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition-colors"
               >
-                Зареєструватись на {coin.exchange} →
+                {c.register} {coin.exchange} →
               </a>
             </div>
           </div>
         )}
       </div>
 
-      <p className="text-center text-xs text-gray-400 mt-3">
-        Дані: CoinGecko API · Не є фінансовою порадою
-      </p>
+      <p className="text-center text-xs text-gray-400 mt-3">{c.footer}</p>
     </section>
   );
 }
