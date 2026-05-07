@@ -11,7 +11,7 @@ const TRANSLATIONS = {
 
 export default function ClientHeader() {
   const pathname = usePathname();
-  const lang = pathname.startsWith('/pl') ? 'pl' : pathname.startsWith('/de') ? 'de' : 'uk';
+  const lang = pathname.startsWith('/pl') ? 'pl' : pathname.startsWith('/de') ? 'de' : pathname.startsWith('/en') ? 'en' : 'uk';
   const t = TRANSLATIONS[lang];
 
   return (
