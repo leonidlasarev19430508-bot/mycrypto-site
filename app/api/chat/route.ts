@@ -15,33 +15,78 @@ const COIN_MAP: Record<string, string> = {
   dogecoin: 'dogecoin', doge: 'dogecoin',
 };
 
-function detectCoin(message: string): string {
-  const lower = message.toLowerCase();
-  for (const [key, value] of Object.entries(COIN_MAP)) {
-    if (lower.includes(key)) return value;
-  }
-  return 'bitcoin';
-}
-
 function detectExchangeMention(message: string): string | null {
   const lower = message.toLowerCase();
   if (lower.includes('binance')) return 'binance';
   if (lower.includes('bybit')) return 'bybit';
   if (lower.includes('whitebit')) return 'whitebit';
   if (lower.includes('okx')) return 'okx';
-  if (lower.includes('біржу') || lower.includes('біржа') || lower.includes('зареєстр')) return 'general';
+  if (lower.includes('біржу') || lower.includes('exchange') || lower.includes('börse') || lower.includes('giełd')) return 'general';
   return null;
 }
 
+const LANG_CONFIG: Record<string, {
+  language: string;
+  levelInstructions: Record<string, string>;
+  errorMsg: string;
+  ctaTriggers: string[];
+}> = {
+  uk: {
+    language: 'українською',
+    levelInstructions: {
+      beginner: 'Користувач — НОВАЧОК. Пояснюй просто, без жаргону. Підбадьорюй.',
+      intermediate: 'Користувач має базові знання. Можна використовувати терміни (DeFi, стейкінг).',
+      advanced: 'Користувач досвідчений трейдер. Говори як рівний з рівним.',
+      unknown: 'Рівень невідомий — адаптуйся по ходу розмови.',
+    },
+    errorMsg: '🤖 Вибачте, сталася помилка. Спробуйте ще раз!',
+    ctaTriggers: ['біржу', 'біржа', 'зареєстр'],
+  },
+  en: {
+    language: 'English',
+    levelInstructions: {
+      beginner: 'User is a BEGINNER. Explain simply, avoid jargon. Be encouraging.',
+      intermediate: 'User has basic knowledge. You can use terms (DeFi, staking, liquidity).',
+      advanced: 'User is an experienced trader. Talk as equals.',
+      unknown: 'Level unknown — adapt as the conversation goes.',
+    },
+    errorMsg: '🤖 Sorry, an error occurred. Please try again!',
+    ctaTriggers: ['exchange', 'register', 'sign up', 'start trading'],
+  },
+  pl: {
+    language: 'polsku',
+    levelInstructions: {
+      beginner: 'Użytkownik jest POCZĄTKUJĄCYM. Tłumacz prosto, bez żargonu. Zachęcaj.',
+      intermediate: 'Użytkownik ma podstawową wiedzę. Można używać terminów (DeFi, staking).',
+      advanced: 'Użytkownik to doświadczony trader. Rozmawiaj jak równy z równym.',
+      unknown: 'Poziom nieznany — dostosowuj się w trakcie rozmowy.',
+    },
+    errorMsg: '🤖 Przepraszamy, wystąpił błąd. Spróbuj ponownie!',
+    ctaTriggers: ['giełd', 'zarejestr', 'handel'],
+  },
+  de: {
+    language: 'Deutsch',
+    levelInstructions: {
+      beginner: 'Der Nutzer ist ANFÄNGER. Erkläre einfach, ohne Fachbegriffe. Ermutige ihn.',
+      intermediate: 'Nutzer hat Grundkenntnisse. Begriffe wie DeFi, Staking sind OK.',
+      advanced: 'Erfahrener Trader. Sprich auf Augenhöhe.',
+      unknown: 'Level unbekannt — passe dich im Gespräch an.',
+    },
+    errorMsg: '🤖 Entschuldigung, ein Fehler ist aufgetreten. Bitte versuche es erneut!',
+    ctaTriggers: ['börse', 'registrier', 'handel', 'exchange'],
+  },
+};
+
 export async function POST(request: Request) {
   try {
-    const { message, history = [], userLevel = 'unknown' } = await request.json();
+    const { message, history = [], userLevel = 'unknown', locale = 'uk' } = await request.json();
+
+    const lang = LANG_CONFIG[locale] || LANG_CONFIG['uk'];
 
     if (!message) {
       return NextResponse.json({ reply: 'Будь ласка, введіть питання.' });
     }
 
-    // Новини з БД
     let newsContext = '';
     try {
       const newsResult = await pool.query(`
@@ -51,7 +96,7 @@ export async function POST(request: Request) {
         LIMIT 8
       `);
       if (newsResult.rows.length > 0) {
-        newsContext = '\n\nОСТАННІ КРИПТО-НОВИНИ:\n';
+        newsContext = '\n\nLATEST CRYPTO NEWS:\n';
         newsResult.rows.forEach((n, i) => {
           newsContext += `${i + 1}. [${n.sentiment?.toUpperCase()}] ${n.title}\n`;
           newsContext += `   ${n.summary?.slice(0, 120)}...\n`;
@@ -62,12 +107,7 @@ export async function POST(request: Request) {
       console.error('DB Error:', dbError);
     }
 
-    const levelInstructions: Record<string, string> = {
-      beginner: `Користувач — НОВАЧОК. Пояснюй просто, без жаргону. Уникай технічних термінів або одразу пояснюй їх. Підбадьорюй. Рекомендуй починати з Binance як найнадійнішої біржі для початківців.`,
-      intermediate: `Користувач має базові знання. Можна використовувати терміни (DeFi, стейкінг, ліквідність). Давай більш детальні порівняння.`,
-      advanced: `Користувач досвідчений трейдер. Говори як рівний з рівним. Можна обговорювати арбітраж, похідні інструменти, ліквідність пулів.`,
-      unknown: `Рівень невідомий — адаптуйся по ходу розмови. Якщо це перше повідомлення, запитай рівень досвіду.`,
-    };
+    const levelInstruction = lang.levelInstructions[userLevel] || lang.levelInstructions['unknown'];
 
     const claudeHistory = history
       .slice(-10)
@@ -78,31 +118,31 @@ export async function POST(request: Request) {
 
     claudeHistory.push({ role: 'user', content: message });
 
-    const systemPrompt = `Ти — CryptoBot, експертний AI-консультант на сайті CryptoNavigator (cryptotop.chat).
-Твоя мета: допомогти користувачу розібратись у крипті І природно направити до реєстрації на біржі.
+    const systemPrompt = `You are CryptoBot, an expert AI crypto consultant on CryptoNavigator (cryptotop.chat).
+IMPORTANT: Always respond in ${lang.language}. Never switch languages.
 
-РІВЕНЬ КОРИСТУВАЧА: ${levelInstructions[userLevel] || levelInstructions['unknown']}
+USER LEVEL: ${levelInstruction}
 
-СТИЛЬ ВІДПОВІДЕЙ:
-- Відповідай ТІЛЬКИ українською
-- Структуруй відповідь: коротка суть → деталі → практична порада
-- Використовуй емодзі органічно (не кожне речення)
-- Довжина: 4-7 речень для простих питань, до 10 для складних
-- Будь впевненим але чесним щодо ризиків
+RESPONSE STYLE:
+- Respond ONLY in ${lang.language}
+- Structure: short summary → details → practical advice
+- Use emojis organically
+- Length: 4-7 sentences for simple questions, up to 10 for complex ones
+- Be confident but honest about risks
 
-БІРЖІ — РЕКОМЕНДУЙ ПРИРОДНО:
-Коли питають про біржу або реєстрацію, завершуй відповідь так:
-"[EXCHANGE_CTA:binance]" — якщо рекомендуєш Binance
-"[EXCHANGE_CTA:whitebit]" — якщо рекомендуєш WhiteBIT (для UA без верифікації)
-"[EXCHANGE_CTA:both]" — якщо рекомендуєш обидві
+EXCHANGES — RECOMMEND NATURALLY:
+When asked about exchanges or registration, end your response with:
+"[EXCHANGE_CTA:binance]" — if recommending Binance
+"[EXCHANGE_CTA:whitebit]" — if recommending WhiteBIT
+"[EXCHANGE_CTA:both]" — if recommending both
 
-КОЛИ РЕКОМЕНДУВАТИ:
-- Питання про вибір біржі → [EXCHANGE_CTA:binance]
-- Питання про старт в крипті → [EXCHANGE_CTA:binance]  
-- Питання про українські біржі → [EXCHANGE_CTA:whitebit]
-- Питання про безпеку/надійність → [EXCHANGE_CTA:binance]
+WHEN TO RECOMMEND:
+- Questions about choosing an exchange → [EXCHANGE_CTA:binance]
+- Questions about starting in crypto → [EXCHANGE_CTA:binance]
+- Questions about Ukrainian exchanges → [EXCHANGE_CTA:whitebit]
+- Questions about safety/reliability → [EXCHANGE_CTA:binance]
 
-ВАЖЛИВО: Не давай конкретних порад "купуй/продавай". Завжди DYOR.
+IMPORTANT: No specific buy/sell advice. Always DYOR.
 ${newsContext}`;
 
     const response = await anthropic.messages.create({
@@ -114,10 +154,8 @@ ${newsContext}`;
 
     let reply = response.content[0].type === 'text'
       ? response.content[0].text
-      : 'Вибачте, не вдалося отримати відповідь.';
+      : lang.errorMsg;
 
-    // Визначаємо який CTA вставити
-    const exchangeMentioned = detectExchangeMention(reply + message);
     let ctaData = null;
 
     if (reply.includes('[EXCHANGE_CTA:binance]')) {
@@ -136,7 +174,7 @@ ${newsContext}`;
   } catch (error) {
     console.error('Chat API error:', error);
     return NextResponse.json({
-      reply: '🤖 Вибачте, сталася помилка. Спробуйте ще раз!'
+      reply: '🤖 Sorry, an error occurred. Please try again!'
     });
   }
 }
