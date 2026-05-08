@@ -1,29 +1,27 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://mycrypto-site-production.up.railway.app'
-  
   return [
     {
-      url: baseUrl,
+      url: 'https://cryptotop.chat',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1,
     },
     {
-      url: `${baseUrl}/pl`,
+      url: 'https://cryptotop.chat/en',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/de`,
+      url: 'https://cryptotop.chat/pl',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/en`,
+      url: 'https://cryptotop.chat/de',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.9,
