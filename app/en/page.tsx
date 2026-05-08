@@ -5,6 +5,7 @@ import WhatIfCalculator from '../components/WhatIfCalculator';
 import WhaleAlertTicker from '../components/WhaleAlertTicker';
 import TradingCounter from '../components/TradingCounter';
 import ChatWidget from '../components/ChatWidget';
+import ExchangeQuiz from '../components/ExchangeQuiz';
 import { useTranslation } from '../lib/i18n';
 import { useState } from 'react';
 
@@ -68,6 +69,7 @@ export default function ENPage() {
         <CryptoPrices />
         <FearGreedIndex locale="en" />
         <WhatIfCalculator locale="en" />
+        <ExchangeQuiz locale="en" />
         <SubscribeForm />
       </main>
       <ChatWidget locale="en" />
