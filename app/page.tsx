@@ -6,6 +6,7 @@ import PriceChart from "./components/PriceChart";
 import TradingCounter from "./components/TradingCounter";
 import WhatIfCalculator from "./components/WhatIfCalculator";
 import WhaleAlertTicker from "./components/WhaleAlertTicker";
+import ChatWidget from "./components/ChatWidget";
 import { useState } from "react";
 
 function SubscribeForm() {
@@ -70,6 +71,7 @@ export default function Home() {
         <ExchangeQuiz />
         <SubscribeForm />
       </main>
+      <ChatWidget locale="uk" />
     </>
   );
 }

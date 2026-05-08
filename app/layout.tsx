@@ -1,5 +1,4 @@
 import ClientHeader from './components/ClientHeader';
-import ChatWidget from './components/ChatWidget';
 import "./globals.css";
 
 export const metadata = {
@@ -10,11 +9,7 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="uk">
       <body className="bg-gray-50 text-gray-900">
@@ -27,7 +22,6 @@ export default function RootLayout({
             <p>© 2026 CryptoNavigator. AI-powered crypto insights.</p>
           </div>
         </footer>
-        <ChatWidget />
       </body>
     </html>
   );

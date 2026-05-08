@@ -4,6 +4,7 @@ import FearGreedIndex from '../components/FearGreedIndex';
 import WhatIfCalculator from '../components/WhatIfCalculator';
 import WhaleAlertTicker from '../components/WhaleAlertTicker';
 import TradingCounter from '../components/TradingCounter';
+import ChatWidget from '../components/ChatWidget';
 import { useTranslation } from '../lib/i18n';
 import { useState } from 'react';
 
@@ -69,6 +70,7 @@ export default function DEPage() {
         <WhatIfCalculator locale="de" />
         <SubscribeForm />
       </main>
+      <ChatWidget locale="de" />
     </>
   );
 }
