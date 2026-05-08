@@ -1,166 +1,140 @@
-"use client";
-import { useEffect, useRef, useState } from "react";
+'use client';
+import { useEffect, useState } from 'react';
+import { Line } from 'react-chartjs-2';
 import {
-  Chart,
-  LineElement,
-  PointElement,
-  LineController,
+  Chart as ChartJS,
   CategoryScale,
   LinearScale,
+  PointElement,
+  LineElement,
+  Title,
   Tooltip,
   Filler,
-} from "chart.js";
+  Legend,
+} from 'chart.js';
 
-Chart.register(LineElement, PointElement, LineController, CategoryScale, LinearScale, Tooltip, Filler);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend);
 
 const COINS = [
-  { id: "bitcoin",  symbol: "BTC", color: "#F7931A" },
-  { id: "ethereum", symbol: "ETH", color: "#627EEA" },
-  { id: "solana",   symbol: "SOL", color: "#9945FF" },
-  { id: "binancecoin", symbol: "BNB", color: "#F3BA2F" },
-];
-
-const RANGES = [
-  { label: "24г", days: 1 },
-  { label: "7д",  days: 7 },
-  { label: "30д", days: 30 },
+  { id: 'bitcoin', symbol: 'BTC', color: '#f97316' },
+  { id: 'ethereum', symbol: 'ETH', color: '#6366f1' },
+  { id: 'solana', symbol: 'SOL', color: '#10b981' },
 ];
 
 export default function PriceChart() {
-  const [activeCoin, setActiveCoin] = useState(COINS[0]);
-  const [activeRange, setActiveRange] = useState(RANGES[1]);
-  const [loading, setLoading] = useState(false);
-  const [change, setChange] = useState<number | null>(null);
-  const chartRef = useRef<HTMLCanvasElement>(null);
-  const chartInstance = useRef<Chart | null>(null);
+  const [selected, setSelected] = useState(COINS[0]);
+  const [chartData, setChartData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [currentPrice, setCurrentPrice] = useState<number | null>(null);
+  const [priceChange, setPriceChange] = useState<number | null>(null);
 
   useEffect(() => {
-    fetchAndRender();
-  }, [activeCoin, activeRange]);
-
-  async function fetchAndRender() {
-    if (!chartRef.current) return;
     setLoading(true);
-    try {
-      const res = await fetch(
-        `https://api.coingecko.com/api/v3/coins/${activeCoin.id}/market_chart?vs_currency=usd&days=${activeRange.days}`
-      );
-      const data = await res.json();
-      const prices: [number, number][] = data.prices;
-
-      const labels = prices.map(([ts]) => {
-        const d = new Date(ts);
-        return activeRange.days === 1
-          ? d.toLocaleTimeString("uk-UA", { hour: "2-digit", minute: "2-digit" })
-          : d.toLocaleDateString("uk-UA", { day: "2-digit", month: "2-digit" });
-      });
-      const values = prices.map(([, v]) => v);
-
-      const pct = ((values[values.length - 1] - values[0]) / values[0]) * 100;
-      setChange(pct);
-
-      if (chartInstance.current) chartInstance.current.destroy();
-
-      const isUp = pct >= 0;
-      const color = isUp ? "#22c55e" : "#ef4444";
-
-      chartInstance.current = new Chart(chartRef.current, {
-        type: "line",
-        data: {
+    fetch(`https://api.coingecko.com/api/v3/coins/${selected.id}/market_chart?vs_currency=usd&days=7`)
+      .then(r => r.json())
+      .then(data => {
+        const prices = data.prices as [number, number][];
+        const labels = prices.map(([ts]) =>
+          new Date(ts).toLocaleDateString('uk-UA', { month: 'short', day: 'numeric' })
+        );
+        const values = prices.map(([, p]) => p);
+        const first = values[0];
+        const last = values[values.length - 1];
+        setCurrentPrice(last);
+        setPriceChange(((last - first) / first) * 100);
+        setChartData({
           labels,
           datasets: [{
+            label: selected.symbol,
             data: values,
-            borderColor: color,
+            borderColor: selected.color,
+            backgroundColor: selected.color + '20',
             borderWidth: 2,
-            pointRadius: 0,
             fill: true,
-            backgroundColor: isUp ? "rgba(34,197,94,0.1)" : "rgba(239,68,68,0.1)",
             tension: 0.4,
+            pointRadius: 0,
+            pointHoverRadius: 4,
           }],
+        });
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [selected]);
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx: any) => `$${ctx.parsed.y.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false }, tooltip: {
-            callbacks: {
-              label: (ctx) => ` $${(ctx.parsed.y ?? 0).toLocaleString("en-US", { maximumFractionDigits: 2 })}`,
-            }
-          }},
-          scales: {
-            x: { grid: { display: false }, ticks: { maxTicksLimit: 6, color: "#9ca3af" } },
-            y: { grid: { color: "rgba(156,163,175,0.15)" }, ticks: {
-              color: "#9ca3af",
-              callback: (v) => `$${Number(v).toLocaleString("en-US", { maximumFractionDigits: 0 })}`,
-            }},
-          },
+      },
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: { maxTicksLimit: 7, font: { size: 11 } },
+      },
+      y: {
+        grid: { color: '#f3f4f6' },
+        ticks: {
+          font: { size: 11 },
+          callback: (v: any) => '$' + Number(v).toLocaleString('en-US', { maximumFractionDigits: 0 }),
         },
-      });
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
-  }
+      },
+    },
+  };
 
   return (
-    <section className="max-w-4xl mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">📈 Графіки цін</h2>
+    <section className="max-w-4xl mx-auto px-4 py-10">
+      <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">📈 Графіки цін</h2>
 
-      {/* Монети */}
-      <div className="flex gap-2 mb-4 flex-wrap">
-        {COINS.map((coin) => (
-          <button
-            key={coin.id}
-            onClick={() => setActiveCoin(coin)}
-            className={`px-4 py-2 rounded-full font-semibold text-sm transition-all ${
-              activeCoin.id === coin.id
-                ? "text-white shadow-lg scale-105"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-            }`}
-            style={activeCoin.id === coin.id ? { backgroundColor: coin.color } : {}}
-          >
-            {coin.symbol}
-          </button>
-        ))}
-      </div>
-
-      {/* Картка */}
       <div className="bg-white rounded-2xl shadow-md p-6">
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <span className="text-lg font-bold text-gray-800">{activeCoin.symbol}/USD</span>
-            {change !== null && (
-              <span className={`ml-3 text-sm font-semibold ${change >= 0 ? "text-green-500" : "text-red-500"}`}>
-                {change >= 0 ? "▲" : "▼"} {Math.abs(change).toFixed(2)}%
+        {/* Перемикач монет */}
+        <div className="flex gap-3 mb-6">
+          {COINS.map(coin => (
+            <button
+              key={coin.id}
+              onClick={() => setSelected(coin)}
+              className={`px-5 py-2 rounded-full font-semibold text-sm transition-all ${
+                selected.id === coin.id
+                  ? 'text-white shadow-md'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
+              style={selected.id === coin.id ? { backgroundColor: coin.color } : {}}
+            >
+              {coin.symbol}
+            </button>
+          ))}
+        </div>
+
+        {/* Ціна і зміна */}
+        {currentPrice && (
+          <div className="flex items-baseline gap-3 mb-4">
+            <span className="text-3xl font-bold text-gray-900">
+              ${currentPrice.toLocaleString('en-US', { maximumFractionDigits: 2 })}
+            </span>
+            {priceChange !== null && (
+              <span className={`text-sm font-semibold px-2 py-1 rounded-full ${
+                priceChange >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+              }`}>
+                {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}% за 7 днів
               </span>
             )}
           </div>
-          {/* Діапазони */}
-          <div className="flex gap-1">
-            {RANGES.map((r) => (
-              <button
-                key={r.days}
-                onClick={() => setActiveRange(r)}
-                className={`px-3 py-1 rounded-lg text-sm font-medium transition-all ${
-                  activeRange.days === r.days
-                    ? "bg-gray-800 text-white"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}
-              >
-                {r.label}
-              </button>
-            ))}
-          </div>
-        </div>
+        )}
 
-        <div className="relative h-64">
-          {loading && (
-            <div className="absolute inset-0 flex items-center justify-center bg-white/70 rounded-xl z-10">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-800" />
-            </div>
-          )}
-          <canvas ref={chartRef} />
-        </div>
+        {/* Графік */}
+        {loading ? (
+          <div className="h-64 flex items-center justify-center text-gray-400">Завантаження...</div>
+        ) : chartData ? (
+          <Line data={chartData} options={options as any} />
+        ) : (
+          <div className="h-64 flex items-center justify-center text-gray-400">Помилка завантаження</div>
+        )}
+
+        <p className="text-xs text-gray-400 mt-3 text-right">Дані: CoinGecko • 7 днів</p>
       </div>
     </section>
   );
