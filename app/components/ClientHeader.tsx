@@ -19,13 +19,6 @@ const LOCALE_LABELS: Record<Locale, string> = {
 
 const LOCALES: Locale[] = ['uk', 'pl', 'de', 'en'];
 
-const FAQ_LABELS: Record<Locale, string> = {
-  uk: 'FAQ',
-  pl: 'FAQ',
-  de: 'FAQ',
-  en: 'FAQ',
-};
-
 function getLocalizedPath(locale: Locale, page: string): string {
   const prefix = locale === 'uk' ? '' : `/${locale}`;
   return `${prefix}/${page}`;
@@ -41,11 +34,17 @@ export default function ClientHeader() {
   const t = getTranslation(locale);
   const homeHref = LOCALE_HREFS[locale];
 
+  const aboutLabel: Record<Locale, string> = {
+    uk: 'Про нас',
+    en: 'About',
+    pl: 'O nas',
+    de: 'Über uns',
+  };
+
   return (
     <header className="bg-black text-white p-4">
       <div className="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-4">
         <Link href={homeHref} className="font-bold text-xl hover:text-gray-300">
-          <Link href="/about" className="hover:text-gray-300">About</Link>
           CryptoNavigator
         </Link>
         <nav className="flex flex-wrap gap-6 items-center">
@@ -53,7 +52,8 @@ export default function ClientHeader() {
           <Link href={getLocalizedPath(locale, 'markets')} className="hover:text-gray-300">{t.nav.markets}</Link>
           <Link href={getLocalizedPath(locale, 'news')} className="hover:text-gray-300">{t.nav.news}</Link>
           <Link href={getLocalizedPath(locale, 'assistant')} className="hover:text-gray-300">{t.nav.assistant}</Link>
-          <Link href={getLocalizedPath(locale, 'faq')} className="hover:text-gray-300">{FAQ_LABELS[locale]}</Link>
+          <Link href={getLocalizedPath(locale, 'faq')} className="hover:text-gray-300">FAQ</Link>
+          <Link href="/about" className="hover:text-gray-300">{aboutLabel[locale]}</Link>
           <div className="flex gap-1 ml-4 border-l border-gray-600 pl-4">
             {LOCALES.map((l) => (
               <Link
