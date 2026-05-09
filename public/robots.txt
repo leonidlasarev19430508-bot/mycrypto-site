@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mycrypto-site-production.up.railway.app/sitemap.xml
+Sitemap: https://cryptotop.chat/sitemap.xml
