@@ -1,5 +1,5 @@
 import Link from 'next/link';
-
+import ChatWidget from '../components/ChatWidget';
 export const metadata = {
   title: "Крипто Лікбез — Навчання для початківців | CryptoNavigator",
   description: "Дізнайся все про криптовалюти з нуля. Що таке Bitcoin, як купити крипту, що таке гаманець, блокчейн та DeFi — простими словами.",
@@ -217,6 +217,7 @@ export default function LearnPage() {
           </Link>
         </div>
       </div>
+     <ChatWidget locale="uk" />
     </div>
   );
 }
