@@ -1,16 +1,24 @@
-cd ~/Documents/mycrypto-site && mkdir -p app/api/subscribers && cat > app/api/subscribers/route.ts << 'EOF'
 import { NextResponse } from 'next/server';
 import pool from '../../lib/db';
 
-export async function GET() {
+export async function POST(request: Request) {
   try {
-    const result = await pool.query(
-      'SELECT email FROM subscribers WHERE is_active = true ORDER BY created_at DESC'
+    const { email } = await request.json();
+
+    if (!email || !email.includes('@')) {
+      return NextResponse.json({ error: 'Invalid email' }, { status: 400 });
+    }
+
+    await pool.query(
+      `INSERT INTO subscribers (email, is_active, created_at)
+       VALUES ($1, true, NOW())
+       ON CONFLICT (email) DO UPDATE SET is_active = true`,
+      [email]
     );
-    return NextResponse.json({ subscribers: result.rows });
+
+    return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error fetching subscribers:', error);
-    return NextResponse.json({ subscribers: [] });
+    console.error('Subscribe error:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
-EOF
