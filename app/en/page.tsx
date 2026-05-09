@@ -6,6 +6,7 @@ import WhaleAlertTicker from '../components/WhaleAlertTicker';
 import TradingCounter from '../components/TradingCounter';
 import ChatWidget from '../components/ChatWidget';
 import ExchangeQuiz from '../components/ExchangeQuiz';
+import WhaleAlertPopup from '../components/WhaleAlertPopup';
 import { useTranslation } from '../lib/i18n';
 import { useState } from 'react';
 
@@ -72,6 +73,7 @@ export default function ENPage() {
         <ExchangeQuiz locale="en" />
         <SubscribeForm />
       </main>
+      <WhaleAlertPopup />
       <ChatWidget locale="en" />
     </>
   );
