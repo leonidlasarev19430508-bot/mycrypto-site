@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = 'https://cryptotop.chat';
-  const pages = ['', '/news', '/faq', '/markets', '/assistant'];
+  const pages = ['', '/news', '/faq', '/markets', '/assistant', '/about'];
   const locales = ['', '/en', '/pl', '/de'];
 
   const urls: MetadataRoute.Sitemap = [];
