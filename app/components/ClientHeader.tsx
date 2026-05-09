@@ -54,6 +54,7 @@ export default function ClientHeader() {
           <Link href={getLocalizedPath(locale, 'assistant')} className="hover:text-gray-300">{t.nav.assistant}</Link>
           <Link href={getLocalizedPath(locale, 'faq')} className="hover:text-gray-300">FAQ</Link>
           <Link href={getLocalizedPath(locale, 'about')} className="hover:text-gray-300">{aboutLabel[locale]}</Link>
+          <Link href={getLocalizedPath(locale, 'learn')} className="hover:text-gray-300">📚</Link>
           <div className="flex gap-1 ml-4 border-l border-gray-600 pl-4">
             {LOCALES.map((l) => (
               <Link
