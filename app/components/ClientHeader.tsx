@@ -41,6 +41,13 @@ export default function ClientHeader() {
     de: 'Über uns',
   };
 
+  const learnLabel: Record<Locale, string> = {
+    uk: 'Навчання',
+    en: 'Learn',
+    pl: 'Nauka',
+    de: 'Lernen',
+  };
+
   return (
     <header className="bg-black text-white p-4">
       <div className="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-4">
@@ -54,7 +61,7 @@ export default function ClientHeader() {
           <Link href={getLocalizedPath(locale, 'assistant')} className="hover:text-gray-300">{t.nav.assistant}</Link>
           <Link href={getLocalizedPath(locale, 'faq')} className="hover:text-gray-300">FAQ</Link>
           <Link href={getLocalizedPath(locale, 'about')} className="hover:text-gray-300">{aboutLabel[locale]}</Link>
-          <Link href={getLocalizedPath(locale, 'learn')} className="hover:text-gray-300">📚</Link>
+          <Link href={getLocalizedPath(locale, 'learn')} className="hover:text-gray-300">{learnLabel[locale]}</Link>
           <div className="flex gap-1 ml-4 border-l border-gray-600 pl-4">
             {LOCALES.map((l) => (
               <Link
