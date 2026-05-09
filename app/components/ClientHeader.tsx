@@ -45,6 +45,7 @@ export default function ClientHeader() {
     <header className="bg-black text-white p-4">
       <div className="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-4">
         <Link href={homeHref} className="font-bold text-xl hover:text-gray-300">
+          <Link href="/about" className="hover:text-gray-300">About</Link>
           CryptoNavigator
         </Link>
         <nav className="flex flex-wrap gap-6 items-center">
