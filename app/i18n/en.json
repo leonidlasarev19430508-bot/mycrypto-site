@@ -41,13 +41,19 @@
     }
   ],
   "subscribe": {
-    "title": "Get daily crypto digest",
-    "subtitle": "Daily crypto news with AI analysis",
+    "title": "🔔 CryptoAlert — Be First!",
+    "subtitle": "Get instant alerts when:",
+    "alerts": [
+      "🐋 Whale moves more than $50M",
+      "😱 Fear & Greed drops below 20",
+      "🚀 BTC rises or falls more than 5%",
+      "📰 Daily AI news digest"
+    ],
     "placeholder": "Your email",
-    "button": "Subscribe",
+    "button": "Subscribe Free",
     "sending": "Subscribing...",
-    "success": "Successfully subscribed!",
-    "error": "Error. Please try again later."
+    "success": "✅ You're in! Check your inbox.",
+    "error": "Something went wrong. Please try again."
   },
   "calculator": {
     "badge": "Calculator",

@@ -41,13 +41,19 @@
     }
   ],
   "subscribe": {
-    "title": "Otrzymuj codzienny digest",
-    "subtitle": "Codzienny wybór wiadomości krypto z analizą AI",
+    "title": "🔔 CryptoAlert — Bądź pierwszy!",
+    "subtitle": "Otrzymuj natychmiastowe powiadomienia gdy:",
+    "alerts": [
+      "🐋 Wieloryb przenosi więcej niż $50M",
+      "😱 Fear & Greed spada poniżej 20",
+      "🚀 BTC rośnie lub spada o więcej niż 5%",
+      "📰 Codzienny digest wiadomości AI"
+    ],
     "placeholder": "Twój email",
-    "button": "Zapisz się",
+    "button": "Zapisz się za darmo",
     "sending": "Zapisuję...",
-    "success": "Zapisano pomyślnie!",
-    "error": "Błąd. Spróbuj później."
+    "success": "✅ Gotowe! Sprawdź swoją skrzynkę.",
+    "error": "Coś poszło nie tak. Spróbuj ponownie."
   },
   "calculator": {
     "badge": "Kalkulator",

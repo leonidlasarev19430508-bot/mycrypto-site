@@ -35,6 +35,11 @@ function SubscribeForm() {
     <div className="mt-10 p-6 bg-gray-100 rounded-xl text-center">
       <h3 className="text-xl font-semibold mb-2">{t.subscribe.title}</h3>
       <p className="text-gray-600 mb-4 text-sm">{t.subscribe.subtitle}</p>
+      <ul className="text-left text-sm text-gray-600 mb-4 space-y-1 max-w-xs mx-auto">
+        {t.subscribe.alerts.map((alert: string, i: number) => (
+          <li key={i}>{alert}</li>
+        ))}
+      </ul>
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
         <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder={t.subscribe.placeholder} className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
         <button type="submit" disabled={status === 'sending'} className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50">{status === 'sending' ? t.subscribe.sending : t.subscribe.button}</button>

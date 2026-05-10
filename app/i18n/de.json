@@ -41,13 +41,19 @@
     }
   ],
   "subscribe": {
-    "title": "Täglichen Digest erhalten",
-    "subtitle": "Tägliche Krypto-News mit KI-Analyse",
+    "title": "🔔 CryptoAlert — Sei der Erste!",
+    "subtitle": "Erhalte sofortige Benachrichtigungen wenn:",
+    "alerts": [
+      "🐋 Ein Wal mehr als $50M bewegt",
+      "😱 Fear & Greed unter 20 fällt",
+      "🚀 BTC um mehr als 5% steigt oder fällt",
+      "📰 Täglicher AI-News-Digest"
+    ],
     "placeholder": "Deine E-Mail",
-    "button": "Abonnieren",
+    "button": "Kostenlos abonnieren",
     "sending": "Wird gespeichert...",
-    "success": "Erfolgreich abonniert!",
-    "error": "Fehler. Bitte versuche es später."
+    "success": "✅ Fertig! Schau in dein Postfach.",
+    "error": "Etwas ist schiefgelaufen. Bitte erneut versuchen."
   },
   "calculator": {
     "badge": "Rechner",
