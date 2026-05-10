@@ -48,6 +48,13 @@ export default function ClientHeader() {
     de: 'Lernen',
   };
 
+  const coinsLabel: Record<Locale, string> = {
+    uk: 'Монети',
+    en: 'Coins',
+    pl: 'Monety',
+    de: 'Münzen',
+  };
+
   return (
     <header className="bg-black text-white p-4">
       <div className="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-4">
@@ -56,6 +63,7 @@ export default function ClientHeader() {
         </Link>
         <nav className="flex flex-wrap gap-6 items-center">
           <Link href={homeHref} className="hover:text-gray-300">{t.nav.home}</Link>
+          <Link href="/coins" className="hover:text-gray-300">{coinsLabel[locale]}</Link>
           <Link href={getLocalizedPath(locale, 'markets')} className="hover:text-gray-300">{t.nav.markets}</Link>
           <Link href={getLocalizedPath(locale, 'news')} className="hover:text-gray-300">{t.nav.news}</Link>
           <Link href={getLocalizedPath(locale, 'assistant')} className="hover:text-gray-300">{t.nav.assistant}</Link>

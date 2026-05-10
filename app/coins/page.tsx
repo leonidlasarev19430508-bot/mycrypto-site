@@ -9,7 +9,6 @@ type Coin = {
   current_price: number;
   price_change_percentage_24h: number;
   market_cap: number;
-  total_volume: number;
   image: string;
   market_cap_rank: number;
 };
@@ -20,18 +19,21 @@ export default function CoinsPage() {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<'all' | 'gainers' | 'losers'>('all');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch(
-      'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false'
-    )
+    fetch('/api/coins')
       .then(r => r.json())
       .then(data => {
-        setCoins(data);
-        setFiltered(data);
+        if (Array.isArray(data) && data.length > 0) {
+          setCoins(data);
+          setFiltered(data);
+        } else {
+          setError(true);
+        }
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => { setError(true); setLoading(false); });
   }, []);
 
   useEffect(() => {
@@ -47,29 +49,35 @@ export default function CoinsPage() {
     setFiltered(result);
   }, [search, filter, coins]);
 
+  const gainers = coins.filter(c => c.price_change_percentage_24h > 0).length;
+  const losers = coins.filter(c => c.price_change_percentage_24h < 0).length;
+
   return (
     <main className="max-w-6xl mx-auto px-4 py-10">
+
+      {/* Header */}
       <div className="text-center mb-10">
         <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-3">
           📊 Топ 100 Криптовалют
         </h1>
-        <p className="text-gray-500 text-lg">Актуальні ціни, зміна за 24 години, ринкова капіталізація</p>
+        <p className="text-gray-500 text-lg">Актуальні ціни · Зміна за 24 год · Ринкова капіталізація</p>
       </div>
 
+      {/* Search + Filter */}
       <div className="flex flex-col sm:flex-row gap-3 mb-6">
         <input
           type="text"
-          placeholder="🔍 Пошук за назвою або символом..."
+          placeholder="🔍 Пошук: Bitcoin, BTC, Ethereum..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="flex-1 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+          className="flex-1 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm bg-white"
         />
         <div className="flex gap-2">
           {(['all', 'gainers', 'losers'] as const).map(f => (
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-4 py-3 rounded-xl text-sm font-semibold transition ${
+              className={`px-4 py-3 rounded-xl text-sm font-semibold transition whitespace-nowrap ${
                 filter === f
                   ? f === 'gainers' ? 'bg-green-500 text-white'
                   : f === 'losers' ? 'bg-red-500 text-white'
@@ -77,48 +85,64 @@ export default function CoinsPage() {
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
-              {f === 'all' ? 'Всі' : f === 'gainers' ? '▲ Ростуть' : '▼ Падають'}
+              {f === 'all' ? '🌐 Всі' : f === 'gainers' ? '▲ Ростуть' : '▼ Падають'}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="bg-blue-50 rounded-xl p-4 text-center">
-          <p className="text-2xl font-black text-blue-600">{coins.length}</p>
-          <p className="text-xs text-gray-500 mt-1">Всього монет</p>
+      {/* Stats */}
+      {!loading && !error && (
+        <div className="grid grid-cols-3 gap-4 mb-6">
+          <div className="bg-blue-50 rounded-xl p-4 text-center cursor-pointer" onClick={() => setFilter('all')}>
+            <p className="text-2xl font-black text-blue-600">{coins.length}</p>
+            <p className="text-xs text-gray-500 mt-1">Всього монет</p>
+          </div>
+          <div className="bg-green-50 rounded-xl p-4 text-center cursor-pointer" onClick={() => setFilter('gainers')}>
+            <p className="text-2xl font-black text-green-600">{gainers}</p>
+            <p className="text-xs text-gray-500 mt-1">▲ Ростуть сьогодні</p>
+          </div>
+          <div className="bg-red-50 rounded-xl p-4 text-center cursor-pointer" onClick={() => setFilter('losers')}>
+            <p className="text-2xl font-black text-red-500">{losers}</p>
+            <p className="text-xs text-gray-500 mt-1">▼ Падають сьогодні</p>
+          </div>
         </div>
-        <div className="bg-green-50 rounded-xl p-4 text-center">
-          <p className="text-2xl font-black text-green-600">
-            {coins.filter(c => c.price_change_percentage_24h > 0).length}
-          </p>
-          <p className="text-xs text-gray-500 mt-1">Ростуть сьогодні</p>
-        </div>
-        <div className="bg-red-50 rounded-xl p-4 text-center">
-          <p className="text-2xl font-black text-red-500">
-            {coins.filter(c => c.price_change_percentage_24h < 0).length}
-          </p>
-          <p className="text-xs text-gray-500 mt-1">Падають сьогодні</p>
-        </div>
-      </div>
+      )}
 
-      <div className="hidden md:grid grid-cols-12 gap-4 px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wide">
+      {/* Table header */}
+      <div className="hidden md:grid grid-cols-12 gap-4 px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wide border-b border-gray-100 mb-2">
         <div className="col-span-1">#</div>
         <div className="col-span-4">Монета</div>
         <div className="col-span-2 text-right">Ціна</div>
-        <div className="col-span-2 text-right">24г</div>
+        <div className="col-span-2 text-right">24 год</div>
         <div className="col-span-3 text-right">Капіталізація</div>
       </div>
 
-      {loading ? (
+      {/* States */}
+      {loading && (
         <div className="text-center py-20">
           <div className="inline-block w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
           <p className="text-gray-500">Завантаження даних...</p>
         </div>
-      ) : filtered.length === 0 ? (
-        <div className="text-center py-20 text-gray-400">Нічого не знайдено</div>
-      ) : (
-        <div className="space-y-2">
+      )}
+
+      {error && (
+        <div className="text-center py-20">
+          <p className="text-4xl mb-3">😕</p>
+          <p className="text-gray-500">Не вдалося завантажити дані. Спробуйте пізніше.</p>
+        </div>
+      )}
+
+      {!loading && !error && filtered.length === 0 && (
+        <div className="text-center py-20 text-gray-400">
+          <p className="text-3xl mb-2">🔍</p>
+          <p>Нічого не знайдено за запитом &quot;{search}&quot;</p>
+        </div>
+      )}
+
+      {/* Coins list */}
+      {!loading && !error && filtered.length > 0 && (
+        <div className="space-y-1.5">
           {filtered.map((coin) => (
             <Link
               key={coin.id}
@@ -129,9 +153,9 @@ export default function CoinsPage() {
                 {coin.market_cap_rank}
               </div>
               <div className="col-span-6 md:col-span-4 flex items-center gap-3">
-                <img src={coin.image} alt={coin.name} width={36} height={36} className="rounded-full" />
-                <div>
-                  <p className="font-bold text-gray-900 group-hover:text-blue-600 transition text-sm">{coin.name}</p>
+                <img src={coin.image} alt={coin.name} width={36} height={36} className="rounded-full flex-shrink-0" />
+                <div className="min-w-0">
+                  <p className="font-bold text-gray-900 group-hover:text-blue-600 transition text-sm truncate">{coin.name}</p>
                   <p className="text-xs text-gray-400 uppercase">{coin.symbol}</p>
                 </div>
               </div>
@@ -143,7 +167,7 @@ export default function CoinsPage() {
                 </p>
               </div>
               <div className="col-span-2 text-right">
-                <span className={`inline-flex items-center gap-0.5 text-sm font-semibold px-2 py-0.5 rounded-lg ${
+                <span className={`inline-flex items-center gap-0.5 text-xs font-bold px-2 py-1 rounded-lg ${
                   coin.price_change_percentage_24h > 0
                     ? 'bg-green-100 text-green-700'
                     : 'bg-red-100 text-red-600'
@@ -152,7 +176,7 @@ export default function CoinsPage() {
                   {Math.abs(coin.price_change_percentage_24h).toFixed(2)}%
                 </span>
               </div>
-              <div className="hidden md:block col-span-3 text-right text-sm text-gray-500">
+              <div className="hidden md:block col-span-3 text-right text-sm text-gray-400">
                 ${(coin.market_cap / 1_000_000_000).toFixed(2)}B
               </div>
             </Link>
