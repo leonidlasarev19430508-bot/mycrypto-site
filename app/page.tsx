@@ -26,8 +26,14 @@ function SubscribeForm() {
   };
   return (
     <div className="mt-10 p-6 bg-gray-100 rounded-xl text-center">
-      <h3 className="text-xl font-semibold mb-2">Отримуйте дайджест новин</h3>
-      <p className="text-gray-600 mb-4 text-sm">Щоденна підбірка крипто-новин з AI-аналізом</p>
+      <h3 className="text-xl font-semibold mb-2">🔔 CryptoAlert — Будь першим!</h3>
+      <p className="text-gray-600 mb-4 text-sm">Отримуй миттєві сповіщення коли:</p>
+      <ul className="text-left text-sm text-gray-600 mb-4 space-y-1 max-w-xs mx-auto">
+        <li>🐋 Кит переміщує більше $50M</li>
+        <li>😱 Fear & Greed падає нижче 20</li>
+        <li>🚀 BTC зростає або падає більше 5%</li>
+        <li>📰 Щоденний AI-дайджест новин</li>
+      </ul>
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
         <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Ваш email" className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
         <button type="submit" disabled={status === 'sending'} className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50">{status === 'sending' ? 'Підписуємо...' : 'Підписатися'}</button>
