@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { useTranslation, type Locale } from '../lib/i18n';
 
 const AFFILIATE = {
-  bitcoin:  process.env.NEXT_PUBLIC_AFFILIATE_BINANCE  || '#',
-  ethereum: process.env.NEXT_PUBLIC_AFFILIATE_BINANCE  || '#',
-  solana:   process.env.NEXT_PUBLIC_AFFILIATE_BYBIT    || '#',
-  bnb:      process.env.NEXT_PUBLIC_AFFILIATE_BINANCE  || '#',
-  xrp:      process.env.NEXT_PUBLIC_AFFILIATE_BYBIT    || '#',
+  bitcoin:  process.env.NEXT_PUBLIC_AFFILIATE_BINANCE  || 'https://www.binance.com/register?ref=GRO_28502_BIO0R',
+  ethereum: process.env.NEXT_PUBLIC_AFFILIATE_BINANCE  || 'https://www.binance.com/register?ref=GRO_28502_BIO0R',
+  solana:   process.env.NEXT_PUBLIC_AFFILIATE_BYBIT    || 'https://www.bybit.com/register?ref=CRYPTONAV',
+  bnb:      process.env.NEXT_PUBLIC_AFFILIATE_BINANCE  || 'https://www.binance.com/register?ref=GRO_28502_BIO0R',
+  xrp:      process.env.NEXT_PUBLIC_AFFILIATE_BYBIT    || 'https://www.bybit.com/register?ref=CRYPTONAV',
 };
 
 const COINS = [
@@ -79,8 +79,8 @@ export default function WhatIfCalculator({ locale = 'uk' }: Props) {
       const cgDate = `${d}-${m}-${y}`;
 
       const [histRes, nowRes] = await Promise.all([
-        fetch(`https://api.coingecko.com/api/v3/coins/${coin.id}/history?date=${cgDate}&localization=false`),
-        fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coin.id}&vs_currencies=usd`),
+        fetch(`/api/coin-history/${coin.id}?date=${cgDate}`),
+        fetch(`/api/coin-price?ids=${coin.id}`),
       ]);
 
       const hist = await histRes.json();
@@ -89,8 +89,8 @@ export default function WhatIfCalculator({ locale = 'uk' }: Props) {
       const priceThen = hist?.market_data?.current_price?.usd;
       const priceNow  = now?.[coin.id]?.usd;
 
-      if (!priceThen) throw new Error(c.error_price);
-      if (!priceNow)  throw new Error(c.error_current);
+      if (!priceThen) { setError(c.error_price); setLoading(false); return; }
+      if (!priceNow)  { setError(c.error_current); setLoading(false); return; }
 
       const coins      = amount / priceThen;
       const nowValue   = coins * priceNow;
@@ -98,8 +98,8 @@ export default function WhatIfCalculator({ locale = 'uk' }: Props) {
       const multiplier = nowValue / amount;
 
       setResult({ priceThen, priceNow, coins, nowValue, profit, multiplier, isGain: profit >= 0 });
-    } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : c.error_generic);
+    } catch {
+      setError(c.error_generic);
     } finally {
       setLoading(false);
     }
