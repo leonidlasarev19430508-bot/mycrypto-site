@@ -71,10 +71,25 @@ const faqJsonLd = {
   ],
 };
 
+const GA_ID = 'G-WK4PW4T4R3';
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="uk">
       <head>
+        {/* Google Analytics */}
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${GA_ID}');
+            `,
+          }}
+        />
+        {/* Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
