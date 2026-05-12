@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = 'https://cryptotop.chat';
-  const pages = ['', '/news', '/faq', '/markets', '/assistant', '/about', '/learn', '/coins'];
+  const pages = ['', '/news', '/faq', '/markets', '/assistant', '/about', '/learn', '/coins', '/bonuses'];
   const locales = ['', '/en', '/pl', '/de'];
   const urls: MetadataRoute.Sitemap = [];
 
@@ -11,8 +11,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       urls.push({
         url: `${base}${locale}${page}`,
         lastModified: new Date(),
-        changeFrequency: page === '' ? 'daily' : 'weekly',
-        priority: page === '' ? 1 : 0.8,
+        changeFrequency: page === '' ? 'daily' : page === '/news' ? 'daily' : 'weekly',
+        priority: page === '' ? 1 : page === '/bonuses' ? 0.9 : 0.8,
       });
     }
   }

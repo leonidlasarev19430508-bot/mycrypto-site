@@ -8,6 +8,7 @@ import WhatIfCalculator from "./components/WhatIfCalculator";
 import WhaleAlertTicker from "./components/WhaleAlertTicker";
 import ChatWidget from "./components/ChatWidget";
 import WhaleAlertPopup from "./components/WhaleAlertPopup";
+import ComparisonTable from "./components/ComparisonTable";
 import { useState } from "react";
 import t from "./i18n/uk.json";
 
@@ -86,6 +87,7 @@ export default function Home() {
             </div>
           ))}
         </div>
+        <ComparisonTable />
         <CryptoPrices />
         <PriceChart />
         <FearGreedIndex />
