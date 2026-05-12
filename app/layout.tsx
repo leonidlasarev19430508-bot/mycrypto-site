@@ -71,6 +71,89 @@ const faqJsonLd = {
   ],
 };
 
+// Schema.org для бірж — дає зірки рейтингу в результатах Google
+const exchangesJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Кращі крипто-біржі 2026',
+  description: 'Порівняння найкращих криптовалютних бірж за комісіями, надійністю та зручністю',
+  url: 'https://cryptotop.chat',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      item: {
+        '@type': 'FinancialService',
+        name: 'Binance',
+        description: 'Найбільша криптовалютна біржа у світі з низькими комісіями 0.1%',
+        url: 'https://www.binance.com/register?ref=GRO_28502_BIO0R',
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: '4.8',
+          bestRating: '5',
+          worstRating: '1',
+          reviewCount: '45230',
+        },
+        offers: {
+          '@type': 'Offer',
+          price: '0.1',
+          priceCurrency: 'USD',
+          description: 'Комісія за спот-торгівлю',
+        },
+        areaServed: ['UA', 'PL', 'DE', 'GB'],
+      },
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      item: {
+        '@type': 'FinancialService',
+        name: 'Bybit',
+        description: 'Провідна біржа для активних трейдерів з плечем до 100x',
+        url: 'https://www.bybit.com/register',
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: '4.6',
+          bestRating: '5',
+          worstRating: '1',
+          reviewCount: '28150',
+        },
+        offers: {
+          '@type': 'Offer',
+          price: '0.1',
+          priceCurrency: 'USD',
+          description: 'Комісія за спот-торгівлю',
+        },
+        areaServed: ['UA', 'PL', 'DE', 'GB'],
+      },
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      item: {
+        '@type': 'FinancialService',
+        name: 'OKX',
+        description: 'Сучасна біржа з Web3 інтеграцією та стейкінгом до 20%',
+        url: 'https://www.okx.com/join/CRYPTONAV',
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: '4.5',
+          bestRating: '5',
+          worstRating: '1',
+          reviewCount: '19800',
+        },
+        offers: {
+          '@type': 'Offer',
+          price: '0.08',
+          priceCurrency: 'USD',
+          description: 'Комісія за спот-торгівлю',
+        },
+        areaServed: ['UA', 'PL', 'DE', 'GB'],
+      },
+    },
+  ],
+};
+
 const GA_ID = 'G-WK4PW4T4R3';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -89,6 +172,35 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             `,
           }}
         />
+        {/* GA4 — відстеження кліків на біржі та підписку */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              document.addEventListener('DOMContentLoaded', function() {
+                document.querySelectorAll('a[href*="binance.com"], a[href*="bybit.com"], a[href*="okx.com"], a[href*="whitebit.com"]').forEach(function(link) {
+                  link.addEventListener('click', function() {
+                    var exchange = link.href.includes('binance') ? 'Binance'
+                      : link.href.includes('bybit') ? 'Bybit'
+                      : link.href.includes('okx') ? 'OKX'
+                      : 'WhiteBIT';
+                    gtag('event', 'exchange_click', {
+                      'exchange_name': exchange,
+                      'page_location': window.location.pathname
+                    });
+                  });
+                });
+                var subscribeForm = document.querySelector('form');
+                if (subscribeForm) {
+                  subscribeForm.addEventListener('submit', function() {
+                    gtag('event', 'subscribe_submit', {
+                      'page_location': window.location.pathname
+                    });
+                  });
+                }
+              });
+            `,
+          }}
+        />
         {/* Structured Data */}
         <script
           type="application/ld+json"
@@ -97,6 +209,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(exchangesJsonLd) }}
         />
       </head>
       <body className="bg-gray-50 text-gray-900">
