@@ -7,6 +7,7 @@ import TradingCounter from '../components/TradingCounter';
 import ChatWidget from '../components/ChatWidget';
 import ExchangeQuiz from '../components/ExchangeQuiz';
 import WhaleAlertPopup from '../components/WhaleAlertPopup';
+import ComparisonTable from '../components/ComparisonTable';
 import { useTranslation } from '../lib/i18n';
 import { useState } from 'react';
 
@@ -23,22 +24,15 @@ function SubscribeForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('sending');
-    const res = await fetch('/api/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    });
-    if (res.ok) { setStatus('success'); setEmail(''); }
-    else setStatus('error');
+    const res = await fetch('/api/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) });
+    if (res.ok) { setStatus('success'); setEmail(''); } else setStatus('error');
   };
   return (
     <div className="mt-10 p-6 bg-gray-100 rounded-xl text-center">
       <h3 className="text-xl font-semibold mb-2">{t.subscribe.title}</h3>
       <p className="text-gray-600 mb-4 text-sm">{t.subscribe.subtitle}</p>
       <ul className="text-left text-sm text-gray-600 mb-4 space-y-1 max-w-xs mx-auto">
-        {t.subscribe.alerts.map((alert: string, i: number) => (
-          <li key={i}>{alert}</li>
-        ))}
+        {t.subscribe.alerts.map((alert: string, i: number) => <li key={i}>{alert}</li>)}
       </ul>
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
         <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder={t.subscribe.placeholder} className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
@@ -72,6 +66,7 @@ export default function PLPage() {
             </div>
           ))}
         </div>
+        <ComparisonTable />
         <CryptoPrices />
         <FearGreedIndex locale="pl" />
         <WhatIfCalculator locale="pl" />
