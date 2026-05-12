@@ -66,7 +66,7 @@ export default function ENPage() {
             </div>
           ))}
         </div>
-        <ComparisonTable />
+        <ComparisonTable locale="en" />
         <CryptoPrices />
         <FearGreedIndex locale="en" />
         <WhatIfCalculator locale="en" />
