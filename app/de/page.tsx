@@ -66,7 +66,7 @@ export default function DEPage() {
             </div>
           ))}
         </div>
-        <ComparisonTable />
+        <ComparisonTable locale="de" />
         <CryptoPrices />
         <FearGreedIndex locale="de" />
         <WhatIfCalculator locale="de" />
