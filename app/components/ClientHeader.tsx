@@ -35,24 +35,16 @@ export default function ClientHeader() {
   const homeHref = LOCALE_HREFS[locale];
 
   const aboutLabel: Record<Locale, string> = {
-    uk: 'Про нас',
-    en: 'About',
-    pl: 'O nas',
-    de: 'Über uns',
+    uk: 'Про нас', en: 'About', pl: 'O nas', de: 'Über uns',
   };
-
   const learnLabel: Record<Locale, string> = {
-    uk: 'Навчання',
-    en: 'Learn',
-    pl: 'Nauka',
-    de: 'Lernen',
+    uk: 'Навчання', en: 'Learn', pl: 'Nauka', de: 'Lernen',
   };
-
   const coinsLabel: Record<Locale, string> = {
-    uk: 'Монети',
-    en: 'Coins',
-    pl: 'Monety',
-    de: 'Münzen',
+    uk: 'Монети', en: 'Coins', pl: 'Monety', de: 'Münzen',
+  };
+  const bonusesLabel: Record<Locale, string> = {
+    uk: '🎁 Бонуси', en: '🎁 Bonuses', pl: '🎁 Bonusy', de: '🎁 Boni',
   };
 
   return (
@@ -64,6 +56,7 @@ export default function ClientHeader() {
         <nav className="flex flex-wrap gap-6 items-center">
           <Link href={homeHref} className="hover:text-gray-300">{t.nav.home}</Link>
           <Link href="/coins" className="hover:text-gray-300">{coinsLabel[locale]}</Link>
+          <Link href="/bonuses" className="text-orange-400 hover:text-orange-300 font-semibold">{bonusesLabel[locale]}</Link>
           <Link href={getLocalizedPath(locale, 'markets')} className="hover:text-gray-300">{t.nav.markets}</Link>
           <Link href={getLocalizedPath(locale, 'news')} className="hover:text-gray-300">{t.nav.news}</Link>
           <Link href={getLocalizedPath(locale, 'assistant')} className="hover:text-gray-300">{t.nav.assistant}</Link>
