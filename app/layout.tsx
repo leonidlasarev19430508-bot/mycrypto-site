@@ -1,4 +1,5 @@
 import ClientHeader from './components/ClientHeader';
+import WelcomeBubble from './components/WelcomeBubble';
 import "./globals.css";
 
 export const metadata = {
@@ -71,7 +72,6 @@ const faqJsonLd = {
   ],
 };
 
-// Schema.org для бірж — дає зірки рейтингу в результатах Google
 const exchangesJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
@@ -172,7 +172,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             `,
           }}
         />
-        {/* GA4 — відстеження кліків на біржі та підписку */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -201,7 +200,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             `,
           }}
         />
-        {/* Structured Data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -232,6 +230,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <p>© 2026 CryptoNavigator. AI-powered crypto insights.</p>
           </div>
         </footer>
+        {/* Welcome Bubble — AI асистент */}
+        <WelcomeBubble />
       </body>
     </html>
   );
