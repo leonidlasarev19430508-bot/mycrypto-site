@@ -52,18 +52,19 @@ export default function WelcomeBubble() {
     setInput('');
     setLoading(true);
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
+      // ✅ Виклик через сервер — API ключ захищений
+      const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-haiku-4-5-20251001',
-          max_tokens: 400,
-          system: 'Ти дружній AI-гід криптовалютного сайту CryptoNavigator. Відповідай коротко (2-4 речення), простою мовою українською. Допомагай новачкам розібратись у криптовалютах. Будь привітним. Не давай фінансових порад.',
-          messages: [...messages, userMsg].map(m => ({ role: m.role, content: m.content })),
+          message: text,
+          history: messages.map(m => ({ role: m.role, content: m.content })),
+          userLevel: 'unknown',
+          locale: 'uk',
         }),
       });
       const data = await res.json();
-      const reply = data.content?.[0]?.text || 'Вибачте, сталась помилка.';
+      const reply = data.reply || 'Вибачте, сталась помилка.';
       setMessages(prev => [...prev, { role: 'assistant', content: reply }]);
     } catch {
       setMessages(prev => [...prev, { role: 'assistant', content: '😔 Помилка зʼєднання.' }]);
@@ -76,111 +77,134 @@ export default function WelcomeBubble() {
 
   return (
     <>
-      {/* Floating button з аватаром */}
+      {/* Floating button — великий аватар */}
       <button
         onClick={() => setOpen(v => !v)}
         style={{
-          position: 'fixed', bottom: '28px', right: '28px', zIndex: 9999,
-          width: '68px', height: '68px', borderRadius: '50%',
-          background: 'transparent',
-          border: 'none', padding: 0,
-          cursor: 'pointer',
-          transition: 'transform 0.2s',
-          filter: 'drop-shadow(0 4px 16px rgba(245,158,11,0.5))',
+          position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999,
+          width: '76px', height: '76px', borderRadius: '50%',
+          background: 'transparent', border: 'none', padding: 0,
+          cursor: 'pointer', transition: 'transform 0.2s',
+          filter: 'drop-shadow(0 6px 20px rgba(245,158,11,0.55))',
         }}
-        onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.1)')}
+        onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.08)')}
         onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
         aria-label="AI Навігатор"
       >
         {open ? (
           <div style={{
-            width: '68px', height: '68px', borderRadius: '50%',
-            background: 'rgba(245,158,11,0.9)',
+            width: '76px', height: '76px', borderRadius: '50%',
+            background: 'rgba(245,158,11,0.92)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '28px', border: '3px solid #f59e0b',
+            fontSize: '30px', color: 'white', fontWeight: 'bold',
+            border: '3px solid #f59e0b',
+            boxShadow: '0 0 0 4px rgba(245,158,11,0.2)',
           }}>✕</div>
         ) : (
-          <Image
-            src="/robot-avatar.png"
-            alt="AI Навігатор"
-            width={68}
-            height={68}
-            style={{ borderRadius: '50%', objectFit: 'cover' }}
-          />
+          <div style={{ position: 'relative', width: '76px', height: '76px' }}>
+            <Image
+              src="/robot-avatar.png"
+              alt="AI Навігатор"
+              width={76}
+              height={76}
+              style={{
+                borderRadius: '50%',
+                objectFit: 'cover',
+                border: '3px solid #f59e0b',
+                boxShadow: '0 0 0 3px rgba(245,158,11,0.25)',
+              }}
+            />
+            {/* Онлайн індикатор на кнопці */}
+            <span style={{
+              position: 'absolute', bottom: '4px', right: '4px',
+              width: '14px', height: '14px', borderRadius: '50%',
+              background: '#22c55e', border: '2px solid white',
+            }}/>
+          </div>
         )}
       </button>
 
       {/* Pulse ring */}
       {!open && (
         <span style={{
-          position: 'fixed', bottom: '28px', right: '28px', zIndex: 9998,
-          width: '68px', height: '68px', borderRadius: '50%',
-          background: 'rgba(245,158,11,0.25)',
+          position: 'fixed', bottom: '24px', right: '24px', zIndex: 9998,
+          width: '76px', height: '76px', borderRadius: '50%',
+          background: 'rgba(245,158,11,0.2)',
           animation: 'pulseRing 2s infinite', pointerEvents: 'none',
         }} />
       )}
 
-      {/* Chat window — напівпрозора планшетка */}
+      {/* Chat window */}
       {open && (
         <div style={{
-          position: 'fixed', bottom: '112px', right: '28px', zIndex: 9999,
-          width: '360px', maxHeight: '520px',
+          position: 'fixed', bottom: '116px', right: '24px', zIndex: 9999,
+          width: '380px', maxHeight: '540px',
           display: 'flex', flexDirection: 'column',
-          /* Напівпрозорий glassmorphism ефект */
-          background: 'rgba(255, 255, 255, 0.82)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          borderRadius: '24px',
-          boxShadow: '0 8px 40px rgba(0,0,0,0.15), 0 0 0 1px rgba(245,158,11,0.3)',
-          border: '1.5px solid rgba(245,158,11,0.4)',
+          background: 'rgba(255, 255, 255, 0.65)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          borderRadius: '28px',
+          boxShadow: '0 12px 48px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8)',
+          border: '1.5px solid rgba(255,255,255,0.6)',
+          outline: '1px solid rgba(245,158,11,0.25)',
           overflow: 'hidden',
           animation: 'fadeSlideUp 0.3s ease',
         }}>
 
-          {/* Header напівпрозорий */}
+          {/* Header */}
           <div style={{
-            background: 'rgba(26, 26, 46, 0.88)',
-            backdropFilter: 'blur(10px)',
-            padding: '14px 18px',
-            display: 'flex', alignItems: 'center', gap: '12px',
+            background: 'rgba(20, 24, 40, 0.82)',
+            backdropFilter: 'blur(12px)',
+            padding: '16px 20px',
+            display: 'flex', alignItems: 'center', gap: '14px',
             flexShrink: 0,
-            borderBottom: '1.5px solid rgba(245,158,11,0.4)',
+            borderBottom: '1px solid rgba(245,158,11,0.3)',
           }}>
-            <div style={{ width: '44px', height: '44px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, border: '2px solid rgba(245,158,11,0.6)' }}>
-              <Image src="/robot-avatar.png" alt="AI" width={44} height={44} style={{ objectFit: 'cover' }} />
+            <div style={{
+              width: '52px', height: '52px', borderRadius: '50%',
+              overflow: 'hidden', flexShrink: 0,
+              border: '2.5px solid rgba(245,158,11,0.7)',
+              boxShadow: '0 0 12px rgba(245,158,11,0.3)',
+            }}>
+              <Image src="/robot-avatar.png" alt="AI" width={52} height={52}
+                style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
             </div>
             <div style={{ flex: 1 }}>
-              <p style={{ color: '#fff', fontWeight: 600, fontSize: '14px', margin: 0 }}>
+              <p style={{ color: '#fff', fontWeight: 700, fontSize: '15px', margin: '0 0 2px 0' }}>
                 CryptoNavigator AI
               </p>
-              <p style={{ color: '#f59e0b', fontSize: '11px', margin: 0, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#22c55e', display: 'inline-block' }}></span>
+              <p style={{ color: '#fbbf24', fontSize: '12px', margin: 0, display: 'flex', alignItems: 'center', gap: '5px' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#22c55e', display: 'inline-block', boxShadow: '0 0 4px #22c55e' }}></span>
                 Ваш особистий крипто-гід
               </p>
             </div>
-            <button onClick={handleDismiss} style={{ color: 'rgba(255,255,255,0.6)', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', lineHeight: 1 }}>×</button>
+            <button onClick={handleDismiss}
+              style={{ color: 'rgba(255,255,255,0.5)', background: 'none', border: 'none', fontSize: '22px', cursor: 'pointer', lineHeight: 1, padding: '4px' }}>×</button>
           </div>
 
           {/* Messages */}
-          <div style={{ flex: 1, overflowY: 'auto', padding: '14px', display: 'flex', flexDirection: 'column', gap: '10px', maxHeight: '280px' }}>
+          <div style={{ flex: 1, overflowY: 'auto', padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', maxHeight: '290px' }}>
             {messages.map((msg, i) => (
               <div key={i} style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start', alignItems: 'flex-end', gap: '8px' }}>
                 {msg.role === 'assistant' && (
-                  <div style={{ width: '26px', height: '26px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-                    <Image src="/robot-avatar.png" alt="" width={26} height={26} style={{ objectFit: 'cover' }} />
+                  <div style={{ width: '30px', height: '30px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, border: '1.5px solid rgba(245,158,11,0.4)' }}>
+                    <Image src="/robot-avatar.png" alt="" width={30} height={30}
+                      style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
                   </div>
                 )}
                 <div style={{
-                  maxWidth: '78%', padding: '10px 13px',
-                  borderRadius: msg.role === 'user' ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
+                  maxWidth: '80%', padding: '11px 14px',
+                  borderRadius: msg.role === 'user' ? '20px 20px 4px 20px' : '20px 20px 20px 4px',
                   background: msg.role === 'user'
                     ? 'linear-gradient(135deg, #f59e0b, #d97706)'
-                    : 'rgba(255,255,255,0.75)',
-                  backdropFilter: msg.role === 'assistant' ? 'blur(8px)' : undefined,
-                  color: msg.role === 'user' ? '#fff' : '#1f2937',
-                  fontSize: '13.5px', lineHeight: '1.5', whiteSpace: 'pre-wrap',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
-                  border: msg.role === 'assistant' ? '1px solid rgba(245,158,11,0.2)' : 'none',
+                    : 'rgba(255,255,255,0.82)',
+                  backdropFilter: 'blur(8px)',
+                  color: msg.role === 'user' ? '#fff' : '#1e293b',
+                  fontSize: '13.5px', lineHeight: '1.55', whiteSpace: 'pre-wrap',
+                  boxShadow: msg.role === 'user'
+                    ? '0 3px 12px rgba(245,158,11,0.35)'
+                    : '0 2px 8px rgba(0,0,0,0.07)',
+                  border: msg.role === 'assistant' ? '1px solid rgba(255,255,255,0.7)' : 'none',
                 }}>
                   {msg.content}
                 </div>
@@ -188,10 +212,11 @@ export default function WelcomeBubble() {
             ))}
             {loading && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <div style={{ width: '26px', height: '26px', borderRadius: '50%', overflow: 'hidden' }}>
-                  <Image src="/robot-avatar.png" alt="" width={26} height={26} style={{ objectFit: 'cover' }} />
+                <div style={{ width: '30px', height: '30px', borderRadius: '50%', overflow: 'hidden', border: '1.5px solid rgba(245,158,11,0.4)' }}>
+                  <Image src="/robot-avatar.png" alt="" width={30} height={30}
+                    style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
                 </div>
-                <div style={{ background: 'rgba(255,255,255,0.75)', padding: '10px 14px', borderRadius: '18px 18px 18px 4px', display: 'flex', gap: '4px', border: '1px solid rgba(245,158,11,0.2)' }}>
+                <div style={{ background: 'rgba(255,255,255,0.82)', padding: '11px 16px', borderRadius: '20px 20px 20px 4px', display: 'flex', gap: '5px', border: '1px solid rgba(255,255,255,0.7)' }}>
                   {[0, 150, 300].map(delay => (
                     <span key={delay} style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#f59e0b', display: 'inline-block', animation: `bounce 1s ${delay}ms infinite` }} />
                   ))}
@@ -203,20 +228,21 @@ export default function WelcomeBubble() {
 
           {/* Suggestions */}
           {messages.length <= 1 && (
-            <div style={{ padding: '0 14px 10px', display: 'flex', flexWrap: 'wrap', gap: '7px', flexShrink: 0 }}>
+            <div style={{ padding: '0 16px 12px', display: 'flex', flexWrap: 'wrap', gap: '8px', flexShrink: 0 }}>
               {SUGGESTIONS.map(s => (
                 <button key={s} onClick={() => sendMessage(s)}
                   style={{
                     fontSize: '12px',
                     background: 'rgba(255,255,255,0.7)',
-                    color: '#d97706',
-                    border: '1px solid rgba(245,158,11,0.4)',
-                    borderRadius: '20px', padding: '5px 11px',
+                    color: '#b45309',
+                    border: '1px solid rgba(245,158,11,0.35)',
+                    borderRadius: '20px', padding: '6px 12px',
                     cursor: 'pointer', backdropFilter: 'blur(4px)',
-                    transition: 'background 0.2s',
+                    transition: 'all 0.2s',
+                    fontWeight: 500,
                   }}
-                  onMouseEnter={e => (e.currentTarget.style.background = 'rgba(245,158,11,0.15)')}
-                  onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.7)')}
+                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(245,158,11,0.18)'; e.currentTarget.style.borderColor = 'rgba(245,158,11,0.6)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.7)'; e.currentTarget.style.borderColor = 'rgba(245,158,11,0.35)'; }}
                 >{s}</button>
               ))}
             </div>
@@ -225,9 +251,9 @@ export default function WelcomeBubble() {
           {/* Input */}
           <div style={{
             display: 'flex', alignItems: 'center', gap: '8px',
-            padding: '10px 14px',
-            borderTop: '1px solid rgba(245,158,11,0.2)',
-            background: 'rgba(255,255,255,0.5)',
+            padding: '12px 16px',
+            borderTop: '1px solid rgba(255,255,255,0.5)',
+            background: 'rgba(255,255,255,0.4)',
             backdropFilter: 'blur(8px)',
             flexShrink: 0,
           }}>
@@ -239,21 +265,21 @@ export default function WelcomeBubble() {
               disabled={loading}
               style={{
                 flex: 1, fontSize: '13.5px',
-                background: 'rgba(255,255,255,0.6)',
+                background: 'rgba(255,255,255,0.7)',
                 border: '1px solid rgba(245,158,11,0.3)',
-                borderRadius: '24px', padding: '9px 15px',
-                outline: 'none', color: '#1f2937',
-                backdropFilter: 'blur(4px)',
+                borderRadius: '24px', padding: '10px 16px',
+                outline: 'none', color: '#1e293b',
               }}
             />
             <button onClick={() => sendMessage(input)} disabled={!input.trim() || loading}
               style={{
-                width: '38px', height: '38px', borderRadius: '50%',
-                background: input.trim() && !loading ? 'linear-gradient(135deg, #f59e0b, #d97706)' : 'rgba(229,231,235,0.8)',
-                border: 'none', color: '#fff', fontSize: '15px',
-                cursor: input.trim() && !loading ? 'pointer' : 'not-allowed',
+                width: '40px', height: '40px', borderRadius: '50%',
+                background: input.trim() && !loading ? 'linear-gradient(135deg, #f59e0b, #d97706)' : 'rgba(229,231,235,0.6)',
+                border: 'none', color: input.trim() && !loading ? '#fff' : '#9ca3af',
+                fontSize: '16px', cursor: input.trim() && !loading ? 'pointer' : 'not-allowed',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0, transition: 'background 0.2s',
+                flexShrink: 0, transition: 'all 0.2s',
+                boxShadow: input.trim() && !loading ? '0 3px 10px rgba(245,158,11,0.4)' : 'none',
               }}
             >➤</button>
           </div>
@@ -266,9 +292,9 @@ export default function WelcomeBubble() {
           to   { opacity: 1; transform: translateY(0); }
         }
         @keyframes pulseRing {
-          0%   { transform: scale(1);   opacity: 0.6; }
-          70%  { transform: scale(1.65); opacity: 0; }
-          100% { transform: scale(1.65); opacity: 0; }
+          0%   { transform: scale(1);   opacity: 0.5; }
+          70%  { transform: scale(1.7); opacity: 0; }
+          100% { transform: scale(1.7); opacity: 0; }
         }
         @keyframes bounce {
           0%, 100% { transform: translateY(0); }
