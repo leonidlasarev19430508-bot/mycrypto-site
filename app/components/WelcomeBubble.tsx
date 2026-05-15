@@ -85,16 +85,15 @@ export default function WelcomeBubble() {
 
   return (
     <>
-      {/* Floating button — просто PNG без контейнера */}
+      {/* Floating button */}
       <button
         onClick={() => setOpen(v => !v)}
         style={{
           position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999,
-          width: '80px', height: '80px',
-          background: 'transparent',
-          border: 'none', padding: 0,
+          width: '80px', height: '80px', borderRadius: '50%',
+          background: 'transparent', border: 'none', padding: 0,
           cursor: 'pointer', transition: 'transform 0.2s',
-          filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.2))',
+          filter: 'drop-shadow(0 4px 16px rgba(0,0,0,0.2))',
         }}
         onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.08)')}
         onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
@@ -108,17 +107,21 @@ export default function WelcomeBubble() {
             fontSize: '28px', color: 'white', fontWeight: 'bold',
           }}>✕</div>
         ) : (
-          <div style={{ position: 'relative' }}>
-            {/* Просто PNG — бульбашка вже в самому зображенні */}
+          <div style={{ position: 'relative', width: '80px', height: '80px' }}>
             <Image
               src={avatar.src}
               alt="AI Навігатор"
               width={80} height={80}
-              style={{ objectFit: 'contain', display: 'block' }}
+              style={{
+                width: '80px', height: '80px',
+                borderRadius: '50%',
+                objectFit: 'cover',
+                display: 'block',
+              }}
             />
             <span style={{
-              position: 'absolute', bottom: '6px', right: '6px',
-              width: '12px', height: '12px', borderRadius: '50%',
+              position: 'absolute', bottom: '4px', right: '4px',
+              width: '14px', height: '14px', borderRadius: '50%',
               background: '#22c55e', border: '2px solid white',
             }}/>
           </div>
@@ -135,13 +138,13 @@ export default function WelcomeBubble() {
         }} />
       )}
 
-      {/* Аватар що виходить за верхній край — окремий елемент */}
+      {/* Аватар — окремий елемент поверх вікна */}
       {open && (
         <div style={{
           position: 'fixed',
-          bottom: '460px', // висота вікна (360) + відступ (112) - трохи
+          bottom: '460px',
           right: '24px',
-          zIndex: 99999, // найвищий — поверх хедера
+          zIndex: 99999,
           width: '360px',
           display: 'flex',
           flexDirection: 'column',
@@ -160,15 +163,17 @@ export default function WelcomeBubble() {
             boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
           }}>×</button>
 
-          {/* PNG аватар — без жодних контейнерів, бульбашка є в зображенні */}
+          {/* Великий аватар — коло з білим фоном обрізається */}
           <Image
             src={avatar.src}
             alt="AI Навігатор"
             width={200} height={200}
             style={{
-              objectFit: 'contain',
+              width: '200px', height: '200px',
+              borderRadius: '50%',
+              objectFit: 'cover',
               display: 'block',
-              filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.15))',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
             }}
           />
         </div>
@@ -200,17 +205,15 @@ export default function WelcomeBubble() {
               {AVATARS.map((av, i) => (
                 <button key={i} onClick={() => setAvatarIndex(i)}
                   style={{
-                    width: '32px', height: '32px',
-                    background: 'transparent',
-                    border: i === avatarIndex ? '2px solid #f59e0b' : '2px solid rgba(0,0,0,0.1)',
-                    borderRadius: '50%',
+                    width: '32px', height: '32px', borderRadius: '50%',
+                    overflow: 'hidden',
+                    border: i === avatarIndex ? '2.5px solid #f59e0b' : '2px solid rgba(0,0,0,0.1)',
                     opacity: i === avatarIndex ? 1 : 0.5,
                     transition: 'all 0.2s',
-                    cursor: 'pointer', padding: 0,
-                    overflow: 'hidden',
+                    cursor: 'pointer', padding: 0, background: 'none',
                   }}>
                   <Image src={av.src} alt={av.label} width={32} height={32}
-                    style={{ objectFit: 'contain', width: '100%', height: '100%' }} />
+                    style={{ objectFit: 'cover', width: '100%', height: '100%', borderRadius: '50%' }} />
                 </button>
               ))}
               <span style={{ fontSize: '10px', color: '#94a3b8', alignSelf: 'center' }}>обери</span>
@@ -231,9 +234,9 @@ export default function WelcomeBubble() {
             {messages.map((msg, i) => (
               <div key={i} style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start', alignItems: 'flex-end', gap: '6px' }}>
                 {msg.role === 'assistant' && (
-                  <div style={{ width: '22px', height: '22px', flexShrink: 0 }}>
-                    <Image src={avatar.src} alt="" width={22} height={22}
-                      style={{ objectFit: 'contain' }} />
+                  <div style={{ width: '24px', height: '24px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+                    <Image src={avatar.src} alt="" width={24} height={24}
+                      style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
                   </div>
                 )}
                 <div style={{
@@ -251,8 +254,9 @@ export default function WelcomeBubble() {
             ))}
             {loading && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <div style={{ width: '22px', height: '22px', flexShrink: 0 }}>
-                  <Image src={avatar.src} alt="" width={22} height={22} style={{ objectFit: 'contain' }} />
+                <div style={{ width: '24px', height: '24px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+                  <Image src={avatar.src} alt="" width={24} height={24}
+                    style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
                 </div>
                 <div style={{ background: 'rgba(255,255,255,0.95)', padding: '9px 13px', borderRadius: '16px 16px 16px 4px', display: 'flex', gap: '4px' }}>
                   {[0, 150, 300].map(delay => (
