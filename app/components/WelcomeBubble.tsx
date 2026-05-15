@@ -93,7 +93,7 @@ export default function WelcomeBubble() {
           width: '80px', height: '80px', borderRadius: '50%',
           background: 'transparent', border: 'none', padding: 0,
           cursor: 'pointer', transition: 'transform 0.2s',
-          filter: 'drop-shadow(0 4px 16px rgba(0,0,0,0.2))',
+          overflow: 'hidden',
         }}
         onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.08)')}
         onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
@@ -107,14 +107,14 @@ export default function WelcomeBubble() {
             fontSize: '28px', color: 'white', fontWeight: 'bold',
           }}>✕</div>
         ) : (
-          <div style={{ position: 'relative', width: '80px', height: '80px' }}>
+          <div style={{ position: 'relative', width: '80px', height: '80px', borderRadius: '50%', overflow: 'hidden' }}>
             <Image
               src={avatar.src}
               alt="AI Навігатор"
               width={80} height={80}
               style={{
-                width: '80px', height: '80px',
-                borderRadius: '50%',
+                width: '96px', height: '96px', /* більше за контейнер — обрізає темний край */
+                marginLeft: '-8px', marginTop: '-8px',
                 objectFit: 'cover',
                 display: 'block',
               }}
@@ -163,19 +163,25 @@ export default function WelcomeBubble() {
             boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
           }}>×</button>
 
-          {/* Великий аватар — коло з білим фоном обрізається */}
-          <Image
-            src={avatar.src}
-            alt="AI Навігатор"
-            width={200} height={200}
-            style={{
-              width: '200px', height: '200px',
-              borderRadius: '50%',
-              objectFit: 'cover',
-              display: 'block',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
-            }}
-          />
+          {/* Великий аватар — збільшений щоб темний край обрізався */}
+          <div style={{
+            width: '200px', height: '200px',
+            borderRadius: '50%',
+            overflow: 'hidden',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
+          }}>
+            <Image
+              src={avatar.src}
+              alt="AI Навігатор"
+              width={240} height={240}
+              style={{
+                width: '240px', height: '240px', /* більше за контейнер 200px — темний край зрізається */
+                marginLeft: '-20px', marginTop: '-20px',
+                objectFit: 'cover',
+                display: 'block',
+              }}
+            />
+          </div>
         </div>
       )}
 
@@ -212,8 +218,11 @@ export default function WelcomeBubble() {
                     transition: 'all 0.2s',
                     cursor: 'pointer', padding: 0, background: 'none',
                   }}>
-                  <Image src={av.src} alt={av.label} width={32} height={32}
-                    style={{ objectFit: 'cover', width: '100%', height: '100%', borderRadius: '50%' }} />
+                  <Image src={av.src} alt={av.label} width={38} height={38}
+                    style={{
+                      objectFit: 'cover', width: '38px', height: '38px',
+                      marginLeft: '-3px', marginTop: '-3px',
+                    }} />
                 </button>
               ))}
               <span style={{ fontSize: '10px', color: '#94a3b8', alignSelf: 'center' }}>обери</span>
@@ -235,8 +244,8 @@ export default function WelcomeBubble() {
               <div key={i} style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start', alignItems: 'flex-end', gap: '6px' }}>
                 {msg.role === 'assistant' && (
                   <div style={{ width: '24px', height: '24px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-                    <Image src={avatar.src} alt="" width={24} height={24}
-                      style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
+                    <Image src={avatar.src} alt="" width={28} height={28}
+                      style={{ objectFit: 'cover', width: '28px', height: '28px', marginLeft: '-2px', marginTop: '-2px' }} />
                   </div>
                 )}
                 <div style={{
@@ -255,8 +264,8 @@ export default function WelcomeBubble() {
             {loading && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <div style={{ width: '24px', height: '24px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-                  <Image src={avatar.src} alt="" width={24} height={24}
-                    style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
+                  <Image src={avatar.src} alt="" width={28} height={28}
+                    style={{ objectFit: 'cover', width: '28px', height: '28px', marginLeft: '-2px', marginTop: '-2px' }} />
                 </div>
                 <div style={{ background: 'rgba(255,255,255,0.95)', padding: '9px 13px', borderRadius: '16px 16px 16px 4px', display: 'flex', gap: '4px' }}>
                   {[0, 150, 300].map(delay => (
