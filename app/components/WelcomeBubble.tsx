@@ -11,7 +11,7 @@ interface Message {
 const AVATARS = [
   { src: '/avatar-robot.png',   label: '🤖' },
   { src: '/avatar-bitcoin.png', label: '₿'  },
-  { src: '/avatar-human.jpg',   label: '😊' },
+  { src: '/avatar-human.png',   label: '😊' },
 ];
 
 const SUGGESTIONS = [
@@ -112,7 +112,7 @@ export default function WelcomeBubble() {
               src={avatar.src}
               alt="AI Навігатор"
               width={72} height={72}
-              style={{ borderRadius: '50%', objectFit: 'cover', width: '72px', height: '72px' }}
+              style={{ width: '72px', height: '72px', objectFit: 'cover', borderRadius: '50%' }}
             />
             <span style={{
               position: 'absolute', bottom: '3px', right: '3px',
@@ -139,39 +139,39 @@ export default function WelcomeBubble() {
           position: 'fixed', bottom: '112px', right: '24px', zIndex: 9999,
           width: '360px',
           display: 'flex', flexDirection: 'column',
-          background: 'rgba(255,255,255,0.75)',
+          background: 'rgba(255,255,255,0.78)',
           backdropFilter: 'blur(28px)',
           WebkitBackdropFilter: 'blur(28px)',
           borderRadius: '32px',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.9)',
+          boxShadow: '0 20px 60px rgba(0,0,0,0.13), inset 0 1px 0 rgba(255,255,255,0.9)',
           border: '1.5px solid rgba(255,255,255,0.7)',
           overflow: 'visible',
           animation: 'fadeSlideUp 0.3s ease',
         }}>
 
-          {/* Великий аватар — виходить за верхній край, без зайвих кіл */}
+          {/* Аватар — виходить за верхній край, без обрізання */}
           <div style={{
             display: 'flex', flexDirection: 'column', alignItems: 'center',
-            marginTop: '-80px', paddingTop: 0, flexShrink: 0,
+            marginTop: '-100px',
             position: 'relative',
           }}>
-            {/* Аватар — просто кругле зображення, ніяких рамок */}
-            <div style={{
-              width: '160px', height: '160px', borderRadius: '50%',
-              overflow: 'hidden',
-              boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
-            }}>
-              <Image
-                src={avatar.src}
-                alt="AI Навігатор"
-                width={160} height={160}
-                style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-              />
-            </div>
+            {/* Аватар — квадратне зображення показуємо як є, без border-radius */}
+            <Image
+              src={avatar.src}
+              alt="AI Навігатор"
+              width={200} height={200}
+              style={{
+                width: '200px',
+                height: '200px',
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 8px 24px rgba(0,0,0,0.15))',
+              }}
+            />
 
-            {/* Перемикач аватарів — маленькі кнопки */}
+            {/* Перемикач аватарів */}
             <div style={{
-              display: 'flex', gap: '8px', marginTop: '10px',
+              display: 'flex', gap: '8px',
+              marginTop: '-4px',
               alignItems: 'center',
             }}>
               {AVATARS.map((av, i) => (
@@ -179,20 +179,23 @@ export default function WelcomeBubble() {
                   key={i}
                   onClick={() => setAvatarIndex(i)}
                   style={{
-                    width: '28px', height: '28px', borderRadius: '50%',
+                    width: '30px', height: '30px', borderRadius: '50%',
                     overflow: 'hidden', cursor: 'pointer', padding: 0,
                     border: i === avatarIndex
-                      ? '2px solid #f59e0b'
-                      : '2px solid rgba(0,0,0,0.12)',
-                    opacity: i === avatarIndex ? 1 : 0.6,
+                      ? '2.5px solid #f59e0b'
+                      : '2px solid rgba(0,0,0,0.1)',
+                    opacity: i === avatarIndex ? 1 : 0.55,
                     transition: 'all 0.2s',
-                    background: 'none',
+                    background: 'white',
                   }}
                 >
-                  <Image src={av.src} alt={av.label} width={28} height={28}
+                  <Image src={av.src} alt={av.label} width={30} height={30}
                     style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
                 </button>
               ))}
+              <span style={{ fontSize: '10.5px', color: '#94a3b8', marginLeft: '2px' }}>
+                обери аватар
+              </span>
             </div>
 
             {/* Назва і статус */}
@@ -208,13 +211,12 @@ export default function WelcomeBubble() {
 
             {/* Кнопка закрити */}
             <button onClick={handleDismiss} style={{
-              position: 'absolute', top: '88px', right: '12px',
+              position: 'absolute', top: '108px', right: '12px',
               width: '26px', height: '26px', borderRadius: '50%',
-              background: 'rgba(255,255,255,0.85)',
-              border: '1px solid rgba(0,0,0,0.1)',
+              background: 'rgba(255,255,255,0.9)',
+              border: '1px solid rgba(0,0,0,0.08)',
               color: '#94a3b8', fontSize: '16px', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              lineHeight: 1, flexShrink: 0,
             }}>×</button>
           </div>
 
@@ -225,7 +227,7 @@ export default function WelcomeBubble() {
           <div style={{
             overflowY: 'auto', padding: '12px 14px',
             display: 'flex', flexDirection: 'column', gap: '10px',
-            maxHeight: '220px', minHeight: '60px',
+            maxHeight: '200px',
           }}>
             {messages.map((msg, i) => (
               <div key={i} style={{
@@ -244,7 +246,7 @@ export default function WelcomeBubble() {
                   borderRadius: msg.role === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
                   background: msg.role === 'user'
                     ? 'linear-gradient(135deg, #f59e0b, #d97706)'
-                    : 'rgba(255,255,255,0.9)',
+                    : 'rgba(255,255,255,0.92)',
                   color: msg.role === 'user' ? '#fff' : '#1e293b',
                   fontSize: '13px', lineHeight: '1.55', whiteSpace: 'pre-wrap',
                   boxShadow: msg.role === 'user'
@@ -262,7 +264,7 @@ export default function WelcomeBubble() {
                   <Image src={avatar.src} alt="" width={24} height={24}
                     style={{ objectFit: 'cover', width: '100%', height: '100%' }} />
                 </div>
-                <div style={{ background: 'rgba(255,255,255,0.9)', padding: '9px 13px', borderRadius: '16px 16px 16px 4px', display: 'flex', gap: '4px' }}>
+                <div style={{ background: 'rgba(255,255,255,0.92)', padding: '9px 13px', borderRadius: '16px 16px 16px 4px', display: 'flex', gap: '4px' }}>
                   {[0, 150, 300].map(delay => (
                     <span key={delay} style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#f59e0b', display: 'inline-block', animation: `bounce 1s ${delay}ms infinite` }} />
                   ))}
@@ -279,14 +281,14 @@ export default function WelcomeBubble() {
                 <button key={s} onClick={() => sendMessage(s)}
                   style={{
                     fontSize: '11.5px',
-                    background: 'rgba(255,255,255,0.8)',
+                    background: 'rgba(255,255,255,0.85)',
                     color: '#b45309',
                     border: '1px solid rgba(245,158,11,0.3)',
                     borderRadius: '20px', padding: '5px 11px',
                     cursor: 'pointer', transition: 'all 0.2s', fontWeight: 500,
                   }}
                   onMouseEnter={e => { e.currentTarget.style.background = 'rgba(245,158,11,0.15)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.8)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.85)'; }}
                 >{s}</button>
               ))}
             </div>
