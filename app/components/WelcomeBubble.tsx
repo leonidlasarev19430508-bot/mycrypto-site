@@ -21,10 +21,17 @@ const SUGGESTIONS = [
   '💰 З якої суми почати?',
 ];
 
+const BUBBLE_STYLE = {
+  background: 'radial-gradient(circle, #ffffff 55%, #e3f2fd 100%)',
+  border: '2px solid rgba(255,255,255,0.75)',
+  boxShadow: '0 8px 28px rgba(0,0,0,0.12)',
+};
+
 export default function WelcomeBubble() {
   const [open, setOpen] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [avatarIndex, setAvatarIndex] = useState(0);
+  const [windowHeight, setWindowHeight] = useState(0);
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
@@ -36,6 +43,14 @@ export default function WelcomeBubble() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const avatar = AVATARS[avatarIndex];
+
+  // Визначаємо висоту вікна браузера щоб правильно позиціонувати чат
+  useEffect(() => {
+    setWindowHeight(window.innerHeight);
+    const handleResize = () => setWindowHeight(window.innerHeight);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const wasDismissed = sessionStorage.getItem('welcomeDismissed');
@@ -83,6 +98,19 @@ export default function WelcomeBubble() {
 
   if (dismissed) return null;
 
+  // Висота чат-вікна без аватара
+  const chatHeight = 480;
+  // Аватар виступає на 90px вгору
+  const avatarOverhang = 90;
+  // Відступ від низу екрану
+  const bottomOffset = 112;
+  // Загальна висота від низу включно з аватаром
+  const totalHeight = chatHeight + avatarOverhang;
+  // Якщо не вміщається — зсуваємо вікно вниз
+  const adjustedBottom = windowHeight > 0 && totalHeight + bottomOffset > windowHeight
+    ? windowHeight - totalHeight - 16
+    : bottomOffset;
+
   return (
     <>
       {/* Floating button */}
@@ -91,40 +119,23 @@ export default function WelcomeBubble() {
         style={{
           position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999,
           width: '72px', height: '72px', borderRadius: '50%',
-          background: 'transparent', border: 'none', padding: 0,
+          border: 'none', padding: 0,
           cursor: 'pointer', transition: 'transform 0.2s',
-          filter: 'drop-shadow(0 4px 16px rgba(245,158,11,0.5))',
+          ...BUBBLE_STYLE,
         }}
         onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.08)')}
         onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
         aria-label="AI Навігатор"
       >
         {open ? (
-          <div style={{
-            width: '72px', height: '72px', borderRadius: '50%',
-            background: 'rgba(245,158,11,0.92)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '28px', color: 'white', fontWeight: 'bold',
-          }}>✕</div>
+          <span style={{ fontSize: '24px', color: '#64748b' }}>✕</span>
         ) : (
-          /* Кнопка — теж CSS бульбашка */
-          <div style={{
-            width: '72px', height: '72px', borderRadius: '50%',
-            background: 'radial-gradient(circle, #ffffff 55%, #e3f2fd 100%)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.8)',
-            border: '1.5px solid rgba(255,255,255,0.7)',
-            position: 'relative',
-          }}>
-            <Image
-              src={avatar.src}
-              alt="AI Навігатор"
-              width={64} height={64}
-              style={{ width: '64px', height: '64px', objectFit: 'contain' }}
-            />
+          <div style={{ position: 'relative', width: '72px', height: '72px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Image src={avatar.src} alt="AI Навігатор" width={60} height={60}
+              style={{ objectFit: 'contain' }} />
             <span style={{
-              position: 'absolute', bottom: '2px', right: '2px',
-              width: '12px', height: '12px', borderRadius: '50%',
+              position: 'absolute', bottom: '4px', right: '4px',
+              width: '13px', height: '13px', borderRadius: '50%',
               background: '#22c55e', border: '2px solid white',
             }}/>
           </div>
@@ -136,144 +147,82 @@ export default function WelcomeBubble() {
         <span style={{
           position: 'fixed', bottom: '24px', right: '24px', zIndex: 9998,
           width: '72px', height: '72px', borderRadius: '50%',
-          background: 'rgba(245,158,11,0.18)',
+          background: 'rgba(245,158,11,0.15)',
           animation: 'pulseRing 2s infinite', pointerEvents: 'none',
         }} />
       )}
 
-      {/* Chat window */}
+      {/* Chat window — позиціонується з урахуванням висоти екрану */}
       {open && (
         <div style={{
-          position: 'fixed', bottom: '112px', right: '24px', zIndex: 9999,
+          position: 'fixed',
+          bottom: `${adjustedBottom}px`,
+          right: '24px',
+          zIndex: 9998, // нижче аватара
           width: '360px',
+          height: `${chatHeight}px`,
           display: 'flex', flexDirection: 'column',
-          background: 'rgba(255,255,255,0.78)',
+          background: 'rgba(255,255,255,0.82)',
           backdropFilter: 'blur(28px)',
           WebkitBackdropFilter: 'blur(28px)',
           borderRadius: '32px',
           boxShadow: '0 20px 60px rgba(0,0,0,0.13), inset 0 1px 0 rgba(255,255,255,0.9)',
           border: '1.5px solid rgba(255,255,255,0.7)',
-          overflow: 'visible',
+          overflow: 'hidden',
           animation: 'fadeSlideUp 0.3s ease',
         }}>
 
-          {/* Великий аватар у CSS-бульбашці — виходить за верхній край */}
-          <div style={{
-            display: 'flex', flexDirection: 'column', alignItems: 'center',
-            marginTop: '-90px',
-            position: 'relative',
-          }}>
-            {/* CSS бульбашка-контейнер */}
-            <div style={{
-              width: '180px',
-              height: '180px',
-              background: 'radial-gradient(circle, #ffffff 55%, #e3f2fd 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: '50%',
-              boxShadow: '0 8px 28px rgba(0,0,0,0.15), inset 0 2px 0 rgba(255,255,255,0.9)',
-              border: '2px solid rgba(255,255,255,0.75)',
-            }}>
-              <Image
-                src={avatar.src}
-                alt="AI Навігатор"
-                width={164}
-                height={164}
-                style={{
-                  width: '164px',
-                  height: '164px',
-                  objectFit: 'contain',
-                }}
-              />
-            </div>
+          {/* Простір під аватар зверху */}
+          <div style={{ height: `${avatarOverhang + 10}px`, flexShrink: 0 }} />
 
-            {/* Перемикач аватарів */}
-            <div style={{
-              display: 'flex', gap: '8px', marginTop: '8px', alignItems: 'center',
-            }}>
+          {/* Перемикач аватарів + назва */}
+          <div style={{ textAlign: 'center', padding: '0 20px 8px', flexShrink: 0 }}>
+            <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginBottom: '8px' }}>
               {AVATARS.map((av, i) => (
-                <button
-                  key={i}
-                  onClick={() => setAvatarIndex(i)}
-                  title={av.label}
+                <button key={i} onClick={() => setAvatarIndex(i)}
                   style={{
-                    width: '32px', height: '32px', borderRadius: '50%',
+                    width: '28px', height: '28px', borderRadius: '50%',
                     cursor: 'pointer', padding: '2px',
                     border: i === avatarIndex ? '2px solid #f59e0b' : '2px solid rgba(0,0,0,0.1)',
                     opacity: i === avatarIndex ? 1 : 0.5,
                     transition: 'all 0.2s',
-                    background: 'radial-gradient(circle, #ffffff 55%, #e3f2fd 100%)',
+                    ...BUBBLE_STYLE,
+                    boxShadow: 'none',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}
-                >
-                  <Image src={av.src} alt={av.label} width={26} height={26}
-                    style={{ objectFit: 'contain', width: '26px', height: '26px' }} />
+                  }}>
+                  <Image src={av.src} alt={av.label} width={22} height={22}
+                    style={{ objectFit: 'contain' }} />
                 </button>
               ))}
-              <span style={{ fontSize: '10.5px', color: '#94a3b8', marginLeft: '2px' }}>обери</span>
+              <span style={{ fontSize: '10px', color: '#94a3b8', alignSelf: 'center' }}>обери</span>
             </div>
-
-            {/* Назва і статус */}
-            <div style={{ textAlign: 'center', padding: '8px 20px 0' }}>
-              <p style={{ margin: '0 0 3px', fontWeight: 700, fontSize: '15px', color: '#1e293b' }}>
-                CryptoNavigator AI
-              </p>
-              <p style={{ margin: 0, fontSize: '11.5px', color: '#64748b', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
-                <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#22c55e', display: 'inline-block' }}/>
-                Ваш особистий крипто-гід
-              </p>
-            </div>
-
-            {/* Кнопка закрити */}
-            <button onClick={handleDismiss} style={{
-              position: 'absolute', top: '98px', right: '10px',
-              width: '26px', height: '26px', borderRadius: '50%',
-              background: 'rgba(255,255,255,0.9)',
-              border: '1px solid rgba(0,0,0,0.08)',
-              color: '#94a3b8', fontSize: '16px', cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>×</button>
+            <p style={{ margin: '0 0 2px', fontWeight: 700, fontSize: '15px', color: '#1e293b' }}>
+              CryptoNavigator AI
+            </p>
+            <p style={{ margin: 0, fontSize: '11px', color: '#64748b', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e', display: 'inline-block' }}/>
+              Ваш особистий крипто-гід
+            </p>
           </div>
 
-          {/* Розділювач */}
-          <div style={{ height: '1px', background: 'rgba(245,158,11,0.15)', margin: '10px 16px 0' }} />
+          <div style={{ height: '1px', background: 'rgba(245,158,11,0.15)', margin: '0 16px 0' }} />
 
           {/* Messages */}
-          <div style={{
-            overflowY: 'auto', padding: '12px 14px',
-            display: 'flex', flexDirection: 'column', gap: '10px',
-            maxHeight: '200px',
-          }}>
+          <div style={{ flex: 1, overflowY: 'auto', padding: '10px 14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {messages.map((msg, i) => (
-              <div key={i} style={{
-                display: 'flex',
-                justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start',
-                alignItems: 'flex-end', gap: '6px',
-              }}>
+              <div key={i} style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start', alignItems: 'flex-end', gap: '6px' }}>
                 {msg.role === 'assistant' && (
-                  <div style={{
-                    width: '24px', height: '24px', borderRadius: '50%',
-                    background: 'radial-gradient(circle, #ffffff 55%, #e3f2fd 100%)',
-                    border: '1px solid rgba(255,255,255,0.7)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    flexShrink: 0,
-                  }}>
-                    <Image src={avatar.src} alt="" width={20} height={20}
-                      style={{ objectFit: 'contain', width: '20px', height: '20px' }} />
+                  <div style={{ width: '24px', height: '24px', borderRadius: '50%', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', ...BUBBLE_STYLE, boxShadow: 'none' }}>
+                    <Image src={avatar.src} alt="" width={18} height={18} style={{ objectFit: 'contain' }} />
                   </div>
                 )}
                 <div style={{
                   maxWidth: '80%', padding: '9px 12px',
                   borderRadius: msg.role === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-                  background: msg.role === 'user'
-                    ? 'linear-gradient(135deg, #f59e0b, #d97706)'
-                    : 'rgba(255,255,255,0.92)',
+                  background: msg.role === 'user' ? 'linear-gradient(135deg, #f59e0b, #d97706)' : 'rgba(255,255,255,0.95)',
                   color: msg.role === 'user' ? '#fff' : '#1e293b',
                   fontSize: '13px', lineHeight: '1.55', whiteSpace: 'pre-wrap',
-                  boxShadow: msg.role === 'user'
-                    ? '0 3px 10px rgba(245,158,11,0.3)'
-                    : '0 2px 6px rgba(0,0,0,0.06)',
+                  boxShadow: msg.role === 'user' ? '0 3px 10px rgba(245,158,11,0.3)' : '0 2px 6px rgba(0,0,0,0.06)',
                   border: msg.role === 'assistant' ? '1px solid rgba(255,255,255,0.8)' : 'none',
                 }}>
                   {msg.content}
@@ -282,15 +231,10 @@ export default function WelcomeBubble() {
             ))}
             {loading && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <div style={{
-                  width: '24px', height: '24px', borderRadius: '50%',
-                  background: 'radial-gradient(circle, #ffffff 55%, #e3f2fd 100%)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
-                  <Image src={avatar.src} alt="" width={20} height={20}
-                    style={{ objectFit: 'contain', width: '20px', height: '20px' }} />
+                <div style={{ width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', ...BUBBLE_STYLE, boxShadow: 'none' }}>
+                  <Image src={avatar.src} alt="" width={18} height={18} style={{ objectFit: 'contain' }} />
                 </div>
-                <div style={{ background: 'rgba(255,255,255,0.92)', padding: '9px 13px', borderRadius: '16px 16px 16px 4px', display: 'flex', gap: '4px' }}>
+                <div style={{ background: 'rgba(255,255,255,0.95)', padding: '9px 13px', borderRadius: '16px 16px 16px 4px', display: 'flex', gap: '4px' }}>
                   {[0, 150, 300].map(delay => (
                     <span key={delay} style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#f59e0b', display: 'inline-block', animation: `bounce 1s ${delay}ms infinite` }} />
                   ))}
@@ -302,15 +246,12 @@ export default function WelcomeBubble() {
 
           {/* Suggestions */}
           {messages.length <= 1 && (
-            <div style={{ padding: '0 14px 10px', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+            <div style={{ padding: '0 14px 8px', display: 'flex', flexWrap: 'wrap', gap: '6px', flexShrink: 0 }}>
               {SUGGESTIONS.map(s => (
                 <button key={s} onClick={() => sendMessage(s)}
                   style={{
-                    fontSize: '11.5px',
-                    background: 'rgba(255,255,255,0.85)',
-                    color: '#b45309',
-                    border: '1px solid rgba(245,158,11,0.3)',
-                    borderRadius: '20px', padding: '5px 11px',
+                    fontSize: '11.5px', background: 'rgba(255,255,255,0.85)', color: '#b45309',
+                    border: '1px solid rgba(245,158,11,0.3)', borderRadius: '20px', padding: '5px 11px',
                     cursor: 'pointer', transition: 'all 0.2s', fontWeight: 500,
                   }}
                   onMouseEnter={e => { e.currentTarget.style.background = 'rgba(245,158,11,0.15)'; }}
@@ -322,24 +263,18 @@ export default function WelcomeBubble() {
 
           {/* Input */}
           <div style={{
-            display: 'flex', alignItems: 'center', gap: '7px',
-            padding: '10px 14px 14px',
-            borderTop: '1px solid rgba(255,255,255,0.5)',
-            background: 'rgba(255,255,255,0.3)',
-            backdropFilter: 'blur(8px)',
-            borderRadius: '0 0 32px 32px',
+            display: 'flex', alignItems: 'center', gap: '7px', padding: '8px 14px 12px',
+            borderTop: '1px solid rgba(255,255,255,0.5)', background: 'rgba(255,255,255,0.3)',
+            backdropFilter: 'blur(8px)', flexShrink: 0,
           }}>
-            <input
-              type="text" value={input}
+            <input type="text" value={input}
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && sendMessage(input)}
               placeholder="Запитайте що-небудь..."
               disabled={loading}
               style={{
-                flex: 1, fontSize: '13px',
-                background: 'rgba(255,255,255,0.8)',
-                border: '1px solid rgba(245,158,11,0.25)',
-                borderRadius: '22px', padding: '9px 14px',
+                flex: 1, fontSize: '13px', background: 'rgba(255,255,255,0.8)',
+                border: '1px solid rgba(245,158,11,0.25)', borderRadius: '22px', padding: '9px 14px',
                 outline: 'none', color: '#1e293b',
               }}
             />
@@ -349,10 +284,45 @@ export default function WelcomeBubble() {
                 background: input.trim() && !loading ? 'linear-gradient(135deg, #f59e0b, #d97706)' : 'rgba(229,231,235,0.6)',
                 border: 'none', color: input.trim() && !loading ? '#fff' : '#9ca3af',
                 fontSize: '14px', cursor: input.trim() && !loading ? 'pointer' : 'not-allowed',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0, transition: 'all 0.2s',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
               }}
             >➤</button>
+          </div>
+        </div>
+      )}
+
+      {/* Аватар — окремий елемент з вищим z-index, завжди поверх вікна */}
+      {open && (
+        <div style={{
+          position: 'fixed',
+          bottom: `${adjustedBottom + chatHeight - avatarOverhang}px`,
+          right: '24px',
+          zIndex: 9999, // вище за вікно чату
+          width: '360px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          pointerEvents: 'none', // кліки проходять крізь
+        }}>
+          {/* Кнопка закрити — поверх аватара */}
+          <button onClick={handleDismiss}
+            style={{
+              position: 'absolute', top: '4px', right: '8px',
+              width: '26px', height: '26px', borderRadius: '50%',
+              background: 'rgba(255,255,255,0.95)', border: '1px solid rgba(0,0,0,0.08)',
+              color: '#94a3b8', fontSize: '16px', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              pointerEvents: 'all', zIndex: 10000,
+            }}>×</button>
+
+          {/* Сама бульбашка-аватар */}
+          <div style={{
+            width: '180px', height: '180px', borderRadius: '50%',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            ...BUBBLE_STYLE,
+          }}>
+            <Image src={avatar.src} alt="AI Навігатор" width={164} height={164}
+              style={{ objectFit: 'contain', width: '164px', height: '164px' }} />
           </div>
         </div>
       )}

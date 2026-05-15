@@ -1,10 +1,24 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
   cta?: { type: 'binance' | 'whitebit' | 'both' } | null;
+}
+
+const AVATARS = [
+  { src: '/avatar-robot.png',   label: '🤖' },
+  { src: '/avatar-bitcoin.png', label: '₿'  },
+  { src: '/avatar-human.png',   label: '😊' },
+];
+
+function pickAvatar(text: string) {
+  const lower = text.toLowerCase();
+  if (lower.includes('бірж') || lower.includes('торг')) return '/avatar-bitcoin.png';
+  if (lower.includes('як') || lower.includes('що')) return '/avatar-human.png';
+  return '/avatar-robot.png';
 }
 
 const UI_TEXT = {
@@ -51,7 +65,7 @@ const UI_TEXT = {
     openBtn: 'Open →',
   },
   pl: {
-    greeting: '👋 Cześć! Jestem **CryptoBot** — Twój AI-konsultant krypto.\n\nAby dawać trafniejsze porady, powiedz: jakie masz doświadczenie z krypto?',
+    greeting: '👋 Cześć! Jestem **CryptoBot** — Twoim AI-konsultantem krypto.',
     levelLabel: 'Konsultant AI • CryptoNavigator',
     levels: [
       { key: 'beginner', label: '🌱 Początkujący', desc: 'Dopiero zaczynam' },
@@ -67,12 +81,12 @@ const UI_TEXT = {
     popularLabel: 'Popularne pytania:',
     placeholder: 'Zapytaj o krypto...',
     errorMsg: '😔 Wystąpił błąd. Spróbuj ponownie.',
-    quickQuestions: ['🔥 Którą giełdę wybrać dla początkujących?', '📈 Jak czytać wykres ceny?', '💡 Czym jest staking?', '🛡️ Jak bezpiecznie przechowywać krypto?'],
-    exchangeDesc: { binance: 'Największa giełda świata — idealna na start', whitebit: 'Łatwa weryfikacja — świetna dla nowych użytkowników' },
+    quickQuestions: ['🔥 Którą giełdę wybrać?', '📈 Jak czytać wykres?', '💡 Czym jest staking?', '🛡️ Jak przechowywać krypto?'],
+    exchangeDesc: { binance: 'Największa giełda świata — idealna na start', whitebit: 'Łatwa weryfikacja — świetna dla nowych' },
     openBtn: 'Otwórz →',
   },
   de: {
-    greeting: '👋 Hallo! Ich bin **CryptoBot** — dein KI-Krypto-Berater.\n\nUm bessere Ratschläge zu geben, sag mir: Wie viel Erfahrung hast du mit Krypto?',
+    greeting: '👋 Hallo! Ich bin **CryptoBot** — dein KI-Krypto-Berater.',
     levelLabel: 'KI-Berater • CryptoNavigator',
     levels: [
       { key: 'beginner', label: '🌱 Anfänger', desc: 'Fange gerade an' },
@@ -88,10 +102,16 @@ const UI_TEXT = {
     popularLabel: 'Beliebte Fragen:',
     placeholder: 'Frag nach Krypto...',
     errorMsg: '😔 Ein Fehler ist aufgetreten. Bitte versuche es erneut.',
-    quickQuestions: ['🔥 Welche Börse für Anfänger?', '📈 Wie liest man Preischarts?', '💡 Was ist Staking?', '🛡️ Wie bewahrt man Krypto sicher auf?'],
+    quickQuestions: ['🔥 Welche Börse für Anfänger?', '📈 Wie liest man Charts?', '💡 Was ist Staking?', '🛡️ Wie bewahrt man Krypto auf?'],
     exchangeDesc: { binance: 'Weltgrößte Börse — ideal für Einsteiger', whitebit: 'Einfache Verifizierung — gut für neue Nutzer' },
     openBtn: 'Öffnen →',
   },
+};
+
+const BUBBLE_STYLE = {
+  background: 'radial-gradient(circle, #ffffff 55%, #e3f2fd 100%)',
+  border: '2px solid rgba(255,255,255,0.75)',
+  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
 };
 
 function ExchangeCTA({ type, locale }: { type: 'binance' | 'whitebit' | 'both'; locale: string }) {
@@ -126,8 +146,11 @@ export default function ChatWidget({ locale = 'uk' }: { locale?: string }) {
   const [messages, setMessages] = useState<Message[]>([{ role: 'assistant', content: t.greeting }]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [avatarIndex, setAvatarIndex] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const avatar = AVATARS[avatarIndex];
 
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
   useEffect(() => { if (isOpen) setTimeout(() => inputRef.current?.focus(), 100); }, [isOpen]);
@@ -151,7 +174,10 @@ export default function ChatWidget({ locale = 'uk' }: { locale?: string }) {
         body: JSON.stringify({ message: messageText, history: messages.slice(-10), userLevel, locale }),
       });
       const data = await response.json();
-      setMessages(prev => [...prev, { role: 'assistant', content: data.reply, cta: data.cta || null }]);
+      const reply = data.reply || t.errorMsg;
+      setMessages(prev => [...prev, { role: 'assistant', content: reply, cta: data.cta || null }]);
+      const idx = AVATARS.findIndex(a => a.src === pickAvatar(reply));
+      if (idx !== -1) setAvatarIndex(idx);
     } catch {
       setMessages(prev => [...prev, { role: 'assistant', content: t.errorMsg }]);
     } finally {
@@ -166,15 +192,23 @@ export default function ChatWidget({ locale = 'uk' }: { locale?: string }) {
   return (
     <>
       <button onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-5 right-5 z-50 flex items-center gap-2 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-all hover:scale-105"
-        style={{ padding: isOpen ? '14px' : '12px 20px 12px 16px' }}>
-        {isOpen ? <span className="text-xl">✕</span> : (<><span className="text-2xl">🤖</span><span className="font-semibold text-sm">CryptoBot</span></>)}
+        className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full shadow-lg hover:scale-105 transition-all"
+        style={{ width: '72px', height: '72px', ...BUBBLE_STYLE }}>
+        {isOpen
+          ? <span className="text-xl w-full text-center">✕</span>
+          : <Image src={avatar.src} alt="CryptoBot" width={56} height={56}
+              style={{ objectFit: 'contain', margin: 'auto' }} />
+        }
       </button>
 
       {isOpen && (
         <div className="fixed bottom-24 right-5 w-96 h-[580px] bg-white rounded-2xl shadow-2xl flex flex-col z-50 border border-gray-100 overflow-hidden">
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 flex items-center gap-3">
-            <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-xl">🤖</div>
+            <div className="w-10 h-10 rounded-full flex items-center justify-center"
+              style={BUBBLE_STYLE}>
+              <Image src={avatar.src} alt="CryptoBot" width={28} height={28}
+                style={{ objectFit: 'contain' }} />
+            </div>
             <div>
               <div className="font-bold">CryptoBot</div>
               <div className="text-xs text-blue-200 flex items-center gap-1">
@@ -193,7 +227,11 @@ export default function ChatWidget({ locale = 'uk' }: { locale?: string }) {
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} gap-2`}>
                 {msg.role === 'assistant' && (
-                  <div className="w-7 h-7 bg-blue-100 rounded-full flex items-center justify-center text-sm flex-shrink-0 mt-1">🤖</div>
+                  <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                    style={BUBBLE_STYLE}>
+                    <Image src={avatar.src} alt="AI" width={20} height={20}
+                      style={{ objectFit: 'contain' }} />
+                  </div>
                 )}
                 <div className="max-w-[82%]">
                   <div className={`p-3 rounded-2xl text-sm leading-relaxed ${msg.role === 'user' ? 'bg-blue-600 text-white rounded-tr-sm' : 'bg-white text-gray-800 shadow-sm rounded-tl-sm'}`}>
@@ -230,11 +268,16 @@ export default function ChatWidget({ locale = 'uk' }: { locale?: string }) {
 
             {isLoading && (
               <div className="flex justify-start gap-2">
-                <div className="w-7 h-7 bg-blue-100 rounded-full flex items-center justify-center text-sm flex-shrink-0">🤖</div>
+                <div className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0"
+                  style={BUBBLE_STYLE}>
+                  <Image src={avatar.src} alt="AI" width={20} height={20}
+                    style={{ objectFit: 'contain' }} />
+                </div>
                 <div className="bg-white shadow-sm p-3 rounded-2xl rounded-tl-sm">
                   <div className="flex gap-1 items-center h-4">
                     {[0, 150, 300].map((delay) => (
-                      <span key={delay} className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: `${delay}ms` }} />
+                      <span key={delay} className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"
+                        style={{ animationDelay: `${delay}ms` }} />
                     ))}
                   </div>
                 </div>
