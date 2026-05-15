@@ -83,6 +83,13 @@ export default function WelcomeBubble() {
 
   if (dismissed) return null;
 
+  // Стиль аватара — scale для рівномірного збільшення без зміщення
+  const avatarImgStyle = {
+    objectFit: 'cover' as const,
+    transform: 'scale(1.15)',
+    display: 'block',
+  };
+
   return (
     <>
       {/* Floating button */}
@@ -112,12 +119,7 @@ export default function WelcomeBubble() {
               src={avatar.src}
               alt="AI Навігатор"
               width={80} height={80}
-              style={{
-                width: '96px', height: '96px', /* більше за контейнер — обрізає темний край */
-                marginLeft: '-8px', marginTop: '-8px',
-                objectFit: 'cover',
-                display: 'block',
-              }}
+              style={{ ...avatarImgStyle, width: '80px', height: '80px' }}
             />
             <span style={{
               position: 'absolute', bottom: '4px', right: '4px',
@@ -151,7 +153,6 @@ export default function WelcomeBubble() {
           alignItems: 'center',
           pointerEvents: 'none',
         }}>
-          {/* Кнопка закрити */}
           <button onClick={handleDismiss} style={{
             position: 'absolute', top: '10px', right: '8px',
             width: '28px', height: '28px', borderRadius: '50%',
@@ -163,7 +164,7 @@ export default function WelcomeBubble() {
             boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
           }}>×</button>
 
-          {/* Великий аватар — збільшений щоб темний край обрізався */}
+          {/* Великий аватар — scale(1.15) рівномірно обрізає темний край з усіх боків */}
           <div style={{
             width: '200px', height: '200px',
             borderRadius: '50%',
@@ -173,13 +174,8 @@ export default function WelcomeBubble() {
             <Image
               src={avatar.src}
               alt="AI Навігатор"
-              width={240} height={240}
-              style={{
-                width: '240px', height: '240px', /* більше за контейнер 200px — темний край зрізається */
-                marginLeft: '-20px', marginTop: '-20px',
-                objectFit: 'cover',
-                display: 'block',
-              }}
+              width={200} height={200}
+              style={{ ...avatarImgStyle, width: '200px', height: '200px' }}
             />
           </div>
         </div>
@@ -218,11 +214,8 @@ export default function WelcomeBubble() {
                     transition: 'all 0.2s',
                     cursor: 'pointer', padding: 0, background: 'none',
                   }}>
-                  <Image src={av.src} alt={av.label} width={38} height={38}
-                    style={{
-                      objectFit: 'cover', width: '38px', height: '38px',
-                      marginLeft: '-3px', marginTop: '-3px',
-                    }} />
+                  <Image src={av.src} alt={av.label} width={32} height={32}
+                    style={{ ...avatarImgStyle, width: '32px', height: '32px' }} />
                 </button>
               ))}
               <span style={{ fontSize: '10px', color: '#94a3b8', alignSelf: 'center' }}>обери</span>
@@ -244,8 +237,8 @@ export default function WelcomeBubble() {
               <div key={i} style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start', alignItems: 'flex-end', gap: '6px' }}>
                 {msg.role === 'assistant' && (
                   <div style={{ width: '24px', height: '24px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-                    <Image src={avatar.src} alt="" width={28} height={28}
-                      style={{ objectFit: 'cover', width: '28px', height: '28px', marginLeft: '-2px', marginTop: '-2px' }} />
+                    <Image src={avatar.src} alt="" width={24} height={24}
+                      style={{ ...avatarImgStyle, width: '24px', height: '24px' }} />
                   </div>
                 )}
                 <div style={{
@@ -264,8 +257,8 @@ export default function WelcomeBubble() {
             {loading && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <div style={{ width: '24px', height: '24px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-                  <Image src={avatar.src} alt="" width={28} height={28}
-                    style={{ objectFit: 'cover', width: '28px', height: '28px', marginLeft: '-2px', marginTop: '-2px' }} />
+                  <Image src={avatar.src} alt="" width={24} height={24}
+                    style={{ ...avatarImgStyle, width: '24px', height: '24px' }} />
                 </div>
                 <div style={{ background: 'rgba(255,255,255,0.95)', padding: '9px 13px', borderRadius: '16px 16px 16px 4px', display: 'flex', gap: '4px' }}>
                   {[0, 150, 300].map(delay => (
