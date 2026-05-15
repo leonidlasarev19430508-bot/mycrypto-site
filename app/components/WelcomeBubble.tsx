@@ -21,11 +21,9 @@ const SUGGESTIONS = [
   '💰 З якої суми почати?',
 ];
 
-const BUBBLE_STYLE = {
-  background: 'radial-gradient(circle, #ffffff 55%, #e3f2fd 100%)',
-  border: '2px solid rgba(255,255,255,0.75)',
-  boxShadow: '0 8px 28px rgba(0,0,0,0.12)',
-};
+// Стиль бульбашки — без border, бо він задається окремо де потрібно
+const bubbleBackground = 'radial-gradient(circle, #ffffff 55%, #e3f2fd 100%)';
+const bubbleShadow = '0 8px 28px rgba(0,0,0,0.12)';
 
 export default function WelcomeBubble() {
   const [open, setOpen] = useState(false);
@@ -44,7 +42,6 @@ export default function WelcomeBubble() {
 
   const avatar = AVATARS[avatarIndex];
 
-  // Визначаємо висоту вікна браузера щоб правильно позиціонувати чат
   useEffect(() => {
     setWindowHeight(window.innerHeight);
     const handleResize = () => setWindowHeight(window.innerHeight);
@@ -98,15 +95,10 @@ export default function WelcomeBubble() {
 
   if (dismissed) return null;
 
-  // Висота чат-вікна без аватара
   const chatHeight = 480;
-  // Аватар виступає на 90px вгору
   const avatarOverhang = 90;
-  // Відступ від низу екрану
   const bottomOffset = 112;
-  // Загальна висота від низу включно з аватаром
   const totalHeight = chatHeight + avatarOverhang;
-  // Якщо не вміщається — зсуваємо вікно вниз
   const adjustedBottom = windowHeight > 0 && totalHeight + bottomOffset > windowHeight
     ? windowHeight - totalHeight - 16
     : bottomOffset;
@@ -119,9 +111,10 @@ export default function WelcomeBubble() {
         style={{
           position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999,
           width: '72px', height: '72px', borderRadius: '50%',
-          border: 'none', padding: 0,
-          cursor: 'pointer', transition: 'transform 0.2s',
-          ...BUBBLE_STYLE,
+          background: bubbleBackground,
+          border: '2px solid rgba(255,255,255,0.75)',
+          boxShadow: bubbleShadow,
+          padding: 0, cursor: 'pointer', transition: 'transform 0.2s',
         }}
         onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.08)')}
         onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
@@ -152,13 +145,13 @@ export default function WelcomeBubble() {
         }} />
       )}
 
-      {/* Chat window — позиціонується з урахуванням висоти екрану */}
+      {/* Chat window */}
       {open && (
         <div style={{
           position: 'fixed',
           bottom: `${adjustedBottom}px`,
           right: '24px',
-          zIndex: 9998, // нижче аватара
+          zIndex: 9998,
           width: '360px',
           height: `${chatHeight}px`,
           display: 'flex', flexDirection: 'column',
@@ -172,7 +165,7 @@ export default function WelcomeBubble() {
           animation: 'fadeSlideUp 0.3s ease',
         }}>
 
-          {/* Простір під аватар зверху */}
+          {/* Простір під аватар */}
           <div style={{ height: `${avatarOverhang + 10}px`, flexShrink: 0 }} />
 
           {/* Перемикач аватарів + назва */}
@@ -183,11 +176,10 @@ export default function WelcomeBubble() {
                   style={{
                     width: '28px', height: '28px', borderRadius: '50%',
                     cursor: 'pointer', padding: '2px',
+                    background: bubbleBackground,
                     border: i === avatarIndex ? '2px solid #f59e0b' : '2px solid rgba(0,0,0,0.1)',
                     opacity: i === avatarIndex ? 1 : 0.5,
                     transition: 'all 0.2s',
-                    ...BUBBLE_STYLE,
-                    boxShadow: 'none',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}>
                   <Image src={av.src} alt={av.label} width={22} height={22}
@@ -205,14 +197,19 @@ export default function WelcomeBubble() {
             </p>
           </div>
 
-          <div style={{ height: '1px', background: 'rgba(245,158,11,0.15)', margin: '0 16px 0' }} />
+          <div style={{ height: '1px', background: 'rgba(245,158,11,0.15)', margin: '0 16px' }} />
 
           {/* Messages */}
           <div style={{ flex: 1, overflowY: 'auto', padding: '10px 14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {messages.map((msg, i) => (
               <div key={i} style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start', alignItems: 'flex-end', gap: '6px' }}>
                 {msg.role === 'assistant' && (
-                  <div style={{ width: '24px', height: '24px', borderRadius: '50%', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', ...BUBBLE_STYLE, boxShadow: 'none' }}>
+                  <div style={{
+                    width: '24px', height: '24px', borderRadius: '50%', flexShrink: 0,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    background: bubbleBackground,
+                    border: '1.5px solid rgba(255,255,255,0.75)',
+                  }}>
                     <Image src={avatar.src} alt="" width={18} height={18} style={{ objectFit: 'contain' }} />
                   </div>
                 )}
@@ -231,7 +228,12 @@ export default function WelcomeBubble() {
             ))}
             {loading && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <div style={{ width: '24px', height: '24px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', ...BUBBLE_STYLE, boxShadow: 'none' }}>
+                <div style={{
+                  width: '24px', height: '24px', borderRadius: '50%',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  background: bubbleBackground,
+                  border: '1.5px solid rgba(255,255,255,0.75)',
+                }}>
                   <Image src={avatar.src} alt="" width={18} height={18} style={{ objectFit: 'contain' }} />
                 </div>
                 <div style={{ background: 'rgba(255,255,255,0.95)', padding: '9px 13px', borderRadius: '16px 16px 16px 4px', display: 'flex', gap: '4px' }}>
@@ -291,35 +293,34 @@ export default function WelcomeBubble() {
         </div>
       )}
 
-      {/* Аватар — окремий елемент з вищим z-index, завжди поверх вікна */}
+      {/* Аватар — окремий елемент поверх вікна */}
       {open && (
         <div style={{
           position: 'fixed',
           bottom: `${adjustedBottom + chatHeight - avatarOverhang}px`,
           right: '24px',
-          zIndex: 9999, // вище за вікно чату
+          zIndex: 9999,
           width: '360px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          pointerEvents: 'none', // кліки проходять крізь
+          display: 'flex', flexDirection: 'column', alignItems: 'center',
+          pointerEvents: 'none',
         }}>
-          {/* Кнопка закрити — поверх аватара */}
           <button onClick={handleDismiss}
             style={{
               position: 'absolute', top: '4px', right: '8px',
               width: '26px', height: '26px', borderRadius: '50%',
-              background: 'rgba(255,255,255,0.95)', border: '1px solid rgba(0,0,0,0.08)',
+              background: 'rgba(255,255,255,0.95)',
+              border: '1px solid rgba(0,0,0,0.08)',
               color: '#94a3b8', fontSize: '16px', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               pointerEvents: 'all', zIndex: 10000,
             }}>×</button>
 
-          {/* Сама бульбашка-аватар */}
           <div style={{
             width: '180px', height: '180px', borderRadius: '50%',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            ...BUBBLE_STYLE,
+            background: bubbleBackground,
+            border: '2px solid rgba(255,255,255,0.75)',
+            boxShadow: bubbleShadow,
           }}>
             <Image src={avatar.src} alt="AI Навігатор" width={164} height={164}
               style={{ objectFit: 'contain', width: '164px', height: '164px' }} />
