@@ -35,6 +35,16 @@ export default function WelcomeBubble() {
 
   const avatar = AVATARS[avatarIndex];
 
+  // Розрахунок позицій
+  const cardHeight = 494;
+  const avatarSize = 170;
+  const bottomOffset = 112;
+  // Аватар розміщується так щоб його низ збігався з верхом планшетки + 20px всередину
+  const avatarBottom = bottomOffset + cardHeight - 20;
+  // Аватар заходить в планшетку на: avatarSize - 20 = 150px
+  // paddingTop = 150 + 12px відступ від аватара до перемикачів
+  const headerPaddingTop = 162;
+
   useEffect(() => {
     const wasDismissed = sessionStorage.getItem('welcomeDismissed');
     if (wasDismissed) return;
@@ -93,10 +103,6 @@ export default function WelcomeBubble() {
     transform: 'scale(1.15)',
     display: 'block',
   };
-
-  const cardHeight = 494;
-  const avatarSize = 170;
-  const avatarBottom = 112 + cardHeight - 20;
 
   return (
     <>
@@ -182,7 +188,7 @@ export default function WelcomeBubble() {
       {open && (
         <div style={{
           position: 'fixed',
-          bottom: '112px',
+          bottom: `${bottomOffset}px`,
           right: '24px',
           zIndex: 9998,
           width: '360px',
@@ -198,9 +204,9 @@ export default function WelcomeBubble() {
           animation: 'fadeSlideUp 0.3s ease',
         }}>
 
-          {/* Шапка — paddingTop збільшено щоб перемикачі не налізали на аватар */}
+          {/* Шапка */}
           <div style={{
-            paddingTop: '155px',
+            paddingTop: `${headerPaddingTop}px`,
             paddingBottom: '10px',
             textAlign: 'center',
             flexShrink: 0,
@@ -209,18 +215,25 @@ export default function WelcomeBubble() {
             borderBottom: '1px solid rgba(0,0,0,0.05)',
             position: 'relative',
           }}>
-            {/* Кнопка Назад — тільки в режимі чату */}
+            {/* Кнопка ← Назад — видима в режимі чату */}
             {started && (
               <button onClick={handleBack} style={{
-                position: 'absolute', left: '12px', top: '32px',
-                background: 'none', border: 'none', cursor: 'pointer',
-                color: '#6b7280', fontSize: '13px', fontWeight: 500,
+                position: 'absolute',
+                left: '12px',
+                top: `${headerPaddingTop - 6}px`,
+                background: 'rgba(255,255,255,0.8)',
+                border: '1px solid rgba(0,0,0,0.08)',
+                cursor: 'pointer',
+                color: '#4b5563',
+                fontSize: '13px',
+                fontWeight: 600,
                 display: 'flex', alignItems: 'center', gap: '4px',
-                padding: '4px 8px', borderRadius: '12px',
+                padding: '5px 10px', borderRadius: '14px',
                 transition: 'all 0.2s',
+                boxShadow: '0 1px 4px rgba(0,0,0,0.08)',
               }}
-              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(0,0,0,0.05)'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'none'; }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(245,158,11,0.1)'; e.currentTarget.style.borderColor = '#f59e0b'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.8)'; e.currentTarget.style.borderColor = 'rgba(0,0,0,0.08)'; }}
               >
                 ← Назад
               </button>
@@ -250,12 +263,16 @@ export default function WelcomeBubble() {
             </span>
           </div>
 
-          {/* Привітання */}
+          {/* Привітання — збільшений шрифт */}
           {!started && (
-            <div style={{ padding: '18px 20px 10px', flexShrink: 0, textAlign: 'center' }}>
+            <div style={{ padding: '16px 20px 10px', flexShrink: 0, textAlign: 'center' }}>
               <p style={{
-                margin: 0, fontSize: '16px', fontWeight: 600,
-                color: '#1e293b', lineHeight: '1.65', whiteSpace: 'pre-line',
+                margin: 0,
+                fontSize: '18px',
+                fontWeight: 600,
+                color: '#1e293b',
+                lineHeight: '1.65',
+                whiteSpace: 'pre-line',
               }}>
                 {GREETING}
               </p>
