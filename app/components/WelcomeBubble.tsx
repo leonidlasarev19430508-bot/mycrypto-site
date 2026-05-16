@@ -86,6 +86,7 @@ export default function WelcomeBubble() {
   // Стиль аватара — scale для рівномірного збільшення без зміщення
   const avatarImgStyle = {
   objectFit: 'cover' as const,
+  transform: 'scale(1.15)',
   display: 'block',
 };
 
