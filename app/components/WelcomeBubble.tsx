@@ -200,7 +200,7 @@ export default function WelcomeBubble() {
 
           {/* Шапка — paddingTop збільшено щоб перемикачі не налізали на аватар */}
           <div style={{
-            paddingTop: '28px',
+            paddingTop: '155px',
             paddingBottom: '10px',
             textAlign: 'center',
             flexShrink: 0,
