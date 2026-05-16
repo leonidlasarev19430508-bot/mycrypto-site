@@ -21,16 +21,14 @@ const SUGGESTIONS = [
   '💰 З якої суми почати?',
 ];
 
+const GREETING = 'Привіт! Я ваш особистий крипто-консультант.\nЯк я можу допомогти вам сьогодні?';
+
 export default function WelcomeBubble() {
   const [open, setOpen] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [avatarIndex, setAvatarIndex] = useState(0);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: 'assistant',
-      content: '👋 Вітаю у CryptoNavigator!\n\nЯ ваш особистий AI-гід у світі криптовалют. Допоможу розібратись з біржами, поясню терміни та відповім на будь-які питання.\n\nЗ чого почнемо?',
-    },
-  ]);
+  const [started, setStarted] = useState(false); // чи почав користувач діалог
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -56,6 +54,7 @@ export default function WelcomeBubble() {
 
   const sendMessage = async (text: string) => {
     if (!text.trim() || loading) return;
+    setStarted(true);
     const userMsg: Message = { role: 'user', content: text };
     setMessages(prev => [...prev, userMsg]);
     setInput('');
@@ -135,11 +134,11 @@ export default function WelcomeBubble() {
         }} />
       )}
 
-      {/* Аватар — виходить за верхній край */}
+      {/* Аватар — поверх планшетки */}
       {open && (
         <div style={{
           position: 'fixed',
-          bottom: '428px',
+          bottom: '418px',
           right: '24px',
           zIndex: 99999,
           width: '360px',
@@ -160,18 +159,17 @@ export default function WelcomeBubble() {
           }}>×</button>
 
           <div style={{
-            width: '180px', height: '180px',
-            borderRadius: '50%',
-            overflow: 'hidden',
+            width: '170px', height: '170px',
+            borderRadius: '50%', overflow: 'hidden',
             boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
           }}>
-            <Image src={avatar.src} alt="AI Навігатор" width={180} height={180}
-              style={{ ...avatarImgStyle, width: '180px', height: '180px' }} />
+            <Image src={avatar.src} alt="AI Навігатор" width={170} height={170}
+              style={{ ...avatarImgStyle, width: '170px', height: '170px' }} />
           </div>
         </div>
       )}
 
-      {/* Chat window — напівпрозора планшетка */}
+      {/* Chat window */}
       {open && (
         <div style={{
           position: 'fixed',
@@ -179,10 +177,9 @@ export default function WelcomeBubble() {
           right: '24px',
           zIndex: 9998,
           width: '360px',
-          height: '340px',
+          height: '330px',
           display: 'flex', flexDirection: 'column',
-          /* Напівпрозора планшетка */
-          background: 'rgba(255, 255, 255, 0.75)',
+          background: 'rgba(255,255,255,0.78)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
           borderRadius: '28px',
@@ -192,100 +189,118 @@ export default function WelcomeBubble() {
           animation: 'fadeSlideUp 0.3s ease',
         }}>
 
-          {/* Верхня частина з впадинкою */}
+          {/* Шапка з впадинкою — назва + перемикач */}
           <div style={{
-            paddingTop: '80px',
+            paddingTop: '76px',
             paddingBottom: '10px',
             textAlign: 'center',
             flexShrink: 0,
             boxShadow: 'inset 0 6px 20px rgba(0,0,0,0.06)',
-            background: 'rgba(248,249,250,0.6)',
+            background: 'rgba(248,249,250,0.7)',
             borderBottom: '1px solid rgba(0,0,0,0.05)',
           }}>
-            {/* Перемикач аватарів */}
-            <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginBottom: '8px' }}>
+            <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginBottom: '6px' }}>
               {AVATARS.map((av, i) => (
                 <button key={i} onClick={() => setAvatarIndex(i)}
                   style={{
-                    width: '28px', height: '28px', borderRadius: '50%',
-                    overflow: 'hidden',
-                    border: i === avatarIndex ? '2.5px solid #f59e0b' : '2px solid rgba(0,0,0,0.1)',
-                    opacity: i === avatarIndex ? 1 : 0.45,
-                    transition: 'all 0.2s',
-                    cursor: 'pointer', padding: 0, background: 'none',
+                    width: '26px', height: '26px', borderRadius: '50%', overflow: 'hidden',
+                    border: i === avatarIndex ? '2px solid #f59e0b' : '2px solid rgba(0,0,0,0.1)',
+                    opacity: i === avatarIndex ? 1 : 0.4,
+                    transition: 'all 0.2s', cursor: 'pointer', padding: 0, background: 'none',
                   }}>
-                  <Image src={av.src} alt={av.label} width={28} height={28}
-                    style={{ ...avatarImgStyle, width: '28px', height: '28px' }} />
+                  <Image src={av.src} alt={av.label} width={26} height={26}
+                    style={{ ...avatarImgStyle, width: '26px', height: '26px' }} />
                 </button>
               ))}
             </div>
-            <p style={{ margin: '0 0 3px', fontWeight: 700, fontSize: '15px', color: '#1a1a2e' }}>
+            <p style={{ margin: '0 0 2px', fontWeight: 700, fontSize: '14px', color: '#1a1a2e' }}>
               CryptoNavigator AI
             </p>
-            <span style={{
-              display: 'inline-flex', alignItems: 'center', gap: '4px',
-              fontSize: '11px', color: '#16a34a', fontWeight: 500,
-            }}>
+            <span style={{ fontSize: '11px', color: '#16a34a', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
               <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#22c55e', display: 'inline-block' }}/>
               Онлайн
             </span>
           </div>
 
-          {/* Messages */}
-          <div style={{ flex: 1, overflowY: 'auto', padding: '10px 14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {messages.map((msg, i) => (
-              <div key={i} style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start', alignItems: 'flex-end', gap: '6px' }}>
-                {msg.role === 'assistant' && (
-                  <div style={{ width: '22px', height: '22px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-                    <Image src={avatar.src} alt="" width={22} height={22}
-                      style={{ ...avatarImgStyle, width: '22px', height: '22px' }} />
-                  </div>
-                )}
-                <div style={{
-                  maxWidth: '80%', padding: '8px 12px',
-                  borderRadius: msg.role === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-                  background: msg.role === 'user' ? 'linear-gradient(135deg, #f59e0b, #d97706)' : 'rgba(241,245,249,0.9)',
-                  color: msg.role === 'user' ? '#fff' : '#1e293b',
-                  fontSize: '13px', lineHeight: '1.55', whiteSpace: 'pre-wrap',
-                  boxShadow: msg.role === 'user' ? '0 3px 10px rgba(245,158,11,0.25)' : 'none',
-                }}>
-                  {msg.content}
-                </div>
-              </div>
-            ))}
-            {loading && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <div style={{ width: '22px', height: '22px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
-                  <Image src={avatar.src} alt="" width={22} height={22}
-                    style={{ ...avatarImgStyle, width: '22px', height: '22px' }} />
-                </div>
-                <div style={{ background: 'rgba(241,245,249,0.9)', padding: '8px 12px', borderRadius: '16px 16px 16px 4px', display: 'flex', gap: '4px' }}>
-                  {[0, 150, 300].map(delay => (
-                    <span key={delay} style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#f59e0b', display: 'inline-block', animation: `bounce 1s ${delay}ms infinite` }} />
-                  ))}
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
+          {/* Привітання — завжди видиме, великим текстом */}
+          {!started && (
+            <div style={{
+              padding: '14px 18px 10px',
+              flexShrink: 0,
+              textAlign: 'center',
+            }}>
+              <p style={{
+                margin: 0,
+                fontSize: '14px',
+                fontWeight: 600,
+                color: '#1e293b',
+                lineHeight: '1.6',
+                whiteSpace: 'pre-line',
+              }}>
+                {GREETING}
+              </p>
+            </div>
+          )}
 
-          {/* Suggestions — 2 колонки */}
-          {messages.length <= 1 && (
-            <div style={{ padding: '0 12px 8px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', flexShrink: 0 }}>
+          {/* Suggestions — 2 колонки (тільки до початку діалогу) */}
+          {!started && (
+            <div style={{ padding: '4px 12px 10px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', flexShrink: 0 }}>
               {SUGGESTIONS.map(s => (
                 <button key={s} onClick={() => sendMessage(s)}
                   style={{
-                    fontSize: '11px', background: 'rgba(255,255,255,0.8)', color: '#374151',
+                    fontSize: '11px', background: 'rgba(255,255,255,0.85)', color: '#374151',
                     border: '1px solid rgba(0,0,0,0.08)', borderRadius: '20px', padding: '7px 8px',
-                    cursor: 'pointer', transition: 'all 0.2s', fontWeight: 500,
-                    textAlign: 'center',
+                    cursor: 'pointer', transition: 'all 0.2s', fontWeight: 500, textAlign: 'center',
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(254,243,199,0.9)'; e.currentTarget.style.borderColor = '#f59e0b'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.8)'; e.currentTarget.style.borderColor = 'rgba(0,0,0,0.08)'; }}
+                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(254,243,199,0.95)'; e.currentTarget.style.borderColor = '#f59e0b'; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.85)'; e.currentTarget.style.borderColor = 'rgba(0,0,0,0.08)'; }}
                 >{s}</button>
               ))}
             </div>
           )}
+
+          {/* Messages — з'являються після початку діалогу */}
+          {started && (
+            <div style={{ flex: 1, overflowY: 'auto', padding: '10px 14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {messages.map((msg, i) => (
+                <div key={i} style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start', alignItems: 'flex-end', gap: '6px' }}>
+                  {msg.role === 'assistant' && (
+                    <div style={{ width: '22px', height: '22px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+                      <Image src={avatar.src} alt="" width={22} height={22}
+                        style={{ ...avatarImgStyle, width: '22px', height: '22px' }} />
+                    </div>
+                  )}
+                  <div style={{
+                    maxWidth: '80%', padding: '8px 12px',
+                    borderRadius: msg.role === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
+                    background: msg.role === 'user' ? 'linear-gradient(135deg, #f59e0b, #d97706)' : 'rgba(241,245,249,0.95)',
+                    color: msg.role === 'user' ? '#fff' : '#1e293b',
+                    fontSize: '13px', lineHeight: '1.55', whiteSpace: 'pre-wrap',
+                    boxShadow: msg.role === 'user' ? '0 3px 10px rgba(245,158,11,0.25)' : 'none',
+                  }}>
+                    {msg.content}
+                  </div>
+                </div>
+              ))}
+              {loading && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <div style={{ width: '22px', height: '22px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
+                    <Image src={avatar.src} alt="" width={22} height={22}
+                      style={{ ...avatarImgStyle, width: '22px', height: '22px' }} />
+                  </div>
+                  <div style={{ background: 'rgba(241,245,249,0.95)', padding: '8px 12px', borderRadius: '16px 16px 16px 4px', display: 'flex', gap: '4px' }}>
+                    {[0, 150, 300].map(delay => (
+                      <span key={delay} style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#f59e0b', display: 'inline-block', animation: `bounce 1s ${delay}ms infinite` }} />
+                    ))}
+                  </div>
+                </div>
+              )}
+              <div ref={messagesEndRef} />
+            </div>
+          )}
+
+          {/* Flex spacer коли не розпочато */}
+          {!started && <div style={{ flex: 1 }} />}
 
           {/* Input */}
           <div style={{
