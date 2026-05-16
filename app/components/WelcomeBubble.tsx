@@ -52,6 +52,12 @@ export default function WelcomeBubble() {
     sessionStorage.setItem('welcomeDismissed', 'true');
   };
 
+  const handleBack = () => {
+    setStarted(false);
+    setMessages([]);
+    setInput('');
+  };
+
   const sendMessage = async (text: string) => {
     if (!text.trim() || loading) return;
     setStarted(true);
@@ -88,7 +94,6 @@ export default function WelcomeBubble() {
     display: 'block',
   };
 
-  // Висота 380 * 1.3 = ~494px
   const cardHeight = 494;
   const avatarSize = 170;
   const avatarBottom = 112 + cardHeight - 20;
@@ -193,17 +198,35 @@ export default function WelcomeBubble() {
           animation: 'fadeSlideUp 0.3s ease',
         }}>
 
-          {/* Шапка — перемикачі ВПРИТУЛ до аватара (мінімальний paddingTop) */}
+          {/* Шапка — paddingTop збільшено щоб перемикачі не налізали на аватар */}
           <div style={{
-            paddingTop: '8px', // мінімум — перемикачі одразу під аватаром
+            paddingTop: '28px',
             paddingBottom: '10px',
             textAlign: 'center',
             flexShrink: 0,
             boxShadow: 'inset 0 6px 20px rgba(0,0,0,0.06)',
             background: 'rgba(248,249,250,0.7)',
             borderBottom: '1px solid rgba(0,0,0,0.05)',
+            position: 'relative',
           }}>
-            {/* Перемикач аватарів — впритул до верху */}
+            {/* Кнопка Назад — тільки в режимі чату */}
+            {started && (
+              <button onClick={handleBack} style={{
+                position: 'absolute', left: '12px', top: '32px',
+                background: 'none', border: 'none', cursor: 'pointer',
+                color: '#6b7280', fontSize: '13px', fontWeight: 500,
+                display: 'flex', alignItems: 'center', gap: '4px',
+                padding: '4px 8px', borderRadius: '12px',
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(0,0,0,0.05)'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'none'; }}
+              >
+                ← Назад
+              </button>
+            )}
+
+            {/* Перемикач аватарів */}
             <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginBottom: '6px' }}>
               {AVATARS.map((av, i) => (
                 <button key={i} onClick={() => setAvatarIndex(i)}
@@ -227,30 +250,25 @@ export default function WelcomeBubble() {
             </span>
           </div>
 
-          {/* Привітання — більший шрифт */}
+          {/* Привітання */}
           {!started && (
             <div style={{ padding: '18px 20px 10px', flexShrink: 0, textAlign: 'center' }}>
               <p style={{
-                margin: 0,
-                fontSize: '16px', // збільшено на 2 позиції (було 14px)
-                fontWeight: 600,
-                color: '#1e293b',
-                lineHeight: '1.65',
-                whiteSpace: 'pre-line',
+                margin: 0, fontSize: '16px', fontWeight: 600,
+                color: '#1e293b', lineHeight: '1.65', whiteSpace: 'pre-line',
               }}>
                 {GREETING}
               </p>
             </div>
           )}
 
-          {/* Suggestions — більший шрифт на кнопках */}
+          {/* Suggestions */}
           {!started && (
             <div style={{ padding: '8px 14px 0', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', flexShrink: 0 }}>
               {SUGGESTIONS.map(s => (
                 <button key={s} onClick={() => sendMessage(s)}
                   style={{
-                    fontSize: '13px', // збільшено на 2 позиції (було 11px)
-                    background: 'rgba(255,255,255,0.85)', color: '#374151',
+                    fontSize: '13px', background: 'rgba(255,255,255,0.85)', color: '#374151',
                     border: '1px solid rgba(0,0,0,0.08)', borderRadius: '20px', padding: '9px 10px',
                     cursor: 'pointer', transition: 'all 0.2s', fontWeight: 500, textAlign: 'center',
                   }}
