@@ -9,9 +9,9 @@ interface Message {
 }
 
 const AVATARS = [
-  { src: '/avatar-robot.png',   label: '🤖' },
-  { src: '/avatar-bitcoin.png', label: '₿'  },
-  { src: '/avatar-human.png',   label: '😊' },
+  { src: '/avatar-robot.png',    label: '🤖' },
+  { src: '/avatar-bitcoin.png',  label: '₿'  },
+  { src: '/avatar-human-v2.png', label: '😊' },
 ];
 
 const SUGGESTIONS = [
@@ -83,12 +83,11 @@ export default function WelcomeBubble() {
 
   if (dismissed) return null;
 
-  // Стиль аватара — scale для рівномірного збільшення без зміщення
   const avatarImgStyle = {
-  objectFit: 'cover' as const,
-  transform: 'scale(1.15)',
-  display: 'block',
-};
+    objectFit: 'cover' as const,
+    transform: 'scale(1.15)',
+    display: 'block',
+  };
 
   return (
     <>
@@ -164,7 +163,6 @@ export default function WelcomeBubble() {
             boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
           }}>×</button>
 
-          {/* Великий аватар — scale(1.15) рівномірно обрізає темний край з усіх боків */}
           <div style={{
             width: '200px', height: '200px',
             borderRadius: '50%',
