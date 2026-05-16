@@ -206,7 +206,7 @@ export default function WelcomeBubble() {
 
           {/* Шапка */}
           <div style={{
-            paddingTop: '60px',
+            paddingTop: '40px',
             paddingBottom: '10px',
             textAlign: 'center',
             flexShrink: 0,
