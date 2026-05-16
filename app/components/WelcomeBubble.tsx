@@ -9,9 +9,9 @@ interface Message {
 }
 
 const AVATARS = [
-  { src: '/avatar-robot.png',    label: '🤖' },
-  { src: '/avatar-bitcoin.png',  label: '₿'  },
-  { src: '/avatar-human-v2.png', label: '😊' },
+  { src: '/avatar-robot-v2.png',   label: '🤖' },
+  { src: '/avatar-bitcoin-v2.png', label: '₿'  },
+  { src: '/avatar-human-v2.png',   label: '😊' },
 ];
 
 const SUGGESTIONS = [
