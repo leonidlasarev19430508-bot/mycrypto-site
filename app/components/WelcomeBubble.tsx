@@ -27,7 +27,7 @@ export default function WelcomeBubble() {
   const [open, setOpen] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [avatarIndex, setAvatarIndex] = useState(0);
-  const [started, setStarted] = useState(false); // чи почав користувач діалог
+  const [started, setStarted] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -138,7 +138,7 @@ export default function WelcomeBubble() {
       {open && (
         <div style={{
           position: 'fixed',
-          bottom: '418px',
+          bottom: '468px',
           right: '24px',
           zIndex: 99999,
           width: '360px',
@@ -169,7 +169,7 @@ export default function WelcomeBubble() {
         </div>
       )}
 
-      {/* Chat window */}
+      {/* Chat window — вища планшетка */}
       {open && (
         <div style={{
           position: 'fixed',
@@ -177,7 +177,7 @@ export default function WelcomeBubble() {
           right: '24px',
           zIndex: 9998,
           width: '360px',
-          height: '330px',
+          height: '380px', // збільшена висота
           display: 'flex', flexDirection: 'column',
           background: 'rgba(255,255,255,0.78)',
           backdropFilter: 'blur(20px)',
@@ -189,9 +189,9 @@ export default function WelcomeBubble() {
           animation: 'fadeSlideUp 0.3s ease',
         }}>
 
-          {/* Шапка з впадинкою — назва + перемикач */}
+          {/* Шапка — назва впритул до аватара */}
           <div style={{
-            paddingTop: '76px',
+            paddingTop: '70px', // менший відступ — назва ближче до аватара
             paddingBottom: '10px',
             textAlign: 'center',
             flexShrink: 0,
@@ -199,7 +199,8 @@ export default function WelcomeBubble() {
             background: 'rgba(248,249,250,0.7)',
             borderBottom: '1px solid rgba(0,0,0,0.05)',
           }}>
-            <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginBottom: '6px' }}>
+            {/* Перемикач аватарів — ближче до назви */}
+            <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginBottom: '5px' }}>
               {AVATARS.map((av, i) => (
                 <button key={i} onClick={() => setAvatarIndex(i)}
                   style={{
@@ -213,7 +214,7 @@ export default function WelcomeBubble() {
                 </button>
               ))}
             </div>
-            <p style={{ margin: '0 0 2px', fontWeight: 700, fontSize: '14px', color: '#1a1a2e' }}>
+            <p style={{ margin: '0 0 3px', fontWeight: 700, fontSize: '15px', color: '#1a1a2e' }}>
               CryptoNavigator AI
             </p>
             <span style={{ fontSize: '11px', color: '#16a34a', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
@@ -222,29 +223,21 @@ export default function WelcomeBubble() {
             </span>
           </div>
 
-          {/* Привітання — завжди видиме, великим текстом */}
+          {/* Привітання — завжди видиме */}
           {!started && (
-            <div style={{
-              padding: '14px 18px 10px',
-              flexShrink: 0,
-              textAlign: 'center',
-            }}>
+            <div style={{ padding: '14px 18px 8px', flexShrink: 0, textAlign: 'center' }}>
               <p style={{
-                margin: 0,
-                fontSize: '14px',
-                fontWeight: 600,
-                color: '#1e293b',
-                lineHeight: '1.6',
-                whiteSpace: 'pre-line',
+                margin: 0, fontSize: '14px', fontWeight: 600,
+                color: '#1e293b', lineHeight: '1.6', whiteSpace: 'pre-line',
               }}>
                 {GREETING}
               </p>
             </div>
           )}
 
-          {/* Suggestions — 2 колонки (тільки до початку діалогу) */}
+          {/* Suggestions — 2 колонки */}
           {!started && (
-            <div style={{ padding: '4px 12px 10px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', flexShrink: 0 }}>
+            <div style={{ padding: '6px 12px 0', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '6px', flexShrink: 0 }}>
               {SUGGESTIONS.map(s => (
                 <button key={s} onClick={() => sendMessage(s)}
                   style={{
@@ -259,7 +252,7 @@ export default function WelcomeBubble() {
             </div>
           )}
 
-          {/* Messages — з'являються після початку діалогу */}
+          {/* Messages */}
           {started && (
             <div style={{ flex: 1, overflowY: 'auto', padding: '10px 14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {messages.map((msg, i) => (
@@ -299,13 +292,12 @@ export default function WelcomeBubble() {
             </div>
           )}
 
-          {/* Flex spacer коли не розпочато */}
           {!started && <div style={{ flex: 1 }} />}
 
-          {/* Input */}
+          {/* Input — завжди видиме */}
           <div style={{
             display: 'flex', alignItems: 'center', gap: '8px',
-            padding: '8px 12px 12px',
+            padding: '10px 12px 14px',
             borderTop: '1px solid rgba(0,0,0,0.05)',
             background: 'rgba(255,255,255,0.5)',
             flexShrink: 0,
@@ -318,13 +310,13 @@ export default function WelcomeBubble() {
               style={{
                 flex: 1, fontSize: '13px',
                 background: 'rgba(255,255,255,0.9)',
-                border: '1px solid rgba(0,0,0,0.1)', borderRadius: '24px', padding: '9px 14px',
+                border: '1px solid rgba(0,0,0,0.1)', borderRadius: '24px', padding: '10px 16px',
                 outline: 'none', color: '#1e293b',
               }}
             />
             <button onClick={() => sendMessage(input)} disabled={!input.trim() || loading}
               style={{
-                width: '36px', height: '36px', borderRadius: '50%',
+                width: '38px', height: '38px', borderRadius: '50%',
                 background: input.trim() && !loading ? 'linear-gradient(135deg, #f59e0b, #d97706)' : '#e5e7eb',
                 border: 'none', color: input.trim() && !loading ? '#fff' : '#9ca3af',
                 fontSize: '15px', cursor: input.trim() && !loading ? 'pointer' : 'not-allowed',
