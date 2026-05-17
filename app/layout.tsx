@@ -21,7 +21,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'CryptoNavigator — Кращі Крипто-Біржі 2026',
     description: 'Порівняй Binance, Bybit, OKX. AI-аналіз новин, live ціни, Fear & Greed Index.',
-    images: ['https://cryptotop.chat/avatar-robot.png'],
+    images: ['https://cryptotop.chat/og-image.png'],
   },
   openGraph: {
     title: "CryptoNavigator — Кращі Крипто-Біржі 2026",
@@ -30,7 +30,7 @@ export const metadata = {
     siteName: 'CryptoNavigator',
     locale: 'uk_UA',
     type: 'website',
-    images: [{ url: 'https://cryptotop.chat/avatar-robot.png', width: 400, height: 400, alt: 'CryptoNavigator' }],
+    images: [{ url: 'https://cryptotop.chat/og-image.png', width: 1200, height: 630, alt: 'CryptoNavigator' }],
   },
 };
 
