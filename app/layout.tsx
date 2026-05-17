@@ -17,6 +17,12 @@ export const metadata = {
       'de': 'https://cryptotop.chat/de',
     },
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'CryptoNavigator — Кращі Крипто-Біржі 2026',
+    description: 'Порівняй Binance, Bybit, OKX. AI-аналіз новин, live ціни, Fear & Greed Index.',
+    images: ['https://cryptotop.chat/avatar-robot.png'],
+  },
   openGraph: {
     title: "CryptoNavigator — Кращі Крипто-Біржі 2026",
     description: "Порівняй Binance, Bybit, OKX. AI-аналіз новин, live ціни, Fear & Greed Index.",
