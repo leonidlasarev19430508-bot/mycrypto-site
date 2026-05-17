@@ -24,6 +24,7 @@ export const metadata = {
     siteName: 'CryptoNavigator',
     locale: 'uk_UA',
     type: 'website',
+    images: [{ url: 'https://cryptotop.chat/avatar-robot.png', width: 400, height: 400, alt: 'CryptoNavigator' }],
   },
 };
 
