@@ -1,16 +1,18 @@
 'use client';
-import FearGreedIndex from './components/FearGreedIndex';
-import ExchangeQuiz from './components/ExchangeQuiz';
-import CryptoPrices from "./components/CryptoPrices";
-import PriceChart from "./components/PriceChart";
+import dynamic from 'next/dynamic';
 import TradingCounter from "./components/TradingCounter";
-import WhatIfCalculator from "./components/WhatIfCalculator";
-import WhaleAlertTicker from "./components/WhaleAlertTicker";
-import ChatWidget from "./components/ChatWidget";
-import WhaleAlertPopup from "./components/WhaleAlertPopup";
 import ComparisonTable from "./components/ComparisonTable";
 import { useState } from "react";
 import t from "./i18n/uk.json";
+
+const WhaleAlertTicker = dynamic(() => import('./components/WhaleAlertTicker'), { ssr: false });
+const CryptoPrices = dynamic(() => import('./components/CryptoPrices'), { ssr: false });
+const PriceChart = dynamic(() => import('./components/PriceChart'), { ssr: false });
+const FearGreedIndex = dynamic(() => import('./components/FearGreedIndex'), { ssr: false });
+const WhatIfCalculator = dynamic(() => import('./components/WhatIfCalculator'), { ssr: false });
+const ExchangeQuiz = dynamic(() => import('./components/ExchangeQuiz'), { ssr: false });
+const WhaleAlertPopup = dynamic(() => import('./components/WhaleAlertPopup'), { ssr: false });
+const ChatWidget = dynamic(() => import('./components/ChatWidget'), { ssr: false });
 
 function SubscribeForm() {
   const [email, setEmail] = useState('');
