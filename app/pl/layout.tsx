@@ -1,25 +1,8 @@
 export const metadata = {
-  title: "CryptoNavigator — Najlepsze Giełdy Krypto 2026",
-  description: "Porównaj Binance, Bybit, OKX. Analiza wiadomości AI, ceny na żywo, Indeks Strachu i Chciwości.",
-  alternates: {
-    canonical: 'https://cryptotop.chat/pl',
-    languages: {
-      'uk': 'https://cryptotop.chat',
-      'en': 'https://cryptotop.chat/en',
-      'pl': 'https://cryptotop.chat/pl',
-      'de': 'https://cryptotop.chat/de',
-    },
-  },
-  openGraph: {
-    title: "CryptoNavigator — Najlepsze Giełdy Krypto 2026",
-    description: "Porównaj Binance, Bybit, OKX. Analiza wiadomości AI, ceny na żywo.",
-    url: 'https://cryptotop.chat/pl',
-    siteName: 'CryptoNavigator',
-    locale: 'pl_PL',
-    type: 'website',
-  },
+  title: "Najlepsze Giełdy Kryptowalut 2026 — CryptoNavigator",
+  description: "Porównaj Binance, Bybit, OKX. Analiza AI, ceny na żywo, Fear & Greed Index. Zacznij handlować już dziś.",
+  alternates: { canonical: "https://cryptotop.chat/pl" },
 };
-
-export default function PLLayout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
