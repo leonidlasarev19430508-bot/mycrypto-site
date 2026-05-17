@@ -1,3 +1,9 @@
+export const metadata = {
+  title: "Крипто Новини 2026 — CryptoNavigator",
+  description: "Останні новини криптовалют: Bitcoin, Ethereum, altcoins. AI-аналіз ринку в реальному часі на CryptoNavigator.",
+  alternates: { canonical: "https://cryptotop.chat/news" },
+};
+
 import Link from 'next/link';
 import { Client } from 'pg';
 
