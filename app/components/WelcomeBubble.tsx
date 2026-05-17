@@ -9,21 +9,49 @@ interface Message {
 }
 
 const AVATARS = [
-  { src: '/avatar-robot-v2.png',   label: '🤖' },
-  { src: '/avatar-bitcoin-v2.png', label: '₿'  },
-  { src: '/avatar-human-v2.png',   label: '😊' },
+  { src: '/avatar-robot.png',   label: '🤖' },
+  { src: '/avatar-bitcoin.png', label: '₿'  },
+  { src: '/avatar-human.png',   label: '😊' },
 ];
 
-const SUGGESTIONS = [
-  '🪙 Що таке Bitcoin?',
-  '📈 Як купити крипту?',
-  '🏦 Яку біржу обрати?',
-  '💰 З якої суми почати?',
-];
+const UI = {
+  uk: {
+    greeting: 'Привіт! Я ваш особистий крипто-консультант.\nЯк я можу допомогти вам сьогодні?',
+    suggestions: ['🪙 Що таке Bitcoin?', '📈 Як купити крипту?', '🏦 Яку біржу обрати?', '💰 З якої суми почати?'],
+    online: 'Онлайн',
+    back: '← Назад',
+    placeholder: 'Запитайте що-небудь...',
+    error: '😔 Помилка зʼєднання.',
+  },
+  en: {
+    greeting: 'Hi! I\'m your personal crypto consultant.\nHow can I help you today?',
+    suggestions: ['🪙 What is Bitcoin?', '📈 How to buy crypto?', '🏦 Which exchange to choose?', '💰 How much to start with?'],
+    online: 'Online',
+    back: '← Back',
+    placeholder: 'Ask anything...',
+    error: '😔 Connection error.',
+  },
+  pl: {
+    greeting: 'Cześć! Jestem Twoim osobistym konsultantem krypto.\nJak mogę Ci dziś pomóc?',
+    suggestions: ['🪙 Czym jest Bitcoin?', '📈 Jak kupić krypto?', '🏦 Którą giełdę wybrać?', '💰 Od jakiej kwoty zacząć?'],
+    online: 'Online',
+    back: '← Wróć',
+    placeholder: 'Zapytaj o cokolwiek...',
+    error: '😔 Błąd połączenia.',
+  },
+  de: {
+    greeting: 'Hallo! Ich bin dein persönlicher Krypto-Berater.\nWie kann ich dir heute helfen?',
+    suggestions: ['🪙 Was ist Bitcoin?', '📈 Wie kauft man Krypto?', '🏦 Welche Börse wählen?', '💰 Mit welchem Betrag anfangen?'],
+    online: 'Online',
+    back: '← Zurück',
+    placeholder: 'Frag mich etwas...',
+    error: '😔 Verbindungsfehler.',
+  },
+};
 
-const GREETING = 'Привіт! Я ваш особистий крипто-консультант.\nЯк я можу допомогти вам сьогодні?';
+export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
+  const t = UI[locale as keyof typeof UI] || UI.uk;
 
-export default function WelcomeBubble() {
   const [open, setOpen] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [avatarIndex, setAvatarIndex] = useState(0);
@@ -35,14 +63,10 @@ export default function WelcomeBubble() {
 
   const avatar = AVATARS[avatarIndex];
 
-  // Розрахунок позицій
   const cardHeight = 494;
   const avatarSize = 170;
   const bottomOffset = 112;
-  // Аватар розміщується так щоб його низ збігався з верхом планшетки + 20px всередину
   const avatarBottom = bottomOffset + cardHeight - 20;
-  // Аватар заходить в планшетку на: avatarSize - 20 = 150px
-  // paddingTop = 150 + 12px відступ від аватара до перемикачів
   const headerPaddingTop = 162;
 
   useEffect(() => {
@@ -83,14 +107,14 @@ export default function WelcomeBubble() {
           message: text,
           history: messages.map(m => ({ role: m.role, content: m.content })),
           userLevel: 'unknown',
-          locale: 'uk',
+          locale,
         }),
       });
       const data = await res.json();
-      const reply = data.reply || 'Вибачте, сталась помилка.';
+      const reply = data.reply || t.error;
       setMessages(prev => [...prev, { role: 'assistant', content: reply }]);
     } catch {
-      setMessages(prev => [...prev, { role: 'assistant', content: '😔 Помилка зʼєднання.' }]);
+      setMessages(prev => [...prev, { role: 'assistant', content: t.error }]);
     } finally {
       setLoading(false);
     }
@@ -100,7 +124,6 @@ export default function WelcomeBubble() {
 
   const avatarImgStyle = {
     objectFit: 'cover' as const,
-    transform: 'scale(1.15)',
     display: 'block',
   };
 
@@ -117,7 +140,7 @@ export default function WelcomeBubble() {
         }}
         onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.08)')}
         onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
-        aria-label="AI Навігатор"
+        aria-label="AI Navigator"
       >
         {open ? (
           <div style={{
@@ -128,7 +151,7 @@ export default function WelcomeBubble() {
           }}>✕</div>
         ) : (
           <div style={{ position: 'relative', width: '80px', height: '80px', borderRadius: '50%', overflow: 'hidden' }}>
-            <Image src={avatar.src} alt="AI Навігатор" width={80} height={80}
+            <Image src={avatar.src} alt="AI Navigator" width={80} height={80}
               style={{ ...avatarImgStyle, width: '80px', height: '80px' }} />
             <span style={{
               position: 'absolute', bottom: '4px', right: '4px',
@@ -149,7 +172,7 @@ export default function WelcomeBubble() {
         }} />
       )}
 
-      {/* Аватар */}
+      {/* Avatar */}
       {open && (
         <div style={{
           position: 'fixed',
@@ -178,7 +201,7 @@ export default function WelcomeBubble() {
             borderRadius: '50%', overflow: 'hidden',
             boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
           }}>
-            <Image src={avatar.src} alt="AI Навігатор" width={avatarSize} height={avatarSize}
+            <Image src={avatar.src} alt="AI Navigator" width={avatarSize} height={avatarSize}
               style={{ ...avatarImgStyle, width: `${avatarSize}px`, height: `${avatarSize}px` }} />
           </div>
         </div>
@@ -204,7 +227,7 @@ export default function WelcomeBubble() {
           animation: 'fadeSlideUp 0.3s ease',
         }}>
 
-          {/* Шапка */}
+          {/* Header */}
           <div style={{
             paddingTop: '40px',
             paddingBottom: '10px',
@@ -215,7 +238,6 @@ export default function WelcomeBubble() {
             borderBottom: '1px solid rgba(0,0,0,0.05)',
             position: 'relative',
           }}>
-            {/* Кнопка ← Назад — видима в режимі чату */}
             {started && (
               <button onClick={handleBack} style={{
                 position: 'absolute',
@@ -235,11 +257,11 @@ export default function WelcomeBubble() {
               onMouseEnter={e => { e.currentTarget.style.background = 'rgba(245,158,11,0.1)'; e.currentTarget.style.borderColor = '#f59e0b'; }}
               onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.8)'; e.currentTarget.style.borderColor = 'rgba(0,0,0,0.08)'; }}
               >
-                ← Назад
+                {t.back}
               </button>
             )}
 
-            {/* Перемикач аватарів */}
+            {/* Avatar switcher */}
             <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', marginBottom: '6px' }}>
               {AVATARS.map((av, i) => (
                 <button key={i} onClick={() => setAvatarIndex(i)}
@@ -259,11 +281,11 @@ export default function WelcomeBubble() {
             </p>
             <span style={{ fontSize: '12px', color: '#16a34a', fontWeight: 500, display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
               <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#22c55e', display: 'inline-block' }}/>
-              Онлайн
+              {t.online}
             </span>
           </div>
 
-          {/* Привітання — збільшений шрифт */}
+          {/* Greeting */}
           {!started && (
             <div style={{ padding: '16px 20px 10px', flexShrink: 0, textAlign: 'center' }}>
               <p style={{
@@ -274,7 +296,7 @@ export default function WelcomeBubble() {
                 lineHeight: '1.65',
                 whiteSpace: 'pre-line',
               }}>
-                {GREETING}
+                {t.greeting}
               </p>
             </div>
           )}
@@ -282,7 +304,7 @@ export default function WelcomeBubble() {
           {/* Suggestions */}
           {!started && (
             <div style={{ padding: '8px 14px 0', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', flexShrink: 0 }}>
-              {SUGGESTIONS.map(s => (
+              {t.suggestions.map(s => (
                 <button key={s} onClick={() => sendMessage(s)}
                   style={{
                     fontSize: '13px', background: 'rgba(255,255,255,0.85)', color: '#374151',
@@ -349,7 +371,7 @@ export default function WelcomeBubble() {
             <input type="text" value={input}
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && sendMessage(input)}
-              placeholder="Запитайте що-небудь..."
+              placeholder={t.placeholder}
               disabled={loading}
               style={{
                 flex: 1, fontSize: '14px',

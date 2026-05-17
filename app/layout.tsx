@@ -1,5 +1,5 @@
 import ClientHeader from './components/ClientHeader';
-import WelcomeBubble from './components/WelcomeBubble';
+import LocaleWelcomeBubble from './components/LocaleWelcomeBubble';
 import "./globals.css";
 
 export const metadata = {
@@ -238,7 +238,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </footer>
         {/* Welcome Bubble — AI асистент */}
-        <WelcomeBubble />
+        <LocaleWelcomeBubble />
       </body>
     </html>
   );
