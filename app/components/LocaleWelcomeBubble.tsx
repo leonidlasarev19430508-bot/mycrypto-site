@@ -18,7 +18,7 @@ export default function LocaleWelcomeBubble() {
     : 'uk';
 
   useEffect(() => {
-    const t = setTimeout(() => setShow(true), 6000);
+    const t = setTimeout(() => setShow(true), 3000);
     return () => clearTimeout(t);
   }, []);
 
