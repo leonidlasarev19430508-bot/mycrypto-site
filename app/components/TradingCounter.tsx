@@ -9,9 +9,7 @@ interface CoinPrice {
   price_change_percentage_24h: number;
 }
 
-const SKELETON_COINS = ['Bitcoin', 'Ethereum'];
-
-export default function TradingCounter() {
+export default function CryptoPrices() {
   const [prices, setPrices] = useState<CoinPrice[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,9 +21,9 @@ export default function TradingCounter() {
         );
         const data = await res.json();
         setPrices(data);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching prices:', error);
-      } finally {
         setLoading(false);
       }
     };
@@ -34,33 +32,29 @@ export default function TradingCounter() {
     return () => clearInterval(interval);
   }, []);
 
+  if (loading) {
+    return (
+      <div className="mt-8 p-4 bg-gray-100 rounded-xl text-center">
+        <div className="animate-pulse text-gray-500">Завантаження цін...</div>
+      </div>
+    );
+  }
+
   return (
     <div className="mt-8 p-4 bg-gray-100 rounded-xl">
       <div className="flex justify-center gap-6 flex-wrap">
-        {loading
-          ? SKELETON_COINS.map((name) => (
-              <div key={name} className="text-center" style={{ minWidth: '90px' }}>
-                <div className="font-semibold">{name}</div>
-                <div className="text-xl font-bold mt-1">
-                  <div className="animate-pulse bg-gray-300 rounded h-7 w-28 mx-auto" />
-                </div>
-                <div className="mt-1">
-                  <div className="animate-pulse bg-gray-300 rounded h-4 w-12 mx-auto" />
-                </div>
-              </div>
-            ))
-          : prices.map((coin) => (
-              <div key={coin.id} className="text-center" style={{ minWidth: '90px' }}>
-                <span className="font-semibold">{coin.name}</span>
-                <div className="text-xl font-bold">
-                  ${coin.current_price.toLocaleString()}
-                </div>
-                <div className={coin.price_change_percentage_24h >= 0 ? 'text-green-600' : 'text-red-600'}>
-                  {coin.price_change_percentage_24h >= 0 ? '▲' : '▼'}
-                  {Math.abs(coin.price_change_percentage_24h).toFixed(2)}%
-                </div>
-              </div>
-            ))}
+        {prices.map((coin) => (
+          <div key={coin.id} className="text-center">
+            <span className="font-semibold">{coin.name}</span>
+            <div className="text-xl font-bold">
+              ${coin.current_price.toLocaleString()}
+            </div>
+            <div className={coin.price_change_percentage_24h >= 0 ? 'text-green-600' : 'text-red-600'}>
+              {coin.price_change_percentage_24h >= 0 ? '▲' : '▼'}
+              {Math.abs(coin.price_change_percentage_24h).toFixed(2)}%
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
