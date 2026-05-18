@@ -18,13 +18,6 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  async redirects() {
-    return [
-      { source: '/en/coins', destination: '/coins', permanent: false },
-      { source: '/pl/coins', destination: '/coins', permanent: false },
-      { source: '/de/coins', destination: '/coins', permanent: false },
-    ];
-  },
 };
 
 export default nextConfig;
