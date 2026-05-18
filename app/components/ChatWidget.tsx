@@ -9,16 +9,16 @@ interface Message {
 }
 
 const AVATARS = [
-  { src: '/avatar-robot.png',   label: '🤖' },
-  { src: '/avatar-bitcoin.png', label: '₿'  },
-  { src: '/avatar-human.png',   label: '😊' },
+  { src: '/avatar-robot.jpg',   label: '🤖' },
+  { src: '/avatar-bitcoin.jpg', label: '₿'  },
+  { src: '/avatar-human.jpg',   label: '😊' },
 ];
 
 function pickAvatar(text: string) {
   const lower = text.toLowerCase();
-  if (lower.includes('бірж') || lower.includes('торг')) return '/avatar-bitcoin.png';
-  if (lower.includes('як') || lower.includes('що')) return '/avatar-human.png';
-  return '/avatar-robot.png';
+  if (lower.includes('бірж') || lower.includes('торг')) return '/avatar-bitcoin.jpg';
+  if (lower.includes('як') || lower.includes('що')) return '/avatar-human.jpg';
+  return '/avatar-robot.jpg';
 }
 
 const UI_TEXT = {
