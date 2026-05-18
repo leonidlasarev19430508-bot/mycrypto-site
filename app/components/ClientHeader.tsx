@@ -3,13 +3,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { getTranslation, type Locale } from '../lib/i18n';
 
-const LOCALE_HREFS: Record<Locale, string> = {
-  uk: '/',
-  pl: '/pl',
-  de: '/de',
-  en: '/en',
-};
-
 const LOCALE_LABELS: Record<Locale, string> = {
   uk: '🇺🇦 UA',
   pl: '🇵🇱 PL',
@@ -21,7 +14,13 @@ const LOCALES: Locale[] = ['uk', 'pl', 'de', 'en'];
 
 function getLocalizedPath(locale: Locale, page: string): string {
   const prefix = locale === 'uk' ? '' : `/${locale}`;
-  return `${prefix}/${page}`;
+  return page === '' ? (prefix || '/') : `${prefix}/${page}`;
+}
+
+function getCurrentPage(pathname: string, locale: Locale): string {
+  const prefix = locale === 'uk' ? '' : `/${locale}`;
+  const page = prefix ? pathname.replace(prefix, '') : pathname;
+  return page.replace(/^\//, '') || '';
 }
 
 export default function ClientHeader() {
@@ -32,7 +31,9 @@ export default function ClientHeader() {
     : 'uk';
 
   const t = getTranslation(locale);
-  const homeHref = LOCALE_HREFS[locale];
+  const homeHref = getLocalizedPath(locale, '');
+
+  const currentPage = getCurrentPage(pathname, locale);
 
   const aboutLabel: Record<Locale, string> = {
     uk: 'Про нас', en: 'About', pl: 'O nas', de: 'Über uns',
@@ -55,8 +56,8 @@ export default function ClientHeader() {
         </Link>
         <nav className="flex flex-wrap gap-6 items-center">
           <Link href={homeHref} className="hover:text-gray-300">{t.nav.home}</Link>
-          <Link href="/coins" className="hover:text-gray-300">{coinsLabel[locale]}</Link>
-          <Link href="/bonuses" className="text-orange-400 hover:text-orange-300 font-semibold">{bonusesLabel[locale]}</Link>
+          <Link href={getLocalizedPath(locale, 'coins')} className="hover:text-gray-300">{coinsLabel[locale]}</Link>
+          <Link href={getLocalizedPath(locale, 'bonuses')} className="text-orange-400 hover:text-orange-300 font-semibold">{bonusesLabel[locale]}</Link>
           <Link href={getLocalizedPath(locale, 'markets')} className="hover:text-gray-300">{t.nav.markets}</Link>
           <Link href={getLocalizedPath(locale, 'news')} className="hover:text-gray-300">{t.nav.news}</Link>
           <Link href={getLocalizedPath(locale, 'assistant')} className="hover:text-gray-300">{t.nav.assistant}</Link>
@@ -67,7 +68,7 @@ export default function ClientHeader() {
             {LOCALES.map((l) => (
               <Link
                 key={l}
-                href={LOCALE_HREFS[l]}
+                href={getLocalizedPath(l, currentPage)}
                 className={`text-sm px-2 py-1 rounded transition-colors ${
                   locale === l
                     ? 'text-white font-bold bg-gray-700'
