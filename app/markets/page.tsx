@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "Крипто Ринки — Ціни Bitcoin та Altcoins | CryptoNavigator",
-  description: "Live ціни топ-100 криптовалют. Графіки, капіталізація, обсяги торгів. Актуальні дані ринку на CryptoNavigator.",
+  title: "Крипто Ринки — Live Ціни Bitcoin та Топ-100 Монет 2026 | CryptoNavigator",
+  description: "Актуальні ціни криптовалют в реальному часі. Bitcoin, Ethereum, BNB, Solana та топ-100 монет. Графіки, ринкова капіталізація, зміна за 24 години та обсяги торгів.",
   alternates: { canonical: "https://cryptotop.chat/markets" },
 };
 

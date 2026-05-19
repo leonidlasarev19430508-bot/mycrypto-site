@@ -1,3 +1,11 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Навчання Криптовалютам для Початківців 2026 | CryptoNavigator",
+  description: "Вивчи все про криптовалюти з нуля. Що таке Bitcoin та блокчейн, як купити крипту, вибрати гаманець та розібратись з DeFi — зрозумілими словами для початківців.",
+  alternates: { canonical: "https://cryptotop.chat/learn" },
+};
+
 import Link from 'next/link';
 import ChatWidget from '../components/ChatWidget';
 
