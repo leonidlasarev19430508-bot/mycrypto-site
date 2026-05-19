@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: "Про нас — CryptoNavigator",
-  description: "CryptoNavigator — AI-платформа для порівняння криптобірж.",
+  title: "Про нас — CryptoNavigator | AI-платформа для крипто-інвесторів",
+  description: "CryptoNavigator — AI-платформа для порівняння Binance, Bybit, OKX, WhiteBIT. Аналіз новин, live ціни, Fear & Greed Index та персональний AI-консультант 24/7.",
 };
 
 const CONTENT = {
