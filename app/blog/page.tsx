@@ -246,7 +246,7 @@ export default function BlogPage() {
               </h2>
 
               {/* Summary */}
-              <p className="text-xs text-gray-500 leading-relaxed mb-4 line-clamp-3">
+              <p className="text-xs text-gray-500 leading-relaxed mb-4 line-clamp-5">
                 {article.summary}
               </p>
 
