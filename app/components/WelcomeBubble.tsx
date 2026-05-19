@@ -9,9 +9,9 @@ interface Message {
 }
 
 const AVATARS = [
-  { src: '/avatar-robot.jpg',   label: '🤖' },
-  { src: '/avatar-bitcoin.jpg', label: '₿'  },
   { src: '/avatar-human.jpg',   label: '😊' },
+  { src: '/avatar-bitcoin.jpg', label: '₿'  },
+  { src: '/avatar-robot.jpg',   label: '🤖' },
 ];
 
 const UI = {
