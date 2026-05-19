@@ -1,88 +1,205 @@
-export const metadata = {
-  title: "Крипто Ринки — Live Ціни Bitcoin та Топ-100 Монет 2026 | CryptoNavigator",
-  description: "Актуальні ціни криптовалют в реальному часі. Bitcoin, Ethereum, BNB, Solana та топ-100 монет. Графіки, ринкова капіталізація, зміна за 24 години та обсяги торгів.",
-  alternates: { canonical: "https://cryptotop.chat/markets" },
+'use client';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+
+type CoinSentiment = {
+  coin_slug: string;
+  coin_name: string;
+  total_news: number;
+  positive_count: number;
+  negative_count: number;
+  neutral_count: number;
+  sentiment_score: number;
+  top_recommendation: string;
+  latest_news_at: string;
 };
 
-import Link from 'next/link';
-import pool from '../lib/db';
+export default function MarketsPage() {
+  const [coins, setCoins] = useState<CoinSentiment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<'all' | 'bullish' | 'bearish' | 'neutral'>('all');
+  const [search, setSearch] = useState('');
 
-async function getTopCoins() {
-  try {
-    const result = await pool.query(`
-      SELECT 
-        coin_slug as id,
-        coin_name as name,
-        COUNT(*) as news_count,
-        ROUND(AVG(CASE 
-          WHEN sentiment = 'positive' THEN 1 
-          WHEN sentiment = 'negative' THEN -1 
-          ELSE 0 
-        END), 2) as sentiment_score
-      FROM ai_news
-      WHERE coin_slug IS NOT NULL 
-        AND coin_slug != 'unknown'
-        AND coin_slug != ''
-      GROUP BY coin_slug, coin_name
-      HAVING COUNT(*) > 0
-      ORDER BY news_count DESC
-      LIMIT 100
-    `);
-    return result.rows;
-  } catch (error) {
-    console.error('Error fetching coins:', error);
-    return [];
-  }
-}
+  useEffect(() => {
+    fetch('/api/markets-sentiment')
+      .then(r => r.json())
+      .then(data => {
+        setCoins(data.coins || []);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
-export default async function MarketsPage() {
-  const coins = await getTopCoins();
+  const filtered = coins.filter(c => {
+    const matchSearch = !search ||
+      c.coin_name.toLowerCase().includes(search.toLowerCase()) ||
+      c.coin_slug.toLowerCase().includes(search.toLowerCase());
+    const matchFilter = filter === 'all' ||
+      (filter === 'bullish' && c.sentiment_score > 0.2) ||
+      (filter === 'bearish' && c.sentiment_score < -0.2) ||
+      (filter === 'neutral' && c.sentiment_score >= -0.2 && c.sentiment_score <= 0.2);
+    return matchSearch && matchFilter;
+  });
+
+  const getSentimentLabel = (score: number) => {
+    if (score > 0.5) return { label: '🚀 Дуже позитивний', color: 'text-green-700', bg: 'bg-green-50', border: 'border-green-200' };
+    if (score > 0.2) return { label: '📈 Позитивний', color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-100' };
+    if (score < -0.5) return { label: '💥 Дуже негативний', color: 'text-red-700', bg: 'bg-red-50', border: 'border-red-200' };
+    if (score < -0.2) return { label: '📉 Негативний', color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-100' };
+    return { label: '⚖️ Нейтральний', color: 'text-gray-600', bg: 'bg-gray-50', border: 'border-gray-100' };
+  };
+
+  const getRecLabel = (rec: string) => {
+    if (rec === 'buy') return { label: '🟢 Купити', color: 'text-green-700', bg: 'bg-green-100' };
+    if (rec === 'sell') return { label: '🔴 Продати', color: 'text-red-700', bg: 'bg-red-100' };
+    return { label: '🟡 Тримати', color: 'text-yellow-700', bg: 'bg-yellow-100' };
+  };
+
+  const timeAgo = (dateStr: string) => {
+    const diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
+    if (diff < 3600) return Math.floor(diff / 60) + ' хв тому';
+    if (diff < 86400) return Math.floor(diff / 3600) + ' год тому';
+    return Math.floor(diff / 86400) + ' дн тому';
+  };
+
+  const bullish = coins.filter(c => c.sentiment_score > 0.2).length;
+  const bearish = coins.filter(c => c.sentiment_score < -0.2).length;
+  const neutral = coins.filter(c => c.sentiment_score >= -0.2 && c.sentiment_score <= 0.2).length;
 
   return (
-    <div className="p-10">
-      <h1 className="text-4xl font-bold text-center mb-2">
-        Top 100 Cryptocurrencies
-      </h1>
-      <p className="text-center text-gray-600 mb-10">
-        Click on any coin to see detailed information and AI analysis
-      </p>
-      
-      {coins.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 rounded-xl">
-          <p className="text-gray-500">Завантаження даних...</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-7xl mx-auto">
-          {coins.map((coin) => (
-            <Link 
-              key={coin.id}
-              href={`/coin/${coin.id}`}
-              className="block"
-            >
-              <div className="border rounded-xl p-4 bg-white shadow-sm hover:shadow-md transition cursor-pointer">
-                <div className="flex justify-between items-start mb-2">
-                  <h2 className="text-lg font-semibold text-blue-600">
-                    {coin.name || coin.id}
-                  </h2>
-                  <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-                    {coin.news_count} новин
-                  </span>
-                </div>
-                <div className="flex items-center gap-2 mt-2">
-                  <span className="text-sm text-gray-500">Настрій:</span>
-                  <span className={`text-sm font-medium ${
-                    coin.sentiment_score > 0.2 ? 'text-green-600' : 
-                    coin.sentiment_score < -0.2 ? 'text-red-600' : 'text-gray-500'
-                  }`}>
-                    {coin.sentiment_score > 0.2 ? '📈 Позитивний' : 
-                     coin.sentiment_score < -0.2 ? '📉 Негативний' : '⚖️ Нейтральний'}
-                  </span>
-                </div>
-              </div>
-            </Link>
-          ))}
+    <main className="max-w-6xl mx-auto px-4 py-10">
+      {/* Header */}
+      <div className="text-center mb-10">
+        <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-3">
+          🧠 AI Sentiment Ринків
+        </h1>
+        <p className="text-gray-500 text-lg">
+          Аналіз настрою крипторинку на основі AI-обробки новин
+        </p>
+      </div>
+
+      {/* Stats */}
+      {!loading && (
+        <div className="grid grid-cols-3 gap-4 mb-8">
+          <div onClick={() => setFilter('bullish')}
+            className="bg-green-50 border border-green-100 rounded-2xl p-4 text-center cursor-pointer hover:shadow-md transition">
+            <p className="text-3xl font-black text-green-600">{bullish}</p>
+            <p className="text-sm text-gray-500 mt-1">📈 Бичачих</p>
+          </div>
+          <div onClick={() => setFilter('neutral')}
+            className="bg-gray-50 border border-gray-100 rounded-2xl p-4 text-center cursor-pointer hover:shadow-md transition">
+            <p className="text-3xl font-black text-gray-600">{neutral}</p>
+            <p className="text-sm text-gray-500 mt-1">⚖️ Нейтральних</p>
+          </div>
+          <div onClick={() => setFilter('bearish')}
+            className="bg-red-50 border border-red-100 rounded-2xl p-4 text-center cursor-pointer hover:shadow-md transition">
+            <p className="text-3xl font-black text-red-600">{bearish}</p>
+            <p className="text-sm text-gray-500 mt-1">📉 Ведмежих</p>
+          </div>
         </div>
       )}
-    </div>
+
+      {/* Search + Filter */}
+      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+        <input
+          type="text"
+          placeholder="🔍 Пошук монети..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="flex-1 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm bg-white"
+        />
+        <div className="flex gap-2">
+          {[
+            { value: 'all', label: '🌐 Всі' },
+            { value: 'bullish', label: '📈 Бичачі' },
+            { value: 'bearish', label: '📉 Ведмежі' },
+            { value: 'neutral', label: '⚖️ Нейтральні' },
+          ].map(f => (
+            <button key={f.value} onClick={() => setFilter(f.value as typeof filter)}
+              className={`px-3 py-3 rounded-xl text-sm font-semibold transition whitespace-nowrap ${
+                filter === f.value ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}>
+              {f.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Loading */}
+      {loading && (
+        <div className="text-center py-20">
+          <div className="inline-block w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mb-4" />
+          <p className="text-gray-500">Завантаження AI-аналізу...</p>
+        </div>
+      )}
+
+      {/* Coins grid */}
+      {!loading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filtered.map(coin => {
+            const sentiment = getSentimentLabel(coin.sentiment_score);
+            const rec = getRecLabel(coin.top_recommendation);
+            const positivePercent = Math.round((coin.positive_count / coin.total_news) * 100);
+            const negativePercent = Math.round((coin.negative_count / coin.total_news) * 100);
+            const neutralPercent = 100 - positivePercent - negativePercent;
+
+            return (
+              <Link key={coin.coin_slug} href={`/coin/${coin.coin_slug}`}
+                className={`bg-white border-2 ${sentiment.border} rounded-2xl p-5 hover:shadow-md transition block`}>
+                {/* Header */}
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <h2 className="font-black text-gray-900 text-lg">{coin.coin_name}</h2>
+                    <p className="text-xs text-gray-400 uppercase">{coin.coin_slug}</p>
+                  </div>
+                  <span className={`text-xs font-bold px-2 py-1 rounded-lg ${rec.bg} ${rec.color}`}>
+                    {rec.label}
+                  </span>
+                </div>
+
+                {/* Sentiment */}
+                <div className={`${sentiment.bg} rounded-xl p-3 mb-3`}>
+                  <p className={`text-sm font-bold ${sentiment.color}`}>{sentiment.label}</p>
+                  <p className="text-xs text-gray-400 mt-0.5">
+                    Score: {coin.sentiment_score > 0 ? '+' : ''}{coin.sentiment_score}
+                  </p>
+                </div>
+
+                {/* Progress bar */}
+                <div className="mb-3">
+                  <div className="flex rounded-full overflow-hidden h-2">
+                    <div className="bg-green-400" style={{ width: `${positivePercent}%` }} />
+                    <div className="bg-gray-200" style={{ width: `${neutralPercent}%` }} />
+                    <div className="bg-red-400" style={{ width: `${negativePercent}%` }} />
+                  </div>
+                  <div className="flex justify-between text-xs text-gray-400 mt-1">
+                    <span>📈 {positivePercent}%</span>
+                    <span>⚖️ {neutralPercent}%</span>
+                    <span>📉 {negativePercent}%</span>
+                  </div>
+                </div>
+
+                {/* Footer */}
+                <div className="flex justify-between items-center text-xs text-gray-400">
+                  <span>📰 {coin.total_news} новин</span>
+                  <span>{timeAgo(coin.latest_news_at)}</span>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      )}
+
+      {!loading && filtered.length === 0 && (
+        <div className="text-center py-20 text-gray-400">
+          <p className="text-3xl mb-2">🔍</p>
+          <p>Нічого не знайдено</p>
+        </div>
+      )}
+
+      <p className="text-center text-xs text-gray-400 mt-8">
+        AI-аналіз на основі новин з CoinTelegraph, CoinDesk, Decrypt, CryptoSlate · Не є фінансовою порадою
+      </p>
+    </main>
   );
 }
