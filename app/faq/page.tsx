@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: "FAQ — Часті питання | CryptoNavigator",
-  description: "Відповіді на найпоширеніші питання про криптовалюти, біржі, безпеку та інвестиції.",
+  title: "FAQ — Часті питання про криптовалюти 2026 | CryptoNavigator",
+  description: "Відповіді на найпоширеніші питання про криптовалюти, біржі, безпеку та інвестиції. Що таке Bitcoin, як купити крипту, яку біржу обрати — простими словами.",
 };
 
 const FAQS = {
