@@ -41,6 +41,9 @@ export default function ClientHeader() {
   const learnLabel: Record<Locale, string> = {
     uk: 'Навчання', en: 'Learn', pl: 'Nauka', de: 'Lernen',
   };
+  const blogLabel: Record<Locale, string> = {
+  uk: '📰 Блог', en: '📰 Blog', pl: '📰 Blog', de: '📰 Blog',
+  };
   const coinsLabel: Record<Locale, string> = {
     uk: 'Монети', en: 'Coins', pl: 'Monety', de: 'Münzen',
   };
@@ -61,6 +64,7 @@ export default function ClientHeader() {
           <Link href={getLocalizedPath(locale, 'markets')} className="hover:text-gray-300">{t.nav.markets}</Link>
           <Link href={getLocalizedPath(locale, 'news')} className="hover:text-gray-300">{t.nav.news}</Link>
           <Link href={getLocalizedPath(locale, 'assistant')} className="hover:text-gray-300">{t.nav.assistant}</Link>
+          <Link href={getLocalizedPath(locale, 'blog')} className="hover:text-gray-300">{blogLabel[locale]}</Link>
           <Link href={getLocalizedPath(locale, 'faq')} className="hover:text-gray-300">FAQ</Link>
           <Link href={getLocalizedPath(locale, 'about')} className="hover:text-gray-300">{aboutLabel[locale]}</Link>
           <Link href={getLocalizedPath(locale, 'learn')} className="hover:text-gray-300">{learnLabel[locale]}</Link>
