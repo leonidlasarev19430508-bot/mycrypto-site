@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import { getTranslation, type Locale } from '../lib/i18n';
 
 const LOCALE_LABELS: Record<Locale, string> = {
@@ -25,6 +26,8 @@ function getCurrentPage(pathname: string, locale: Locale): string {
 
 export default function ClientHeader() {
   const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const locale: Locale = pathname.startsWith('/pl') ? 'pl'
     : pathname.startsWith('/de') ? 'de'
     : pathname.startsWith('/en') ? 'en'
@@ -32,59 +35,106 @@ export default function ClientHeader() {
 
   const t = getTranslation(locale);
   const homeHref = getLocalizedPath(locale, '');
-
   const currentPage = getCurrentPage(pathname, locale);
 
-  const aboutLabel: Record<Locale, string> = {
-    uk: 'Про нас', en: 'About', pl: 'O nas', de: 'Über uns',
-  };
-  const learnLabel: Record<Locale, string> = {
-    uk: 'Навчання', en: 'Learn', pl: 'Nauka', de: 'Lernen',
-  };
-  const blogLabel: Record<Locale, string> = {
-  uk: '📰 Блог', en: '📰 Blog', pl: '📰 Blog', de: '📰 Blog',
-  };
-  const coinsLabel: Record<Locale, string> = {
-    uk: 'Монети', en: 'Coins', pl: 'Monety', de: 'Münzen',
-  };
-  const bonusesLabel: Record<Locale, string> = {
-    uk: '🎁 Бонуси', en: '🎁 Bonuses', pl: '🎁 Bonusy', de: '🎁 Boni',
+  const labels = {
+    about: { uk: 'Про нас', en: 'About', pl: 'O nas', de: 'Über uns' },
+    learn: { uk: 'Навчання', en: 'Learn', pl: 'Nauka', de: 'Lernen' },
+    coins: { uk: 'Монети', en: 'Coins', pl: 'Monety', de: 'Münzen' },
+    bonuses: { uk: '🎁 Бонуси', en: '🎁 Bonuses', pl: '🎁 Bonusy', de: '🎁 Boni' },
+    blog: { uk: '📰 Блог', en: '📰 Blog', pl: '📰 Blog', de: '📰 Blog' },
   };
 
+  const navLinks = [
+    { href: homeHref, label: t.nav.home },
+    { href: getLocalizedPath(locale, 'coins'), label: labels.coins[locale] },
+    { href: getLocalizedPath(locale, 'bonuses'), label: labels.bonuses[locale], highlight: true },
+    { href: getLocalizedPath(locale, 'markets'), label: t.nav.markets },
+    { href: getLocalizedPath(locale, 'news'), label: t.nav.news },
+    { href: getLocalizedPath(locale, 'assistant'), label: t.nav.assistant },
+    { href: getLocalizedPath(locale, 'blog'), label: labels.blog[locale] },
+    { href: getLocalizedPath(locale, 'faq'), label: 'FAQ' },
+    { href: getLocalizedPath(locale, 'about'), label: labels.about[locale] },
+    { href: getLocalizedPath(locale, 'learn'), label: labels.learn[locale] },
+  ];
+
   return (
-    <header className="bg-black text-white p-4">
-      <div className="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-4">
-        <Link href={homeHref} className="font-bold text-xl hover:text-gray-300">
+    <header className="bg-black text-white">
+      <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+        {/* Logo */}
+        <Link href={homeHref} className="font-bold text-xl hover:text-gray-300 flex-shrink-0">
           CryptoNavigator
         </Link>
-        <nav className="flex flex-wrap gap-6 items-center">
-          <Link href={homeHref} className="hover:text-gray-300">{t.nav.home}</Link>
-          <Link href={getLocalizedPath(locale, 'coins')} className="hover:text-gray-300">{coinsLabel[locale]}</Link>
-          <Link href={getLocalizedPath(locale, 'bonuses')} className="text-orange-400 hover:text-orange-300 font-semibold">{bonusesLabel[locale]}</Link>
-          <Link href={getLocalizedPath(locale, 'markets')} className="hover:text-gray-300">{t.nav.markets}</Link>
-          <Link href={getLocalizedPath(locale, 'news')} className="hover:text-gray-300">{t.nav.news}</Link>
-          <Link href={getLocalizedPath(locale, 'assistant')} className="hover:text-gray-300">{t.nav.assistant}</Link>
-          <Link href={getLocalizedPath(locale, 'blog')} className="hover:text-gray-300">{blogLabel[locale]}</Link>
-          <Link href={getLocalizedPath(locale, 'faq')} className="hover:text-gray-300">FAQ</Link>
-          <Link href={getLocalizedPath(locale, 'about')} className="hover:text-gray-300">{aboutLabel[locale]}</Link>
-          <Link href={getLocalizedPath(locale, 'learn')} className="hover:text-gray-300">{learnLabel[locale]}</Link>
-          <div className="flex gap-1 ml-4 border-l border-gray-600 pl-4">
-            {LOCALES.map((l) => (
-              <Link
-                key={l}
-                href={getLocalizedPath(l, currentPage)}
-                className={`text-sm px-2 py-1 rounded transition-colors ${
-                  locale === l
-                    ? 'text-white font-bold bg-gray-700'
-                    : 'text-gray-400 hover:text-white hover:bg-gray-800'
-                }`}
-              >
+
+        {/* Desktop nav */}
+        <nav className="hidden lg:flex items-center gap-4 flex-wrap">
+          {navLinks.map(link => (
+            <Link key={link.href} href={link.href}
+              className={`text-sm hover:text-gray-300 whitespace-nowrap ${
+                link.highlight ? 'text-orange-400 font-semibold' : ''
+              }`}>
+              {link.label}
+            </Link>
+          ))}
+          {/* Language switcher */}
+          <div className="flex gap-1 ml-2 border-l border-gray-600 pl-3">
+            {LOCALES.map(l => (
+              <Link key={l} href={getLocalizedPath(l, currentPage)}
+                className={`text-xs px-2 py-1 rounded transition-colors ${
+                  locale === l ? 'text-white font-bold bg-gray-700' : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                }`}>
                 {LOCALE_LABELS[l]}
               </Link>
             ))}
           </div>
         </nav>
+
+        {/* Mobile: lang + hamburger */}
+        <div className="flex items-center gap-2 lg:hidden">
+          {/* Language switcher mobile */}
+          <div className="flex gap-1">
+            {LOCALES.map(l => (
+              <Link key={l} href={getLocalizedPath(l, currentPage)}
+                className={`text-xs px-1.5 py-1 rounded transition-colors ${
+                  locale === l ? 'text-white font-bold bg-gray-700' : 'text-gray-400 hover:text-white'
+                }`}>
+                {l.toUpperCase()}
+              </Link>
+            ))}
+          </div>
+          {/* Hamburger */}
+          <button onClick={() => setMenuOpen(v => !v)}
+            className="p-2 rounded hover:bg-gray-800 transition"
+            aria-label="Menu">
+            {menuOpen ? (
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+              </svg>
+            )}
+          </button>
+        </div>
       </div>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div className="lg:hidden bg-gray-900 border-t border-gray-800 px-4 py-3">
+          <nav className="grid grid-cols-2 gap-2">
+            {navLinks.map(link => (
+              <Link key={link.href} href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className={`text-sm py-2 px-3 rounded-lg hover:bg-gray-800 transition ${
+                  link.highlight ? 'text-orange-400 font-semibold' : 'text-gray-300'
+                }`}>
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
