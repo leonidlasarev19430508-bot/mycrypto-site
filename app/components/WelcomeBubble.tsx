@@ -59,6 +59,7 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const avatar = AVATARS[avatarIndex];
@@ -70,10 +71,17 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
   const headerPaddingTop = 162;
 
   useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  useEffect(() => {
     const wasDismissed = sessionStorage.getItem('welcomeDismissed');
     if (wasDismissed) return;
-    const t = setTimeout(() => setOpen(true), 2500);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setOpen(true), 2500);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -122,6 +130,14 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
 
   if (dismissed) return null;
 
+  // На мобільному: кнопка зліва внизу, щоб не перекривати гамбургер справа
+  const btnSize = isMobile ? 56 : 80;
+  const btnRight = isMobile ? 'auto' : '24px';
+  const btnLeft = isMobile ? '16px' : 'auto';
+  const chatRight = isMobile ? 'auto' : '24px';
+  const chatLeft = isMobile ? '8px' : 'auto';
+  const chatWidth = isMobile ? 'calc(100vw - 16px)' : '360px';
+
   const avatarImgStyle = {
     objectFit: 'cover' as const,
     display: 'block',
@@ -133,10 +149,20 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
       <button
         onClick={() => setOpen(v => !v)}
         style={{
-          position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999,
-          width: '80px', height: '80px', borderRadius: '50%',
-          background: 'transparent', border: 'none', padding: 0,
-          cursor: 'pointer', transition: 'transform 0.2s', overflow: 'hidden',
+          position: 'fixed',
+          bottom: '24px',
+          right: btnRight,
+          left: btnLeft,
+          zIndex: 9999,
+          width: `${btnSize}px`,
+          height: `${btnSize}px`,
+          borderRadius: '50%',
+          background: 'transparent',
+          border: 'none',
+          padding: 0,
+          cursor: 'pointer',
+          transition: 'transform 0.2s',
+          overflow: 'hidden',
         }}
         onMouseEnter={e => (e.currentTarget.style.transform = 'scale(1.08)')}
         onMouseLeave={e => (e.currentTarget.style.transform = 'scale(1)')}
@@ -144,18 +170,18 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
       >
         {open ? (
           <div style={{
-            width: '80px', height: '80px', borderRadius: '50%',
+            width: `${btnSize}px`, height: `${btnSize}px`, borderRadius: '50%',
             background: 'rgba(245,158,11,0.9)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '28px', color: 'white', fontWeight: 'bold',
+            fontSize: '24px', color: 'white', fontWeight: 'bold',
           }}>✕</div>
         ) : (
-          <div style={{ position: 'relative', width: '80px', height: '80px', borderRadius: '50%', overflow: 'hidden' }}>
-            <Image src={avatar.src} alt="AI Navigator" width={80} height={80}
-              style={{ ...avatarImgStyle, width: '80px', height: '80px' }} />
+          <div style={{ position: 'relative', width: `${btnSize}px`, height: `${btnSize}px`, borderRadius: '50%', overflow: 'hidden' }}>
+            <Image src={avatar.src} alt="AI Navigator" width={btnSize} height={btnSize}
+              style={{ ...avatarImgStyle, width: `${btnSize}px`, height: `${btnSize}px` }} />
             <span style={{
               position: 'absolute', bottom: '4px', right: '4px',
-              width: '14px', height: '14px', borderRadius: '50%',
+              width: '12px', height: '12px', borderRadius: '50%',
               background: '#22c55e', border: '2px solid white',
             }}/>
           </div>
@@ -165,15 +191,22 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
       {/* Pulse ring */}
       {!open && (
         <span style={{
-          position: 'fixed', bottom: '24px', right: '24px', zIndex: 9998,
-          width: '80px', height: '80px', borderRadius: '50%',
+          position: 'fixed',
+          bottom: '24px',
+          right: btnRight,
+          left: btnLeft,
+          zIndex: 9998,
+          width: `${btnSize}px`,
+          height: `${btnSize}px`,
+          borderRadius: '50%',
           background: 'rgba(245,158,11,0.15)',
-          animation: 'pulseRing 2s infinite', pointerEvents: 'none',
+          animation: 'pulseRing 2s infinite',
+          pointerEvents: 'none',
         }} />
       )}
 
-      {/* Avatar */}
-      {open && (
+      {/* Avatar (desktop only) */}
+      {open && !isMobile && (
         <div style={{
           position: 'fixed',
           bottom: `${avatarBottom}px`,
@@ -212,9 +245,10 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
         <div style={{
           position: 'fixed',
           bottom: `${bottomOffset}px`,
-          right: '24px',
+          right: chatRight,
+          left: chatLeft,
           zIndex: 9998,
-          width: '360px',
+          width: chatWidth,
           height: `${cardHeight}px`,
           display: 'flex', flexDirection: 'column',
           background: 'rgba(255,255,255,0.78)',
@@ -229,7 +263,7 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
 
           {/* Header */}
           <div style={{
-            paddingTop: '40px',
+            paddingTop: isMobile ? '16px' : '40px',
             paddingBottom: '10px',
             textAlign: 'center',
             flexShrink: 0,
@@ -238,11 +272,24 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
             borderBottom: '1px solid rgba(0,0,0,0.05)',
             position: 'relative',
           }}>
+            {/* Close button on mobile (top right of chat) */}
+            {isMobile && (
+              <button onClick={handleDismiss} style={{
+                position: 'absolute', top: '8px', right: '8px',
+                width: '28px', height: '28px', borderRadius: '50%',
+                background: 'rgba(255,255,255,0.95)',
+                border: '1px solid rgba(0,0,0,0.1)',
+                color: '#94a3b8', fontSize: '16px', cursor: 'pointer',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+              }}>×</button>
+            )}
+
             {started && (
               <button onClick={handleBack} style={{
                 position: 'absolute',
                 left: '12px',
-                top: `${headerPaddingTop - 6}px`,
+                top: isMobile ? '8px' : `${headerPaddingTop - 6}px`,
                 background: 'rgba(255,255,255,0.8)',
                 border: '1px solid rgba(0,0,0,0.08)',
                 cursor: 'pointer',
