@@ -119,9 +119,9 @@ export default function ClientHeader() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — FIXED: md:hidden замість lg:hidden */}
       {menuOpen && (
-        <div className="lg:hidden bg-gray-900 border-t border-gray-800 px-4 py-3">
+        <div className="md:hidden bg-gray-900 border-t border-gray-800 px-4 py-3">
           <nav className="grid grid-cols-2 gap-2">
             {navLinks.map(link => (
               <Link key={link.href} href={link.href}
