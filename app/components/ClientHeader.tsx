@@ -67,7 +67,7 @@ export default function ClientHeader() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden lg:flex items-center gap-4 flex-wrap">
+        <nav className="hidden md:flex items-center gap-4 flex-wrap">
           {navLinks.map(link => (
             <Link key={link.href} href={link.href}
               className={`text-sm hover:text-gray-300 whitespace-nowrap ${
@@ -90,7 +90,7 @@ export default function ClientHeader() {
         </nav>
 
         {/* Mobile: lang + hamburger */}
-        <div className="flex items-center gap-2 lg:hidden">
+        <div className="flex items-center gap-2 md:hidden">
           {/* Language switcher mobile */}
           <div className="flex gap-1">
             {LOCALES.map(l => (
