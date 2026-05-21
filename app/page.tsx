@@ -58,14 +58,14 @@ const OFFERS = [
     description: t.offers[0].description,
     features: t.offers[0].features,
     badge: t.offers[0].badge,
-    affiliate: process.env.NEXT_PUBLIC_AFFILIATE_BINANCE || 'https://www.binance.com/register?ref=GRO_28502_BIO0R',
+    affiliate: process.env.NEXT_PUBLIC_AFFILIATE_BINANCE || 'https://www.binance.com/register?ref=Q5HR1JVW',
   },
   {
-    name: 'WhiteBIT', id: 'whitebit',
+    name: 'MEXC', id: 'mexc',
     description: 'Українська біржа з простим інтерфейсом та підтримкою гривні',
     features: ['Українська підтримка', 'Гривня UAH', 'Швидка верифікація'],
     badge: '🇺🇦 Для українців',
-    affiliate: 'https://whitebit.com/referral/54626c3b-5240-4d39-9784-8e3eda5736de',
+    affiliate: process.env.NEXT_PUBLIC_AFFILIATE_MEXC || 'https://promote.mexc.com/r/q2p1TSAUnh',
   },
   {
     name: 'Bybit', id: 'bybit',
@@ -75,11 +75,11 @@ const OFFERS = [
     affiliate: process.env.NEXT_PUBLIC_AFFILIATE_BYBIT || 'https://www.bybit.com/register?ref=CRYPTONAV',
   },
   {
-    name: 'OKX', id: 'okx',
+    name: 'KuCoin', id: 'kucoin',
     description: t.offers[2].description,
     features: t.offers[2].features,
     badge: t.offers[2].badge,
-    affiliate: 'https://www.okx.com/join/CRYPTONAV',
+    affiliate: process.env.NEXT_PUBLIC_AFFILIATE_KUCOIN || 'https://www.kucoin.com/r/rf/CXEPY4S5',
   },
 ];
 
