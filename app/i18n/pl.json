@@ -33,14 +33,21 @@
       "badge": null
     },
     {
-      "name": "WhiteBIT",
-      "id": "whitebit",
-      "description": "Europejska giełda z wypłatami w PLN",
-      "features": ["Wypłaty w PLN", "Europejskie prawo", "Prosta obsługa"],
-      "badge": "🇵🇱 Popularna w PL"
+      "name": "OKX",
+      "id": "okx",
+      "description": "Nowoczesna platforma z integracją Web3 i stakingiem",
+      "features": ["Portfel Web3", "Staking do 20%", "Niskie opłaty"],
+      "badge": null
+    },
+    {
+      "name": "KuCoin",
+      "id": "kucoin",
+      "description": "Szeroki wybór monet ze stakingiem i Web3",
+      "features": ["700+ monet", "Nagrody za staking", "Niskie prowizje"],
+      "badge": null
     }
-  ],
-  "subscribe": {
+      ], 
+    "subscribe": {
     "title": "🔔 CryptoAlert — Bądź pierwszy!",
     "subtitle": "Otrzymuj natychmiastowe powiadomienia gdy:",
     "alerts": [

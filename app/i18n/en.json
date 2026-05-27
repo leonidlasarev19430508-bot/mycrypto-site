@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Best Crypto Exchanges 2026 | CryptoNavigator",
-    "description": "Compare Binance, Bybit, OKX. Best crypto exchanges with AI analysis."
+    "description": "Compare Binance, Bybit, OKX, KuCoin. Best crypto exchanges with AI analysis."
   },
   "nav": {
     "home": "Home",
@@ -37,6 +37,13 @@
       "id": "okx",
       "description": "Modern platform with Web3 integration and staking",
       "features": ["Web3 Wallet", "Staking up to 20%", "Low fees"],
+      "badge": null
+    },
+    {
+      "name": "KuCoin",
+      "id": "kucoin",
+      "description": "Wide selection of coins with staking and Web3",
+      "features": ["700+ coins", "Staking rewards", "Low fees"],
       "badge": null
     }
   ],

@@ -17,7 +17,7 @@
     "badge_popular": "Beliebteste Börse",
     "cta": "Bei registrieren"
   },
-  "offers": [
+    "offers": [
     {
       "name": "Binance",
       "id": "binance",
@@ -38,8 +38,15 @@
       "description": "Moderne Plattform mit Web3 Integration und Staking",
       "features": ["Web3 Wallet", "Staking bis 20%", "Niedrige Gebühren"],
       "badge": "🇪🇺 EU reguliert"
+    },
+    {
+      "name": "KuCoin",
+      "id": "kucoin",
+      "description": "Große Auswahl an Coins mit Staking und Web3",
+      "features": ["700+ Coins", "Staking-Belohnungen", "Niedrige Gebühren"],
+      "badge": null
     }
-  ],
+  ]
   "subscribe": {
     "title": "🔔 CryptoAlert — Sei der Erste!",
     "subtitle": "Erhalte sofortige Benachrichtigungen wenn:",

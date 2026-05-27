@@ -12,9 +12,10 @@ import { useTranslation } from '../lib/i18n';
 import { useState } from 'react';
 
 const AFFILIATE_LINKS: Record<string, string> = {
-  binance: process.env.NEXT_PUBLIC_AFFILIATE_BINANCE || 'https://www.binance.com/register?ref=GRO_28502_BIO0R',
-  bybit: process.env.NEXT_PUBLIC_AFFILIATE_BYBIT || 'https://www.bybit.com/register?ref=CRYPTONAV',
-  whitebit: process.env.NEXT_PUBLIC_AFFILIATE_WHITEBIT || 'https://whitebit.com/referral/54626c3b-5240-4d39-9784-8e3eda5736de',
+  binance: 'https://www.binance.com/register?ref=Q5HR1JVW',
+  bybit:   'https://www.bybit.com/register?ref=CRYPTONAV',
+  okx:     'https://www.okx.com/join/CRYPTONAV',
+  kucoin:  'https://www.kucoin.com/r/rf/CXEPY4S5',
 };
 
 function SubscribeForm() {
@@ -55,18 +56,18 @@ export default function PLPage() {
           <p className="text-gray-500 mt-3 text-lg">{t.hero.subtitle}</p>
         </div>
         <div className="max-w-2xl mx-auto mb-10"><TradingCounter /></div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {t.offers.map(offer => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {t.offers.map((offer: any) => (
             <div key={offer.id} className={`p-6 border-2 rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow relative ${offer.badge ? 'border-orange-400' : 'border-gray-100'}`}>
               {offer.badge && <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">{offer.badge}</span>}
               <h2 className="text-xl font-bold text-gray-900">{offer.name}</h2>
               <p className="mt-2 text-gray-500 text-sm">{offer.description}</p>
-              <ul className="mt-3 space-y-1.5">{offer.features.map(f => (<li key={f} className="text-sm text-gray-500 flex items-center gap-1.5"><span className="text-green-500 font-bold">✓</span> {f}</li>))}</ul>
-              <a href={AFFILIATE_LINKS[offer.id] || '#'} target="_blank" rel="noopener noreferrer" className="mt-5 block bg-orange-500 text-white text-center px-4 py-2.5 rounded-xl hover:bg-orange-600 transition font-semibold">{t.exchanges.cta} {offer.name}</a>
+              <ul className="mt-3 space-y-1.5">{offer.features.map((f: string) => (<li key={f} className="text-sm text-gray-500 flex items-center gap-1.5"><span className="text-green-500 font-bold">✓</span> {f}</li>))}</ul>
+              <a href={AFFILIATE_LINKS[offer.id] || '#'} target="_blank" rel="noopener noreferrer" className="mt-5 block bg-orange-500 text-white text-center px-4 py-2.5 rounded-xl hover:bg-orange-600 transition font-semibold text-sm">{t.exchanges.cta} {offer.name}</a>
             </div>
           ))}
         </div>
-        <ComparisonTable locale="pl"/>
+        <ComparisonTable locale="pl" />
         <CryptoPrices />
         <FearGreedIndex locale="pl" />
         <WhatIfCalculator locale="pl" />
