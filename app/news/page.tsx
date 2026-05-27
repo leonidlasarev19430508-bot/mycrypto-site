@@ -136,7 +136,7 @@ export default async function NewsPage({ locale = 'uk' }: { locale?: string }) {
                 <SentimentBadge sentiment={item.sentiment} t={t} />
                 <RecommendationBadge recommendation={item.recommendation} t={t} />
               </div>
-              <h2 className="text-xl font-medium mb-2">{item.title_uk || item.title}</h2>
+              <h2 className="text-xl font-medium mb-2">{item.title_uk || item.title || item.summary?.substring(0, 100) + '...'}</h2>
               <p className="text-gray-700 mb-4">
                 {item[t.summaryField] || item.summary}
               </p>
