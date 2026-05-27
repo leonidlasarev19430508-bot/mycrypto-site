@@ -1,19 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { Line } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Filler,
-  Legend,
-} from 'chart.js';
-
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend);
 
 const COINS = [
   { id: 'bitcoin', symbol: 'BTC', color: '#f97316' },
@@ -27,6 +13,52 @@ export default function PriceChart() {
   const [loading, setLoading] = useState(true);
   const [currentPrice, setCurrentPrice] = useState<number | null>(null);
   const [priceChange, setPriceChange] = useState<number | null>(null);
+  const [ChartComponent, setChartComponent] = useState<any>(null);
+  const [chartOptions, setChartOptions] = useState<any>(null);
+
+  useEffect(() => {
+    // Динамічний імпорт Chart.js тільки на клієнті
+    import('react-chartjs-2').then(({ Line }) => {
+      import('chart.js').then(({
+        Chart,
+        CategoryScale,
+        LinearScale,
+        PointElement,
+        LineElement,
+        Title,
+        Tooltip,
+        Filler,
+        Legend,
+      }) => {
+        Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend);
+        setChartComponent(() => Line);
+        setChartOptions({
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: (ctx: any) => `$${ctx.parsed.y.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
+              },
+            },
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { maxTicksLimit: 7, font: { size: 11 } },
+            },
+            y: {
+              grid: { color: '#f3f4f6' },
+              ticks: {
+                font: { size: 11 },
+                callback: (v: any) => '$' + Number(v).toLocaleString('en-US', { maximumFractionDigits: 0 }),
+              },
+            },
+          },
+        });
+      });
+    });
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -61,37 +93,11 @@ export default function PriceChart() {
       .catch(() => setLoading(false));
   }, [selected]);
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        callbacks: {
-          label: (ctx: any) => `$${ctx.parsed.y.toLocaleString('en-US', { maximumFractionDigits: 2 })}`,
-        },
-      },
-    },
-    scales: {
-      x: {
-        grid: { display: false },
-        ticks: { maxTicksLimit: 7, font: { size: 11 } },
-      },
-      y: {
-        grid: { color: '#f3f4f6' },
-        ticks: {
-          font: { size: 11 },
-          callback: (v: any) => '$' + Number(v).toLocaleString('en-US', { maximumFractionDigits: 0 }),
-        },
-      },
-    },
-  };
-
   return (
     <section className="max-w-4xl mx-auto px-4 py-10">
       <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">📈 Графіки цін</h2>
 
       <div className="bg-white rounded-2xl shadow-md p-6">
-        {/* Перемикач монет */}
         <div className="flex gap-3 mb-6">
           {COINS.map(coin => (
             <button
@@ -109,7 +115,6 @@ export default function PriceChart() {
           ))}
         </div>
 
-        {/* Ціна і зміна */}
         {currentPrice && (
           <div className="flex items-baseline gap-3 mb-4">
             <span className="text-3xl font-bold text-gray-900">
@@ -125,13 +130,12 @@ export default function PriceChart() {
           </div>
         )}
 
-        {/* Графік */}
         {loading ? (
           <div className="h-64 flex items-center justify-center text-gray-400">Завантаження...</div>
-        ) : chartData ? (
-          <Line data={chartData} options={options as any} />
+        ) : chartData && ChartComponent ? (
+          <ChartComponent data={chartData} options={chartOptions} />
         ) : (
-          <div className="h-64 flex items-center justify-center text-gray-400">Помилка завантаження</div>
+          <div className="h-64 flex items-center justify-center text-gray-400">Завантаження графіку...</div>
         )}
 
         <p className="text-xs text-gray-400 mt-3 text-right">Дані: CoinGecko • 7 днів</p>
