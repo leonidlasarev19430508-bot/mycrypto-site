@@ -37,7 +37,7 @@
       "id": "okx",
       "description": "Moderne Plattform mit Web3 Integration und Staking",
       "features": ["Web3 Wallet", "Staking bis 20%", "Niedrige Gebühren"],
-      "badge": "🇪🇺 EU reguliert"
+      "badge": null
     },
     {
       "name": "KuCoin",
@@ -49,7 +49,7 @@
   ],
   "subscribe": {
     "title": "🔔 CryptoAlert — Sei der Erste!",
-    "subtitle": "Erhalte sofortige Benachrichtigungen wenn:",
+      "subtitle": "Erhalte sofortige Benachrichtigungen wenn:",
     "alerts": [
       "🐋 Ein Wal mehr als $50M bewegt",
       "😱 Fear & Greed unter 20 fällt",
