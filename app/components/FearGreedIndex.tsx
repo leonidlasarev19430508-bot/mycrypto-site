@@ -73,7 +73,9 @@ export default function FearGreedIndex({ locale = 'uk' }: Props) {
   useEffect(() => {
     fetch("https://api.alternative.me/fng/?limit=32")
       .then(r => r.json())
-      .then(d => setData(d.data))
+      .then(d => {
+        if (Array.isArray(d.data) && d.data.length > 0) setData(d.data);
+      })
       .catch(() => {});
   }, []);
 
@@ -83,7 +85,13 @@ export default function FearGreedIndex({ locale = 'uk' }: Props) {
     </div>
   );
 
-  const now = data[0], yesterday = data[1], weekAgo = data[7], monthAgo = data[30];
+  const now = data[0];
+  const yesterday = data[1] ?? data[0];
+  const weekAgo = data[7] ?? data[data.length - 1] ?? data[0];
+  const monthAgo = data[30] ?? data[data.length - 1] ?? data[0];
+
+  if (!now) return null;
+
   const val = parseInt(now.value);
   const color = getColor(val);
   const angle = -90 + (val / 100) * 180;
@@ -110,6 +118,7 @@ export default function FearGreedIndex({ locale = 'uk' }: Props) {
       <div className="bg-white border border-gray-200 rounded-2xl p-4">
         <p className="text-xs text-gray-400 uppercase tracking-wider mb-3">{t.dynamics}</p>
         {([[t.now, now], [t.yesterday, yesterday], [t.week, weekAgo], [t.month, monthAgo]] as [string, FGData][]).map(([label, d]) => {
+          if (!d) return null;
           const v = parseInt(d.value);
           const c = getColor(v);
           return (
