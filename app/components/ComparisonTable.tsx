@@ -8,10 +8,10 @@ interface ComparisonTableProps {
 }
 
 const EXCHANGES = [
-  { name: 'Binance', spot: '0.10%', futures: '0.02% / 0.05%', withdrawal: '$0.5+', bonus: '$600', coins: '350+', rating: 4.8, badge: '🏆', highlight: true, affiliate: 'https://www.binance.com/register?ref=GRO_28502_BIO0R' },
-  { name: 'WhiteBIT', spot: '0.10%', futures: '0.01% / 0.05%', withdrawal: '$1+', bonus: '$150', coins: '250+', rating: 4.4, badge: '🇺🇦', highlight: false, affiliate: 'https://whitebit.com/referral/54626c3b-5240-4d39-9784-8e3eda5736de' },
+  { name: 'Binance', spot: '0.10%', futures: '0.02% / 0.05%', withdrawal: '$0.5+', bonus: '$600', coins: '350+', rating: 4.8, badge: '🏆', highlight: true, affiliate: 'https://www.binance.com/register?ref=Q5HR1JVW' },
   { name: 'Bybit', spot: '0.10%', futures: '0.02% / 0.055%', withdrawal: '$1+', bonus: '$30,000', coins: '300+', rating: 4.6, badge: '⚡', highlight: false, affiliate: 'https://www.bybit.com/register?ref=CRYPTONAV' },
   { name: 'OKX', spot: '0.08%', futures: '0.02% / 0.05%', withdrawal: '$0.5+', bonus: 'Mystery Box', coins: '300+', rating: 4.5, badge: '🌐', highlight: false, affiliate: 'https://www.okx.com/join/CRYPTONAV' },
+  { name: 'KuCoin', spot: '0.10%', futures: '0.02% / 0.06%', withdrawal: '$1+', bonus: '$500', coins: '700+', rating: 4.4, badge: '🟢', highlight: false, affiliate: 'https://www.kucoin.com/r/rf/CXEPY4S5' },
 ];
 
 const LABELS: Record<Locale, { title: string; subtitle: string; exchange: string; spot: string; futures: string; withdrawal: string; coins: string; bonus: string; register: string; top: string; more: string; bonusLink: string }> = {
