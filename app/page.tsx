@@ -9,7 +9,7 @@ const WhaleAlertTicker = dynamic(() => import('./components/WhaleAlertTicker'), 
   loading: () => <div className="w-full bg-gray-900 border-y border-gray-800" style={{ height: '37px' }} />,
 });
 const CryptoPrices = dynamic(() => import('./components/CryptoPrices'), { ssr: false });
-const PriceChart = dynamic(() => import('./components/PriceChart'), { ssr: false });
+// const PriceChart = dynamic(() => import('./components/PriceChart'), { ssr: false });
 const FearGreedIndex = dynamic(() => import('./components/FearGreedIndex'), { ssr: false });
 const WhatIfCalculator = dynamic(() => import('./components/WhatIfCalculator'), { ssr: false });
 const ExchangeQuiz = dynamic(() => import('./components/ExchangeQuiz'), { ssr: false });
@@ -118,7 +118,7 @@ export default function Home() {
         </div>
         <ComparisonTable />
         <CryptoPrices />
-        <PriceChart />
+        {/* <PriceChart /> */}
         <FearGreedIndex />
         <WhatIfCalculator locale="uk" />
         <ExchangeQuiz />
