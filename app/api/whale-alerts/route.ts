@@ -10,6 +10,12 @@ export async function GET() {
     });
     if (!res.ok) throw new Error('n8n error: ' + res.status);
 
+    const contentType = res.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) {
+      console.error('[whale-alerts] Not JSON, got:', contentType);
+      return NextResponse.json([]);
+    }
+
     const data = await res.json();
     return NextResponse.json(Array.isArray(data) ? data : []);
   } catch (e) {
