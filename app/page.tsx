@@ -3,13 +3,13 @@ import dynamic from 'next/dynamic';
 import ComparisonTable from "./components/ComparisonTable";
 import { useState } from "react";
 import t from "./i18n/uk.json";
+import { ExchangeModal, useExchangeModal } from "./components/ExchangeModal";
 
 const WhaleAlertTicker = dynamic(() => import('./components/WhaleAlertTicker'), {
   ssr: false,
   loading: () => <div className="w-full bg-gray-900 border-y border-gray-800" style={{ height: '37px' }} />,
 });
 const CryptoPrices = dynamic(() => import('./components/CryptoPrices'), { ssr: false });
-// const PriceChart = dynamic(() => import('./components/PriceChart'), { ssr: false });
 const FearGreedIndex = dynamic(() => import('./components/FearGreedIndex'), { ssr: false });
 const WhatIfCalculator = dynamic(() => import('./components/WhatIfCalculator'), { ssr: false });
 const ExchangeQuiz = dynamic(() => import('./components/ExchangeQuiz'), { ssr: false });
@@ -84,6 +84,8 @@ const OFFERS = [
 ];
 
 export default function Home() {
+  const { activeExchange, open, close } = useExchangeModal();
+
   return (
     <>
       <WhaleAlertTicker />
@@ -100,7 +102,13 @@ export default function Home() {
                   {offer.badge}
                 </span>
               )}
-              <h2 className="text-xl font-bold text-gray-900">{offer.name}</h2>
+              {/* Клікабельна назва біржі */}
+              <button
+                onClick={() => open(offer.id)}
+                className="text-xl font-bold text-gray-900 hover:text-orange-500 transition-colors text-left underline decoration-dotted underline-offset-2 cursor-pointer"
+              >
+                {offer.name}
+              </button>
               <p className="mt-2 text-gray-500 text-sm">{offer.description}</p>
               <ul className="mt-3 space-y-1.5">
                 {offer.features.map(f => (
@@ -118,7 +126,6 @@ export default function Home() {
         </div>
         <ComparisonTable />
         <CryptoPrices />
-        {/* <PriceChart /> */}
         <FearGreedIndex />
         <WhatIfCalculator locale="uk" />
         <ExchangeQuiz />
@@ -126,6 +133,15 @@ export default function Home() {
       </main>
       <WhaleAlertPopup />
       <ChatWidget locale="uk" />
+
+      {/* Модальне вікно біржі */}
+      {activeExchange && (
+        <ExchangeModal
+          exchangeId={activeExchange}
+          locale="uk"
+          onClose={close}
+        />
+      )}
     </>
   );
 }
