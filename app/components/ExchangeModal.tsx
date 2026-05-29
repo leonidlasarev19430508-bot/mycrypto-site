@@ -205,12 +205,7 @@ export function ExchangeModal({ exchangeId, locale = 'uk', onClose }: Props) {
           <div className="flex items-center gap-3">
             <span className="text-3xl">{LOGOS[exchangeId]}</span>
             <h2 className="text-2xl font-black text-white">
-              {exchangeId.charAt(0).toUpperCase() + exchangeId.slice(1).toUpperCase().replace('MEXC','MEXC')}
-              {exchangeId === 'binance' && 'Binance'}
-              {exchangeId === 'mexc' && 'MEXC'}
-              {exchangeId === 'bybit' && 'Bybit'}
-              {exchangeId === 'kucoin' && 'KuCoin'}
-              {exchangeId === 'okx' && 'OKX'}
+            {{ binance: 'Binance', mexc: 'MEXC', bybit: 'Bybit', kucoin: 'KuCoin', okx: 'OKX' }[exchangeId]}
             </h2>
           </div>
           <button

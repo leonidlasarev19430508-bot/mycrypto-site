@@ -1,19 +1,9 @@
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Бонуси при реєстрації на біржах 2026 | CryptoNavigator',
-  description: 'Порівняй бонуси при реєстрації на Binance, Bybit, OKX, KuCoin. До $600 за першу реєстрацію. Актуальні реферальні посилання.',
-  alternates: { canonical: 'https://cryptotop.chat/bonuses' },
-  openGraph: {
-    title: 'Бонуси при реєстрації на біржах 2026',
-    description: 'До $600 бонусів за реєстрацію на топових крипто-біржах.',
-    url: 'https://cryptotop.chat/bonuses',
-  },
-};
+'use client';
+import { ExchangeModal, useExchangeModal } from '../components/ExchangeModal';
 
 const EXCHANGES = [
   {
-    name: 'Binance', logo: '🟡',
+    name: 'Binance', id: 'binance', logo: '🟡',
     bonus: 'До $600 USDT',
     bonusDetails: 'Бонус за реєстрацію + верифікацію + перший депозит',
     conditions: ['Верифікація KYC', 'Перший депозит від $50', 'Торговий об\'єм від $100'],
@@ -24,7 +14,7 @@ const EXCHANGES = [
     color: 'border-yellow-400',
   },
   {
-    name: 'Bybit', logo: '🔵',
+    name: 'Bybit', id: 'bybit', logo: '🔵',
     bonus: 'До $30,000 USDT',
     bonusDetails: 'Пакет привітальних бонусів для нових трейдерів',
     conditions: ['Реєстрація за посиланням', 'Депозит від $100', 'Ф\'ючерсна торгівля'],
@@ -35,7 +25,7 @@ const EXCHANGES = [
     color: 'border-blue-300',
   },
   {
-    name: 'OKX', logo: '⚫',
+    name: 'OKX', id: 'okx', logo: '⚫',
     bonus: 'Mystery Box $10,000',
     bonusDetails: 'Mystery Box з шансом виграти до $10,000 USDT',
     conditions: ['Реєстрація за посиланням', 'Верифікація KYC', 'Перший депозит'],
@@ -46,7 +36,7 @@ const EXCHANGES = [
     color: 'border-gray-400',
   },
   {
-    name: 'KuCoin', logo: '🟢',
+    name: 'KuCoin', id: 'kucoin', logo: '🟢',
     bonus: 'До $500 USDT',
     bonusDetails: 'Бонус за реєстрацію та перший депозит',
     conditions: ['Реєстрація за посиланням', 'Верифікація KYC', 'Перший депозит від $50'],
@@ -59,6 +49,8 @@ const EXCHANGES = [
 ];
 
 export default function BonusesPage() {
+  const { activeExchange, open, close } = useExchangeModal();
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
       <div className="text-center mb-12">
@@ -66,11 +58,13 @@ export default function BonusesPage() {
         <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">🎁 Бонуси при реєстрації</h1>
         <p className="text-gray-500 text-lg max-w-2xl mx-auto">Порівняй бонуси топових бірж. Реєструйся за нашими посиланнями і отримай максимальний бонус.</p>
       </div>
+
       <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-6 mb-10 text-white text-center">
         <p className="text-sm font-semibold uppercase tracking-wide opacity-80 mb-1">Загальний потенційний бонус</p>
         <p className="text-5xl font-black mb-2">До $41,100</p>
         <p className="text-orange-100 text-sm">якщо зареєструватись на всіх 4 біржах</p>
       </div>
+
       <div className="space-y-6 mb-12">
         {EXCHANGES.map((ex) => (
           <div key={ex.name} className={`bg-white border-2 ${ex.color} rounded-2xl p-6 shadow-sm hover:shadow-md transition`}>
@@ -80,30 +74,48 @@ export default function BonusesPage() {
                   <span className="text-3xl">{ex.logo}</span>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h2 className="text-2xl font-black text-gray-900">{ex.name}</h2>
+                      {/* Клікабельна назва біржі */}
+                      <button
+                        onClick={() => open(ex.id)}
+                        className="text-2xl font-black text-gray-900 hover:text-orange-500 transition-colors underline decoration-dotted underline-offset-2 cursor-pointer"
+                      >
+                        {ex.name}
+                      </button>
                       <span className={`text-white text-xs font-bold px-2 py-0.5 rounded-full ${ex.badgeColor}`}>{ex.badge}</span>
                     </div>
                     <div className="flex items-center gap-1 mt-0.5">
-                      {[...Array(5)].map((_, i) => (<span key={i} className={i < Math.floor(ex.rating) ? 'text-yellow-400' : 'text-gray-300'}>★</span>))}
+                      {[...Array(5)].map((_, i) => (
+                        <span key={i} className={i < Math.floor(ex.rating) ? 'text-yellow-400' : 'text-gray-300'}>★</span>
+                      ))}
                       <span className="text-xs text-gray-400 ml-1">{ex.rating}/5</span>
                     </div>
                   </div>
                 </div>
+
                 <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-4">
                   <p className="text-xs text-green-600 font-semibold uppercase tracking-wide mb-1">Бонус за реєстрацію</p>
                   <p className="text-2xl font-black text-green-700">{ex.bonus}</p>
                   <p className="text-sm text-gray-600 mt-1">{ex.bonusDetails}</p>
                 </div>
+
                 <div className="grid grid-cols-2 gap-1.5 mb-4">
-                  {ex.pros.map(pro => (<div key={pro} className="flex items-center gap-1.5 text-sm text-gray-600"><span className="text-green-500 font-bold">✓</span> {pro}</div>))}
+                  {ex.pros.map(pro => (
+                    <div key={pro} className="flex items-center gap-1.5 text-sm text-gray-600">
+                      <span className="text-green-500 font-bold">✓</span> {pro}
+                    </div>
+                  ))}
                 </div>
+
                 <div>
                   <p className="text-xs text-gray-400 font-semibold uppercase tracking-wide mb-2">Умови отримання</p>
                   <div className="flex flex-wrap gap-2">
-                    {ex.conditions.map(c => (<span key={c} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-lg">{c}</span>))}
+                    {ex.conditions.map(c => (
+                      <span key={c} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-lg">{c}</span>
+                    ))}
                   </div>
                 </div>
               </div>
+
               <div className="md:w-52 flex-shrink-0">
                 <div className="bg-gray-50 rounded-xl p-4 mb-4">
                   <p className="text-xs text-gray-400 mb-1">Комісія спот</p>
@@ -120,6 +132,7 @@ export default function BonusesPage() {
           </div>
         ))}
       </div>
+
       <div className="bg-white border border-gray-100 rounded-2xl p-6 mb-8">
         <h2 className="text-xl font-bold text-gray-900 mb-4">❓ Часті запитання</h2>
         <div className="space-y-4">
@@ -136,7 +149,17 @@ export default function BonusesPage() {
           ))}
         </div>
       </div>
+
       <p className="text-center text-xs text-gray-400">* Розміри бонусів можуть змінюватись. Актуальна інформація на сайтах бірж. Не є фінансовою порадою.</p>
+
+      {/* Модальне вікно */}
+      {activeExchange && (
+        <ExchangeModal
+          exchangeId={activeExchange}
+          locale="uk"
+          onClose={close}
+        />
+      )}
     </div>
   );
 }
