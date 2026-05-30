@@ -376,3 +376,4 @@ export default function ExchangePage({ params }: { params: { slug: string } }) {
     </div>
   );
 }
+
