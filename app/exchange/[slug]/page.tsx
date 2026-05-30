@@ -37,20 +37,20 @@ const EXCHANGES: Record<string, {
     users: '170M+',
     fee: '0.1%',
     affiliate: 'https://www.binance.com/register?ref=Q5HR1JVW',
-    description: 'Binance — найбільша криптовалютна біржа у світі за обсягом торгів. Заснована у 2017 році Чанпен Чжао, вона за рекордно короткий час стала домінуючою платформою у крипто-індустрії, обробляючи мільярди доларів щоденно.',
+    description: 'Binance — найбільша криптовалютна біржа у світі за обсягом торгів. Заснована у 2017 році Чанпен Чжао, вона за рекордно короткий час стала домінуючою платформою у крипто-індустрії.',
     history: [
       { year: '2017', event: 'Заснування Binance. За 6 місяців стала найбільшою біржею за обсягом торгів.' },
       { year: '2018', event: 'Запуск Binance Chain та токену BNB. Відкриття офісів по всьому світу.' },
       { year: '2019', event: 'Запуск Binance US та Binance DEX — децентралізованої біржі.' },
       { year: '2020', event: 'Запуск Binance Smart Chain (BSC). Понад 500 проєктів на платформі.' },
       { year: '2021', event: 'Рекордний обсяг торгів — $76B за один день. 90M+ користувачів.' },
-      { year: '2023', event: 'CZ пішов у відставку, новим CEO стала Річард Тенг.' },
+      { year: '2023', event: 'CZ пішов у відставку, новим CEO став Річард Тенг.' },
       { year: '2024', event: '170M+ користувачів. Найбільша біржа світу за всіма показниками.' },
     ],
     pros: ['Найнижчі комісії на ринку', 'Найбільша ліквідність', '350+ торгових пар', 'Українська підтримка', 'Стейкінг до 20%', 'Власний блокчейн BNB Chain'],
     cons: ['Складний інтерфейс для новачків', 'Регуляторні проблеми в деяких країнах'],
     features: [
-      { icon: '💹', title: 'Спотова торгівля', description: 'Торгівля 350+ криптовалютами з найнижчими комісіями 0.1%' },
+      { icon: '💹', title: 'Спотова торгівля', description: 'Торгівля 350+ криптовалютами з комісіями 0.1%' },
       { icon: '📈', title: 'Ф\'ючерси', description: 'Торгівля з плечем до 125x на BTC та ETH' },
       { icon: '🏦', title: 'Стейкінг', description: 'Заробляй до 20% річних на своїх активах' },
       { icon: '🎨', title: 'NFT маркетплейс', description: 'Купуй та продавай NFT без комісії' },
@@ -74,10 +74,10 @@ const EXCHANGES: Record<string, {
     users: '10M+',
     fee: '0%',
     affiliate: 'https://promote.mexc.com/r/q2p1TSAUnh',
-    description: 'MEXC — популярна криптовалютна біржа з унікальною підтримкою гривні UAH та україномовним інтерфейсом. Відома найбільшим вибором альткоїнів та нульовою комісією на спотову торгівлю.',
+    description: 'MEXC — популярна криптовалютна біржа з підтримкою гривні UAH та україномовним інтерфейсом. Відома найбільшим вибором альткоїнів та нульовою комісією на спотову торгівлю.',
     history: [
       { year: '2018', event: 'Заснування MEXC Global. Фокус на лістингу нових токенів.' },
-      { year: '2019', event: 'Запуск фьючерсної торгівлі та маржинальної торгівлі.' },
+      { year: '2019', event: 'Запуск ф\'ючерсної торгівлі та маржинальної торгівлі.' },
       { year: '2020', event: 'Понад 200 торгових пар. Розширення на азійські ринки.' },
       { year: '2021', event: 'Запуск підтримки UAH. Понад 1000 торгових пар.' },
       { year: '2022', event: 'Нульова комісія на спот-торгівлю для всіх користувачів.' },
@@ -89,7 +89,7 @@ const EXCHANGES: Record<string, {
       { icon: '🇺🇦', title: 'Українська підтримка', description: 'Повний україномовний інтерфейс та підтримка UAH' },
       { icon: '0️⃣', title: 'Нульова комісія', description: '0% комісія на всі спотові угоди' },
       { icon: '🪙', title: '1500+ монет', description: 'Найбільший вибір альткоїнів серед усіх бірж' },
-      { icon: '⚡', title: 'Швидкий лістинг', description: 'Нові токени 'публікуються' першими на MEXC' },
+      { icon: '⚡', title: 'Швидкий лістинг', description: 'Нові токени виходять першими на MEXC' },
       { icon: '📱', title: 'Мобільний додаток', description: 'Зручний додаток для iOS та Android' },
       { icon: '🎯', title: 'Лаунчпад', description: 'Ранній доступ до нових проєктів' },
     ],
@@ -110,9 +110,9 @@ const EXCHANGES: Record<string, {
     users: '30M+',
     fee: '0.1%',
     affiliate: 'https://www.bybit.com/register?ref=CRYPTONAV',
-    description: 'Bybit — провідна криптовалютна біржа для активних трейдерів. Заснована у 2018 році, вона спеціалізується на деривативах та ф\'ючерсній торгівлі з плечем до 100x, пропонуючи найкращі умови для досвідчених трейдерів.',
+    description: 'Bybit — провідна криптовалютна біржа для активних трейдерів. Заснована у 2018 році, спеціалізується на деривативах та торгівлі з плечем до 100x.',
     history: [
-      { year: '2018', event: 'Заснування Bybit. Фокус на деривативах та ф\'ючерсній торгівлі.' },
+      { year: '2018', event: 'Заснування Bybit. Фокус на деривативах та торгівлі з плечем.' },
       { year: '2019', event: 'Запуск USDT-маргінальних контрактів. Швидке зростання.' },
       { year: '2020', event: 'Понад 1M зареєстрованих користувачів. Запуск опціонів.' },
       { year: '2021', event: 'Запуск спотової торгівлі. 10M+ користувачів.' },
@@ -147,9 +147,9 @@ const EXCHANGES: Record<string, {
     users: '27M+',
     fee: '0.1%',
     affiliate: 'https://www.kucoin.com/r/rf/CXEPY4S5',
-    description: 'KuCoin — "Народна біржа" з найширшим вибором монет серед топових платформ. Заснована у 2017 році, вона відома раннім лістингом перспективних проєктів та широкими можливостями для пасивного заробітку.',
+    description: 'KuCoin — народна біржа з найширшим вибором монет серед топових платформ. Заснована у 2017 році, відома раннім лістингом перспективних проєктів та широкими можливостями для пасивного заробітку.',
     history: [
-      { year: '2017', event: 'Заснування KuCoin. Позиціонування як "народна біржа".' },
+      { year: '2017', event: 'Заснування KuCoin. Позиціонування як народна біржа.' },
       { year: '2018', event: 'Запуск KCS токену та програми розподілу прибутку.' },
       { year: '2019', event: 'Понад 200 торгових пар. Запуск маржинальної торгівлі.' },
       { year: '2020', event: 'Хакерський інцидент на $280M — всі кошти відшкодовано.' },
@@ -184,10 +184,10 @@ const EXCHANGES: Record<string, {
     users: '50M+',
     fee: '0.08%',
     affiliate: 'https://www.okx.com/join/CRYPTONAV',
-    description: 'OKX — одна з найбільших та найтехнологічніших криптовалютних бірж світу. Заснована у 2017 році, вона виділяється найнижчими комісіями на ринку, власним Web3 гаманцем та розвиненою екосистемою DeFi продуктів.',
+    description: 'OKX — одна з найбільших криптовалютних бірж світу. Виділяється найнижчими комісіями на ринку, власним Web3 гаманцем та розвиненою екосистемою DeFi продуктів.',
     history: [
       { year: '2017', event: 'Заснування OKEx (пізніше перейменована на OKX).' },
-      { year: '2018', event: 'Запуск ф\'ючерсної торгівлі. Входження в топ-3 бірж.' },
+      { year: '2018', event: 'Запуск торгівлі деривативами. Входження в топ-3 бірж.' },
       { year: '2020', event: 'Тимчасове призупинення виведень — відновлено через місяць.' },
       { year: '2021', event: 'Ребрендинг з OKEx на OKX. Фокус на Web3.' },
       { year: '2022', event: 'Запуск OKX Web3 гаманця та NFT маркетплейсу.' },
@@ -200,7 +200,7 @@ const EXCHANGES: Record<string, {
       { icon: '💸', title: 'Комісії 0.08%', description: 'Найнижчі комісії серед топових бірж' },
       { icon: '🌐', title: 'Web3 гаманець', description: 'Найкращий мультичейн Web3 гаманець на ринку' },
       { icon: '🎨', title: 'NFT маркетплейс', description: 'Агрегатор NFT з усіх маркетплейсів' },
-      { icon: '📈', title: 'Деривативи', description: 'Ф\'ючерси та опціони з плечем до 100x' },
+      { icon: '📈', title: 'Деривативи', description: 'Торгівля деривативами з плечем до 100x' },
       { icon: '🏦', title: 'Earn', description: 'Стейкінг та DeFi до 20% річних' },
       { icon: '⛓️', title: 'OKX Chain', description: 'Власний блокчейн для DeFi додатків' },
     ],
@@ -240,13 +240,13 @@ export default function ExchangePage({ params }: { params: { slug: string } }) {
             <span className="text-6xl">{ex.logo}</span>
             <div>
               <h1 className="text-4xl md:text-5xl font-black">{ex.name}</h1>
-              <p className="opacity-80 mt-1">Заснована {ex.founded} • {ex.headquarters}</p>
+              <p className="opacity-80 mt-1">Заснована {ex.founded} &bull; {ex.headquarters}</p>
             </div>
           </div>
           <p className="text-lg opacity-90 max-w-2xl leading-relaxed">{ex.description}</p>
           <a href={ex.affiliate} target="_blank" rel="noopener noreferrer"
             className="inline-block mt-6 bg-white text-gray-900 font-black px-8 py-3 rounded-2xl hover:scale-105 transition-transform text-sm">
-            🚀 Зареєструватись на {ex.name} →
+            Зареєструватись на {ex.name} →
           </a>
         </div>
       </div>
@@ -270,7 +270,7 @@ export default function ExchangePage({ params }: { params: { slug: string } }) {
       {/* Bonus banner */}
       <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl p-6 mb-10 text-white flex flex-col md:flex-row items-center justify-between gap-4">
         <div>
-          <p className="text-xs font-bold uppercase tracking-wide opacity-80 mb-1">🎁 Бонус за реєстрацію</p>
+          <p className="text-xs font-bold uppercase tracking-wide opacity-80 mb-1">Бонус за реєстрацію</p>
           <p className="text-3xl font-black">{ex.bonus}</p>
           <p className="text-orange-100 text-sm mt-1">{ex.bonusDetails}</p>
         </div>
@@ -282,7 +282,7 @@ export default function ExchangePage({ params }: { params: { slug: string } }) {
 
       {/* Features */}
       <div className="mb-10">
-        <h2 className="text-2xl font-black text-gray-900 mb-6">⚡ Ключові можливості</h2>
+        <h2 className="text-2xl font-black text-gray-900 mb-6">Ключові можливості</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {ex.features.map(f => (
             <div key={f.title} className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition">
@@ -301,21 +301,21 @@ export default function ExchangePage({ params }: { params: { slug: string } }) {
       {/* Pros & Cons */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
         <div className="bg-green-50 border border-green-200 rounded-2xl p-6">
-          <h3 className="font-black text-gray-900 mb-4">✅ Переваги</h3>
+          <h3 className="font-black text-gray-900 mb-4">Переваги</h3>
           <ul className="space-y-2">
             {ex.pros.map(p => (
               <li key={p} className="flex items-center gap-2 text-sm text-gray-700">
-                <span className="text-green-500 font-bold">✓</span> {p}
+                <span className="text-green-500 font-bold">+</span> {p}
               </li>
             ))}
           </ul>
         </div>
         <div className="bg-red-50 border border-red-200 rounded-2xl p-6">
-          <h3 className="font-black text-gray-900 mb-4">⚠️ Недоліки</h3>
+          <h3 className="font-black text-gray-900 mb-4">Недоліки</h3>
           <ul className="space-y-2">
             {ex.cons.map(c => (
               <li key={c} className="flex items-center gap-2 text-sm text-gray-700">
-                <span className="text-red-400 font-bold">−</span> {c}
+                <span className="text-red-400 font-bold">-</span> {c}
               </li>
             ))}
           </ul>
@@ -324,7 +324,7 @@ export default function ExchangePage({ params }: { params: { slug: string } }) {
 
       {/* History */}
       <div className="mb-10">
-        <h2 className="text-2xl font-black text-gray-900 mb-6">📖 Історія {ex.name}</h2>
+        <h2 className="text-2xl font-black text-gray-900 mb-6">Історія {ex.name}</h2>
         <div className="relative">
           <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-orange-200" />
           <div className="space-y-6">
@@ -344,7 +344,7 @@ export default function ExchangePage({ params }: { params: { slug: string } }) {
 
       {/* Info table */}
       <div className="bg-white border border-gray-100 rounded-2xl p-6 mb-10 shadow-sm">
-        <h2 className="text-xl font-black text-gray-900 mb-4">📋 Основна інформація</h2>
+        <h2 className="text-xl font-black text-gray-900 mb-4">Основна інформація</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {[
             { label: 'Засновник', value: ex.founder },
@@ -370,7 +370,7 @@ export default function ExchangePage({ params }: { params: { slug: string } }) {
           className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-black px-10 py-4 rounded-2xl transition text-lg">
           Зареєструватись на {ex.name} →
         </a>
-        <p className="text-xs text-gray-500 mt-4">* Реєстрація безкоштовна. Не є фінансовою порадою.</p>
+        <p className="text-xs text-gray-500 mt-4">Реєстрація безкоштовна. Не є фінансовою порадою.</p>
       </div>
 
     </div>
