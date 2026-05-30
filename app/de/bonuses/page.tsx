@@ -1,19 +1,9 @@
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Krypto Börsen Boni 2026 | CryptoNavigator',
-  description: 'Vergleiche Registrierungsboni auf Binance, Bybit, OKX, KuCoin. Bis zu $600 für die erste Registrierung. Aktuelle Referral-Links.',
-  alternates: { canonical: 'https://cryptotop.chat/de/bonuses' },
-  openGraph: {
-    title: 'Krypto Börsen Registrierungsboni 2026',
-    description: 'Bis zu $600 Boni für die Registrierung auf Top-Kryptobörsen.',
-    url: 'https://cryptotop.chat/de/bonuses',
-  },
-};
+'use client';
+import { ExchangeModal, useExchangeModal } from '../../components/ExchangeModal';
 
 const EXCHANGES = [
   {
-    name: 'Binance', logo: '🟡',
+    name: 'Binance', id: 'binance', logo: '🟡',
     bonus: 'Bis zu $600 USDT',
     bonusDetails: 'Bonus für Registrierung + Verifizierung + erste Einzahlung',
     conditions: ['KYC-Verifizierung', 'Erste Einzahlung ab $50', 'Handelsvolumen ab $100'],
@@ -24,7 +14,7 @@ const EXCHANGES = [
     color: 'border-yellow-400',
   },
   {
-    name: 'Bybit', logo: '🔵',
+    name: 'Bybit', id: 'bybit', logo: '🔵',
     bonus: 'Bis zu $30,000 USDT',
     bonusDetails: 'Willkommensbonus-Paket für neue Trader',
     conditions: ['Registrierung über Link', 'Einzahlung ab $100', 'Futures-Handel'],
@@ -35,7 +25,7 @@ const EXCHANGES = [
     color: 'border-blue-300',
   },
   {
-    name: 'OKX', logo: '⚫',
+    name: 'OKX', id: 'okx', logo: '⚫',
     bonus: 'Mystery Box $10,000',
     bonusDetails: 'Mystery Box mit Chance auf bis zu $10,000 USDT',
     conditions: ['Registrierung über Link', 'KYC-Verifizierung', 'Erste Einzahlung'],
@@ -46,7 +36,7 @@ const EXCHANGES = [
     color: 'border-gray-400',
   },
   {
-    name: 'KuCoin', logo: '🟢',
+    name: 'KuCoin', id: 'kucoin', logo: '🟢',
     bonus: 'Bis zu $500 USDT',
     bonusDetails: 'Bonus für Registrierung und erste Einzahlung',
     conditions: ['Registrierung über Link', 'KYC-Verifizierung', 'Erste Einzahlung ab $50'],
@@ -59,6 +49,8 @@ const EXCHANGES = [
 ];
 
 export default function BonusesDEPage() {
+  const { activeExchange, open, close } = useExchangeModal();
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
       <div className="text-center mb-12">
@@ -80,7 +72,12 @@ export default function BonusesDEPage() {
                   <span className="text-3xl">{ex.logo}</span>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h2 className="text-2xl font-black text-gray-900">{ex.name}</h2>
+                      <button
+                        onClick={() => open(ex.id)}
+                        className="text-2xl font-black text-gray-900 hover:text-orange-500 transition-colors underline decoration-dotted underline-offset-2 cursor-pointer"
+                      >
+                        {ex.name}
+                      </button>
                       <span className={`text-white text-xs font-bold px-2 py-0.5 rounded-full ${ex.badgeColor}`}>{ex.badge}</span>
                     </div>
                     <div className="flex items-center gap-1 mt-0.5">
@@ -137,6 +134,10 @@ export default function BonusesDEPage() {
         </div>
       </div>
       <p className="text-center text-xs text-gray-400">* Bonusbeträge können sich ändern. Aktuelle Informationen auf den Börsenwebsites. Keine Finanzberatung.</p>
+
+      {activeExchange && (
+        <ExchangeModal exchangeId={activeExchange} locale="de" onClose={close} />
+      )}
     </div>
   );
 }

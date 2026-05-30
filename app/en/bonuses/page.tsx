@@ -1,19 +1,9 @@
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Crypto Exchange Bonuses 2026 | CryptoNavigator',
-  description: 'Compare registration bonuses on Binance, Bybit, OKX, KuCoin. Up to $600 for your first registration. Current referral links.',
-  alternates: { canonical: 'https://cryptotop.chat/en/bonuses' },
-  openGraph: {
-    title: 'Crypto Exchange Bonuses 2026',
-    description: 'Up to $600 in bonuses for registering on top crypto exchanges.',
-    url: 'https://cryptotop.chat/en/bonuses',
-  },
-};
+'use client';
+import { ExchangeModal, useExchangeModal } from '../../components/ExchangeModal';
 
 const EXCHANGES = [
   {
-    name: 'Binance', logo: '🟡',
+    name: 'Binance', id: 'binance', logo: '🟡',
     bonus: 'Up to $600 USDT',
     bonusDetails: 'Bonus for registration + verification + first deposit',
     conditions: ['KYC Verification', 'First deposit from $50', 'Trading volume from $100'],
@@ -24,7 +14,7 @@ const EXCHANGES = [
     color: 'border-yellow-400',
   },
   {
-    name: 'Bybit', logo: '🔵',
+    name: 'Bybit', id: 'bybit', logo: '🔵',
     bonus: 'Up to $30,000 USDT',
     bonusDetails: 'Welcome bonus package for new traders',
     conditions: ['Register via link', 'Deposit from $100', 'Futures trading'],
@@ -35,7 +25,7 @@ const EXCHANGES = [
     color: 'border-blue-300',
   },
   {
-    name: 'OKX', logo: '⚫',
+    name: 'OKX', id: 'okx', logo: '⚫',
     bonus: 'Mystery Box $10,000',
     bonusDetails: 'Mystery Box with a chance to win up to $10,000 USDT',
     conditions: ['Register via link', 'KYC Verification', 'First deposit'],
@@ -46,7 +36,7 @@ const EXCHANGES = [
     color: 'border-gray-400',
   },
   {
-    name: 'KuCoin', logo: '🟢',
+    name: 'KuCoin', id: 'kucoin', logo: '🟢',
     bonus: 'Up to $500 USDT',
     bonusDetails: 'Bonus for registration and first deposit',
     conditions: ['Register via link', 'KYC Verification', 'First deposit from $50'],
@@ -59,6 +49,8 @@ const EXCHANGES = [
 ];
 
 export default function BonusesENPage() {
+  const { activeExchange, open, close } = useExchangeModal();
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
       <div className="text-center mb-12">
@@ -80,7 +72,12 @@ export default function BonusesENPage() {
                   <span className="text-3xl">{ex.logo}</span>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h2 className="text-2xl font-black text-gray-900">{ex.name}</h2>
+                      <button
+                        onClick={() => open(ex.id)}
+                        className="text-2xl font-black text-gray-900 hover:text-orange-500 transition-colors underline decoration-dotted underline-offset-2 cursor-pointer"
+                      >
+                        {ex.name}
+                      </button>
                       <span className={`text-white text-xs font-bold px-2 py-0.5 rounded-full ${ex.badgeColor}`}>{ex.badge}</span>
                     </div>
                     <div className="flex items-center gap-1 mt-0.5">
@@ -137,6 +134,10 @@ export default function BonusesENPage() {
         </div>
       </div>
       <p className="text-center text-xs text-gray-400">* Bonus amounts may change. Current information on exchange websites. Not financial advice.</p>
+
+      {activeExchange && (
+        <ExchangeModal exchangeId={activeExchange} locale="en" onClose={close} />
+      )}
     </div>
   );
 }
