@@ -10,6 +10,7 @@ import WhaleAlertPopup from '../components/WhaleAlertPopup';
 import ComparisonTable from '../components/ComparisonTable';
 import { useTranslation } from '../lib/i18n';
 import { useState } from 'react';
+import { ExchangeModal, useExchangeModal } from '../components/ExchangeModal';
 
 const AFFILIATE_LINKS: Record<string, string> = {
   binance: 'https://www.binance.com/register?ref=Q5HR1JVW',
@@ -47,6 +48,7 @@ function SubscribeForm() {
 
 export default function DEPage() {
   const t = useTranslation('de');
+  const { activeExchange, open, close } = useExchangeModal();
   return (
     <>
       <WhaleAlertTicker />
@@ -60,7 +62,12 @@ export default function DEPage() {
           {t.offers.map((offer: any) => (
             <div key={offer.id} className={`p-6 border-2 rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow relative ${offer.badge ? 'border-orange-400' : 'border-gray-100'}`}>
               {offer.badge && <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">{offer.badge}</span>}
-              <h2 className="text-xl font-bold text-gray-900">{offer.name}</h2>
+              <button
+                onClick={() => open(offer.id)}
+                className="text-xl font-bold text-gray-900 hover:text-orange-500 transition-colors underline decoration-dotted underline-offset-2 cursor-pointer text-left"
+              >
+                {offer.name}
+              </button>
               <p className="mt-2 text-gray-500 text-sm">{offer.description}</p>
               <ul className="mt-3 space-y-1.5">{offer.features.map((f: string) => (<li key={f} className="text-sm text-gray-500 flex items-center gap-1.5"><span className="text-green-500 font-bold">✓</span> {f}</li>))}</ul>
               <a href={AFFILIATE_LINKS[offer.id] || '#'} target="_blank" rel="noopener noreferrer" className="mt-5 block bg-orange-500 text-white text-center px-4 py-2.5 rounded-xl hover:bg-orange-600 transition font-semibold text-sm">{t.exchanges.cta} {offer.name}</a>
@@ -76,6 +83,7 @@ export default function DEPage() {
       </main>
       <WhaleAlertPopup />
       <ChatWidget locale="de" />
+      {activeExchange && <ExchangeModal exchangeId={activeExchange} locale="de" onClose={close} />}
     </>
   );
 }
