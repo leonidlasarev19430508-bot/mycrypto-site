@@ -261,7 +261,7 @@ export function ExchangeModal({ exchangeId, locale = 'uk', onClose }: Props) {
 
           {/* Button */}
           <a
-            href={`/exchange/${ex.pageSlug}`}
+            href={locale === 'uk' ? `/exchange/${ex.pageSlug}` : `/${locale}/exchange/${ex.pageSlug}`}
             className="block w-full text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition text-sm"
           >
             {labels.more}
