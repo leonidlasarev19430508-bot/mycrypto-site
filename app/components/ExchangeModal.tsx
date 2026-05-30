@@ -6,9 +6,9 @@ type Locale = 'uk' | 'en' | 'pl' | 'de';
 interface ExchangeInfo {
   founded: string;
   coins: string;
-  volume: string;
+  volume: Record<Locale, string>;
   users: string;
-  headquarters: string;
+  headquarters: Record<Locale, string>;
   description: Record<Locale, string>;
   pros: Record<Locale, string[]>;
   pageSlug: string;
@@ -18,9 +18,9 @@ const EXCHANGES: Record<string, ExchangeInfo> = {
   binance: {
     founded: '2017',
     coins: '350+',
-    volume: '$15B+/день',
+    volume: { uk: '$15B+/день', en: '$15B+/day', pl: '$15B+/dzień', de: '$15B+/Tag' },
     users: '170M+',
-    headquarters: 'Кайманові острови',
+    headquarters: { uk: 'Кайманові острови', en: 'Cayman Islands', pl: 'Kajmany', de: 'Kaimaninseln' },
     description: {
       uk: 'Найбільша криптовалютна біржа у світі за обсягом торгів. Заснована Чанпен Чжао у 2017 році.',
       en: 'The world\'s largest crypto exchange by trading volume. Founded by Changpeng Zhao in 2017.',
@@ -38,9 +38,9 @@ const EXCHANGES: Record<string, ExchangeInfo> = {
   mexc: {
     founded: '2018',
     coins: '1500+',
-    volume: '$2B+/день',
+    volume: { uk: '$2B+/день', en: '$2B+/day', pl: '$2B+/dzień', de: '$2B+/Tag' },
     users: '10M+',
-    headquarters: 'Сейшельські острови',
+    headquarters: { uk: 'Сейшельські острови', en: 'Seychelles', pl: 'Seszele', de: 'Seychellen' },
     description: {
       uk: 'Популярна біржа з підтримкою гривні та україномовним інтерфейсом. Одна з найкращих для українців.',
       en: 'Popular exchange with UAH support and Ukrainian interface. One of the best for Ukrainians.',
@@ -58,9 +58,9 @@ const EXCHANGES: Record<string, ExchangeInfo> = {
   bybit: {
     founded: '2018',
     coins: '300+',
-    volume: '$8B+/день',
+    volume: { uk: '$8B+/день', en: '$8B+/day', pl: '$8B+/dzień', de: '$8B+/Tag' },
     users: '30M+',
-    headquarters: 'Дубай, ОАЕ',
+    headquarters: { uk: 'Дубай, ОАЕ', en: 'Dubai, UAE', pl: 'Dubaj, ZEA', de: 'Dubai, VAE' },
     description: {
       uk: 'Провідна біржа для активних трейдерів з плечем до 100x та copy trading.',
       en: 'Leading exchange for active traders with up to 100x leverage and copy trading.',
@@ -78,9 +78,9 @@ const EXCHANGES: Record<string, ExchangeInfo> = {
   kucoin: {
     founded: '2017',
     coins: '700+',
-    volume: '$1B+/день',
+    volume: { uk: '$1B+/день', en: '$1B+/day', pl: '$1B+/dzień', de: '$1B+/Tag' },
     users: '27M+',
-    headquarters: 'Сейшельські острови',
+    headquarters: { uk: 'Сейшельські острови', en: 'Seychelles', pl: 'Seszele', de: 'Seychellen' },
     description: {
       uk: 'Сучасна платформа з широким вибором монет, стейкінгом та Web3 інтеграцією.',
       en: 'Modern platform with wide coin selection, staking and Web3 integration.',
@@ -98,9 +98,9 @@ const EXCHANGES: Record<string, ExchangeInfo> = {
   okx: {
     founded: '2017',
     coins: '300+',
-    volume: '$5B+/день',
+    volume: { uk: '$5B+/день', en: '$5B+/day', pl: '$5B+/dzień', de: '$5B+/Tag' },
     users: '50M+',
-    headquarters: 'Сейшельські острови',
+    headquarters: { uk: 'Сейшельські острови', en: 'Seychelles', pl: 'Seszele', de: 'Seychellen' },
     description: {
       uk: 'Топова біржа з найнижчими комісіями 0.08%, Web3 гаманцем та NFT маркетплейсом.',
       en: 'Top exchange with lowest fees 0.08%, Web3 wallet and NFT marketplace.',
@@ -168,6 +168,14 @@ const LOGOS: Record<string, string> = {
   okx: '⚫',
 };
 
+const NAMES: Record<string, string> = {
+  binance: 'Binance',
+  mexc: 'MEXC',
+  bybit: 'Bybit',
+  kucoin: 'KuCoin',
+  okx: 'OKX',
+};
+
 interface Props {
   exchangeId: string;
   locale?: Locale;
@@ -204,9 +212,7 @@ export function ExchangeModal({ exchangeId, locale = 'uk', onClose }: Props) {
         <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="text-3xl">{LOGOS[exchangeId]}</span>
-            <h2 className="text-2xl font-black text-white">
-            {{ binance: 'Binance', mexc: 'MEXC', bybit: 'Bybit', kucoin: 'KuCoin', okx: 'OKX' }[exchangeId]}
-            </h2>
+            <h2 className="text-2xl font-black text-white">{NAMES[exchangeId]}</h2>
           </div>
           <button
             onClick={onClose}
@@ -225,7 +231,7 @@ export function ExchangeModal({ exchangeId, locale = 'uk', onClose }: Props) {
             {[
               { label: labels.founded, value: ex.founded },
               { label: labels.coins, value: ex.coins },
-              { label: labels.volume, value: ex.volume },
+              { label: labels.volume, value: ex.volume[locale] },
               { label: labels.users, value: ex.users },
             ].map(({ label, value }) => (
               <div key={label} className="bg-gray-50 rounded-xl p-3">
@@ -238,7 +244,7 @@ export function ExchangeModal({ exchangeId, locale = 'uk', onClose }: Props) {
           {/* HQ */}
           <div className="flex items-center gap-2 text-sm text-gray-500 mb-5">
             <span>📍</span>
-            <span>{labels.headquarters}: <strong className="text-gray-700">{ex.headquarters}</strong></span>
+            <span>{labels.headquarters}: <strong className="text-gray-700">{ex.headquarters[locale]}</strong></span>
           </div>
 
           {/* Pros */}
