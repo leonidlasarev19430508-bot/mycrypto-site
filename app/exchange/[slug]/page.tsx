@@ -77,7 +77,7 @@ const EXCHANGES: Record<string, {
     description: 'MEXC — популярна криптовалютна біржа з підтримкою гривні UAH та україномовним інтерфейсом. Відома найбільшим вибором альткоїнів та нульовою комісією на спотову торгівлю.',
     history: [
       { year: '2018', event: 'Заснування MEXC Global. Фокус на лістингу нових токенів.' },
-      { year: '2019', event: 'Запуск ф\'ючерсної торгівлі та маржинальної торгівлі.' },
+      { year: '2019', event: 'Запуск торгівлі деривативами та маржинальної торгівлі.' },
       { year: '2020', event: 'Понад 200 торгових пар. Розширення на азійські ринки.' },
       { year: '2021', event: 'Запуск підтримки UAH. Понад 1000 торгових пар.' },
       { year: '2022', event: 'Нульова комісія на спот-торгівлю для всіх користувачів.' },
@@ -123,7 +123,7 @@ const EXCHANGES: Record<string, {
     pros: ['Плече до 100x', 'Copy trading', 'Висока ліквідність', '24/7 підтримка', 'Великі бонуси для нових юзерів', 'Регульована біржа (VARA)'],
     cons: ['Складно для новачків', 'Фокус на деривативах'],
     features: [
-      { icon: '📊', title: 'Деривативи', description: 'Ф\'ючерси та опціони з плечем до 100x' },
+      { icon: '📊', title: 'Деривативи', description: 'Торгівля деривативами з плечем до 100x' },
       { icon: '🤝', title: 'Copy Trading', description: 'Копіюй угоди найкращих трейдерів автоматично' },
       { icon: '🏆', title: 'Торгові турніри', description: 'Регулярні змагання з призовим фондом $1M+' },
       { icon: '💎', title: 'Launchpad', description: 'Ексклюзивний доступ до нових проєктів' },
@@ -209,13 +209,18 @@ const EXCHANGES: Record<string, {
   },
 };
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const ex = EXCHANGES[params.slug];
+type PageProps = {
+  params: Promise<{ slug: string }>;
+};
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const ex = EXCHANGES[slug];
   if (!ex) return { title: 'Біржа не знайдена' };
   return {
     title: `${ex.name} — Огляд біржі 2026 | CryptoNavigator`,
     description: ex.description.slice(0, 160),
-    alternates: { canonical: `https://cryptotop.chat/exchange/${params.slug}` },
+    alternates: { canonical: `https://cryptotop.chat/exchange/${slug}` },
   };
 }
 
@@ -223,8 +228,9 @@ export function generateStaticParams() {
   return Object.keys(EXCHANGES).map(slug => ({ slug }));
 }
 
-export default function ExchangePage({ params }: { params: { slug: string } }) {
-  const ex = EXCHANGES[params.slug];
+export default async function ExchangePage({ params }: PageProps) {
+  const { slug } = await params;
+  const ex = EXCHANGES[slug];
   if (!ex) notFound();
 
   return (
