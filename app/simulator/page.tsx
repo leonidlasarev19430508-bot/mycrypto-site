@@ -398,24 +398,24 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
         <div className="bg-white border border-gray-100 rounded-xl p-3 shadow-sm">
-          <p className="text-xs text-gray-400">{t.freeBalance}</p>
+          <p className="text-xs font-semibold text-gray-600">{t.freeBalance}</p>
           <p className="text-lg font-black text-gray-900">${balance.toFixed(0)}</p>
-          <p className="text-xs text-gray-400">USDT</p>
+          <p className="text-xs text-gray-500">USDT</p>
         </div>
         <div className="bg-white border border-gray-100 rounded-xl p-3 shadow-sm">
-          <p className="text-xs text-gray-400">{t.portfolio}</p>
+          <p className="text-xs font-semibold text-gray-600">{t.portfolio}</p>
           <p className="text-lg font-black text-gray-900">${totalPortfolio.toFixed(0)}</p>
           <p className={`text-xs font-bold ${totalReturn >= 0 ? 'text-green-500' : 'text-red-500'}`}>{totalReturn >= 0 ? '+' : ''}{totalReturn.toFixed(2)}%</p>
         </div>
         <div className="bg-white border border-gray-100 rounded-xl p-3 shadow-sm">
-          <p className="text-xs text-gray-400">{t.openPos}</p>
+          <p className="text-xs font-semibold text-gray-600">{t.openPos}</p>
           <p className="text-lg font-black text-gray-900">{positions.length}</p>
-          <p className="text-xs text-gray-400">{t.trades}</p>
+          <p className="text-xs text-gray-500">{t.trades}</p>
         </div>
         <div className={`rounded-xl p-3 shadow-sm border ${totalPnl >= 0 ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
-          <p className="text-xs text-gray-400">{t.floatPnl}</p>
+          <p className="text-xs font-semibold text-gray-600">{t.floatPnl}</p>
           <p className={`text-lg font-black ${totalPnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>{totalPnl >= 0 ? '+' : ''}${totalPnl.toFixed(2)}</p>
-          <p className="text-xs text-gray-400">{t.unrealized}</p>
+          <p className="text-xs text-gray-500">{t.unrealized}</p>
         </div>
       </div>
 
@@ -458,26 +458,26 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
               <button onClick={() => setAmountType('usd')} className={`flex-1 py-1.5 rounded-md text-xs font-bold transition ${amountType === 'usd' ? 'bg-white shadow text-gray-900' : 'text-gray-500'}`}>{t.inDollars}</button>
               <button onClick={() => setAmountType('coin')} className={`flex-1 py-1.5 rounded-md text-xs font-bold transition ${amountType === 'coin' ? 'bg-white shadow text-gray-900' : 'text-gray-500'}`}>{t.inCoins}</button>
             </div>
-            <div className="mb-2">
+            <div className="mb-3">
               <input type="number" value={amount} onChange={e => setAmount(e.target.value)}
                 placeholder={amountType === 'usd' ? t.amountUsd : `${selectedCoin.symbol}...`}
                 className="w-full border border-gray-200 rounded-xl px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400" />
-              {usdEquivalent !== null && usdEquivalent > 0 && <p className="text-xs text-gray-400 mt-1">≈ ${usdEquivalent.toFixed(2)}</p>}
+              {usdEquivalent !== null && usdEquivalent > 0 && <p className="text-xs text-gray-500 mt-1">≈ ${usdEquivalent.toFixed(2)}</p>}
             </div>
-            <div className="flex gap-1 mb-3">
+            <div className="flex gap-1 mb-4">
               {(amountType === 'usd' ? [100, 500, 1000, 2000] : [0.001, 0.01, 0.1]).map(v => (
-                <button key={v} onClick={() => setAmount(String(v))} className="flex-1 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-xs font-bold text-gray-600 transition">
+                <button key={v} onClick={() => setAmount(String(v))} className="flex-1 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-xs font-bold text-gray-700 transition">
                   {amountType === 'usd' ? `$${v}` : v}
                 </button>
               ))}
             </div>
-            <p className="text-xs text-gray-400 mb-3">{t.available}: <span className="font-bold text-gray-700">${balance.toFixed(0)}</span></p>
+            <p className="text-xs text-gray-600 font-semibold mb-3">{t.available}: <span className="font-black text-gray-900">${balance.toFixed(0)}</span></p>
             <div className="space-y-2">
-              <button onClick={() => openPosition('buy')} disabled={!currentPrice} className="w-full py-3.5 bg-green-500 hover:bg-green-600 disabled:opacity-40 text-white font-black rounded-xl transition text-sm">
-                {t.buyBtn}<span className="block text-xs font-normal opacity-80">{t.buyHint}</span>
+              <button onClick={() => openPosition('buy')} disabled={!currentPrice} className="w-full py-4 bg-green-500 hover:bg-green-600 disabled:opacity-40 text-white font-black rounded-xl transition text-base">
+                {t.buyBtn}
               </button>
-              <button onClick={() => openPosition('sell')} disabled={!currentPrice} className="w-full py-3.5 bg-red-500 hover:bg-red-600 disabled:opacity-40 text-white font-black rounded-xl transition text-sm">
-                {t.sellBtn}<span className="block text-xs font-normal opacity-80">{t.sellHint}</span>
+              <button onClick={() => openPosition('sell')} disabled={!currentPrice} className="w-full py-4 bg-red-500 hover:bg-red-600 disabled:opacity-40 text-white font-black rounded-xl transition text-base">
+                {t.sellBtn}
               </button>
             </div>
           </div>
