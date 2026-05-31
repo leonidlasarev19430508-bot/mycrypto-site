@@ -167,8 +167,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="uk">
       <head>
-        <link rel="preconnect" href="https://ad.a-ads.com" />
-        <link rel="preconnect" href="https://static.a-ads.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         {/* Google Analytics */}
@@ -231,13 +229,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </main>
         <footer className="bg-gray-100 text-gray-600 text-center py-6 mt-12">
           <div className="max-w-6xl mx-auto px-4">
-            <div className="mb-6">
-              <iframe
-                data-aa='2437186'
-                src='//ad.a-ads.com/2437186/?size=300x250' title='Advertisement'
-                style={{border:0, padding:0, width:'300px', height:'250px', overflow:'hidden', display:'block', margin:'auto'}}
-              />
-            </div>
             <p>© 2026 CryptoNavigator. AI-powered crypto insights.</p>
           </div>
         </footer>
