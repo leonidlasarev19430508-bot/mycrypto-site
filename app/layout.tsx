@@ -230,7 +230,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="mb-6">
               <iframe
                 data-aa='2437186'
-                src='//ad.a-ads.com/2437186/?size=300x250'
+                src='//ad.a-ads.com/2437186/?size=300x250' title='Advertisement'
                 style={{border:0, padding:0, width:'300px', height:'250px', overflow:'hidden', display:'block', margin:'auto'}}
               />
             </div>

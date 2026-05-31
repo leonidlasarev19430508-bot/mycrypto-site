@@ -31,7 +31,7 @@ export default function WhaleAlertTicker(){
                 <span className='text-xs font-bold px-2 py-0.5 rounded bg-orange-100 text-orange-700'>{tx.symbol}</span>
                 <span className='text-white text-sm font-semibold'>{fmtUsd(tx.amountUsd)}</span>
                 <span className='text-gray-400 text-xs'>{tx.from} to {tx.to}</span>
-                <span className='text-gray-600 text-xs'>{timeAgo(tx.timestamp)}</span>
+                <span className='text-gray-400 text-xs'>{timeAgo(tx.timestamp)}</span>
               </div>
             ))}
           </div>
