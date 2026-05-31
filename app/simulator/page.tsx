@@ -382,7 +382,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
                 <div className="shrink-0 w-7 h-7 rounded-full bg-orange-500 text-white flex items-center justify-center font-black text-xs">{item.n}</div>
                 <div>
                   <p className="font-bold text-gray-800 text-sm">{item.icon} {item.t}</p>
-                  <p className="text-gray-800 text-sm mt-0.5 leading-relaxed font-medium">{item.d}</p>
+                  <p className="text-gray-900 text-sm mt-0.5 leading-relaxed font-bold">{item.d}</p>
                 </div>
               </div>
             ))}
@@ -429,7 +429,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
               return (
                 <button key={coin.id} onClick={() => setSelectedCoin(coin)}
                   className={`flex items-center gap-2 px-3 py-2 rounded-xl font-black transition ${selectedCoin.id === coin.id ? 'bg-gray-900 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:border-gray-400'}`}>
-                  <span className="text-base font-black">{coin.symbol}</span>
+                  <span className="text-lg font-black">{coin.symbol}</span>
                   {p && <span className={`text-base font-black ${selectedCoin.id === coin.id ? "text-gray-200" : up ? "text-green-700" : "text-red-700"}`}>${p > 1000 ? (p / 1000).toFixed(1) + 'K' : p.toFixed(2)}</span>}
                 </button>
               );
@@ -482,7 +482,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
             </div>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 text-sm text-blue-900 space-y-1.5">
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 text-sm text-blue-950 space-y-1.5 font-semibold">
             <p className="font-bold">{t.hint}</p>
             <p>{t.hintLong}</p>
             <p>{t.hintShort}</p>
