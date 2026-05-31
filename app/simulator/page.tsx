@@ -382,7 +382,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
                 <div className="shrink-0 w-7 h-7 rounded-full bg-orange-500 text-white flex items-center justify-center font-black text-xs">{item.n}</div>
                 <div>
                   <p className="font-bold text-gray-800 text-sm">{item.icon} {item.t}</p>
-                  <p className="text-gray-700 text-xs mt-0.5 leading-relaxed">{item.d}</p>
+                  <p className="text-gray-800 text-sm mt-0.5 leading-relaxed font-medium">{item.d}</p>
                 </div>
               </div>
             ))}
@@ -400,7 +400,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
         <div className="bg-white border border-gray-100 rounded-xl p-3 shadow-sm">
           <p className="text-xs font-semibold text-gray-600">{t.freeBalance}</p>
           <p className="text-lg font-black text-gray-900">${balance.toFixed(0)}</p>
-          <p className="text-xs text-gray-500">USDT</p>
+          <p className="text-xs text-gray-700 font-semibold">USDT</p>
         </div>
         <div className="bg-white border border-gray-100 rounded-xl p-3 shadow-sm">
           <p className="text-xs font-semibold text-gray-600">{t.portfolio}</p>
@@ -410,12 +410,12 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
         <div className="bg-white border border-gray-100 rounded-xl p-3 shadow-sm">
           <p className="text-xs font-semibold text-gray-600">{t.openPos}</p>
           <p className="text-lg font-black text-gray-900">{positions.length}</p>
-          <p className="text-xs text-gray-500">{t.trades}</p>
+          <p className="text-xs text-gray-700 font-semibold">{t.trades}</p>
         </div>
         <div className={`rounded-xl p-3 shadow-sm border ${totalPnl >= 0 ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
           <p className="text-xs font-semibold text-gray-600">{t.floatPnl}</p>
           <p className={`text-lg font-black ${totalPnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>{totalPnl >= 0 ? '+' : ''}${totalPnl.toFixed(2)}</p>
-          <p className="text-xs text-gray-500">{t.unrealized}</p>
+          <p className="text-xs text-gray-700 font-semibold">{t.unrealized}</p>
         </div>
       </div>
 
@@ -482,7 +482,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
             </div>
           </div>
 
-          <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 text-xs text-blue-700 space-y-1">
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 text-sm text-blue-900 space-y-1.5">
             <p className="font-bold">{t.hint}</p>
             <p>{t.hintLong}</p>
             <p>{t.hintShort}</p>
@@ -574,7 +574,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
           )}
         </div>
       </div>
-      <p className="text-center text-xs text-gray-500 font-medium mt-4">{t.footer}</p>
+      <p className="text-center text-sm text-gray-700 font-semibold mt-4">{t.footer}</p>
     </div>
   );
 }
