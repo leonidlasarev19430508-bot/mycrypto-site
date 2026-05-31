@@ -4,6 +4,13 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['@anthropic-ai/sdk'],
   },
+  async redirects() {
+    return [
+      { source: '/en/simulator', destination: '/simulator', permanent: false },
+      { source: '/pl/simulator', destination: '/simulator', permanent: false },
+      { source: '/de/simulator', destination: '/simulator', permanent: false },
+    ];
+  },
   async headers() {
     return [
       {
