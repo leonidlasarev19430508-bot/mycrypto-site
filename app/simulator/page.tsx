@@ -233,10 +233,10 @@ function TradingViewWidget({ tvSymbol, locale }: { tvSymbol: string; locale: str
     script.async = true;
     script.innerHTML = JSON.stringify({
       autosize: true, symbol: tvSymbol, interval: '15',
-      timezone: 'Europe/Kiev', theme: 'light', style: '1',
+      timezone: 'Europe/Kyiv', theme: 'light', style: '1',
       locale: locale === 'uk' ? 'uk' : locale === 'de' ? 'de_DE' : locale === 'pl' ? 'pl_PL' : 'en',
       toolbar_bg: '#f8f9fa', enable_publishing: false,
-      hide_top_toolbar: false, hide_legend: false, save_image: false,
+      hide_top_toolbar: false, hide_legend: false, save_image: false, refresh_rate: 15,
     });
     containerRef.current.appendChild(script);
   }, [tvSymbol, locale]);
@@ -428,16 +428,16 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
               const up = p && pp ? p >= pp : true;
               return (
                 <button key={coin.id} onClick={() => setSelectedCoin(coin)}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold transition ${selectedCoin.id === coin.id ? 'bg-gray-900 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:border-gray-400'}`}>
-                  <span>{coin.symbol}</span>
-                  {p && <span className={`text-sm font-black ${selectedCoin.id === coin.id ? "text-gray-200" : up ? "text-green-700" : "text-red-700"}`}>${p > 1000 ? (p / 1000).toFixed(1) + 'K' : p.toFixed(2)}</span>}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-xl font-black transition ${selectedCoin.id === coin.id ? 'bg-gray-900 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:border-gray-400'}`}>
+                  <span className="text-base font-black">{coin.symbol}</span>
+                  {p && <span className={`text-base font-black ${selectedCoin.id === coin.id ? "text-gray-200" : up ? "text-green-700" : "text-red-700"}`}>${p > 1000 ? (p / 1000).toFixed(1) + 'K' : p.toFixed(2)}</span>}
                 </button>
               );
             })}
             {loading && <span className="text-xs text-gray-400 self-center">{t.loading}</span>}
           </div>
           <div className="bg-white border border-gray-200 rounded-xl overflow-hidden" style={{ height: '420px' }}>
-            <TradingViewWidget tvSymbol={selectedCoin.tvSymbol} locale={locale} />
+            <TradingViewWidget key={selectedCoin.tvSymbol} tvSymbol={selectedCoin.tvSymbol} locale={locale} />
           </div>
         </div>
 
