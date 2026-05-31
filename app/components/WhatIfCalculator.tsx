@@ -137,13 +137,13 @@ export default function WhatIfCalculator({ locale = 'uk' }: Props) {
 
         {/* Amount */}
         <div className="mb-4">
-          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+          <label htmlFor="amount-input" className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
             {c.amount_label}
           </label>
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-medium">$</span>
             <input
-              type="number"
+              id="amount-input" type="number"
               value={amount}
               onChange={e => setAmount(Number(e.target.value))}
               min={1}
@@ -155,11 +155,11 @@ export default function WhatIfCalculator({ locale = 'uk' }: Props) {
 
         {/* Date */}
         <div className="mb-4">
-          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+          <label htmlFor="date-input" className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
             {c.date_label}
           </label>
           <input
-            type="date"
+            id="date-input" type="date"
             value={date}
             onChange={e => setDate(e.target.value)}
             min="2013-01-01"
