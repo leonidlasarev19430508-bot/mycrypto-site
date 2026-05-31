@@ -526,9 +526,9 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
                             <span className="text-xs text-gray-400">{pos.openedAt}</span>
                           </div>
                           <div className="grid grid-cols-3 gap-2 text-xs">
-                            <div><p className="text-gray-400">{t.size}</p><p className="font-bold">${pos.usdAmount.toFixed(0)}</p></div>
-                            <div><p className="text-gray-400">{t.entry}</p><p className="font-bold">${pos.entryPrice.toLocaleString()}</p></div>
-                            <div><p className="text-gray-400">{t.current}</p><p className="font-bold">${currentP?.toLocaleString() ?? '...'}</p></div>
+                            <div><p className="text-gray-600 font-semibold">{t.size}</p><p className="font-bold text-gray-900">${pos.usdAmount.toFixed(0)}</p></div>
+                            <div><p className="text-gray-600 font-semibold">{t.entry}</p><p className="font-bold text-gray-900">${pos.entryPrice.toLocaleString()}</p></div>
+                            <div><p className="text-gray-600 font-semibold">{t.current}</p><p className="font-bold text-gray-900">${currentP?.toLocaleString() ?? '...'}</p></div>
                           </div>
                         </div>
                         <div className="ml-4 text-right">
@@ -559,13 +559,13 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
                         <span className={`text-xs font-black px-2 py-0.5 rounded-full ${h.type === 'buy' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                           {h.type === 'buy' ? '📈 LONG' : '📉 SHORT'} {h.symbol}
                         </span>
-                        <span className="text-xs text-gray-400">{h.closedAt}</span>
+                        <span className="text-xs text-gray-500">{h.closedAt}</span>
                       </div>
-                      <p className="text-xs text-gray-500">${h.usdAmount.toFixed(0)} · {h.entryPrice.toLocaleString()} → {h.exitPrice.toLocaleString()}</p>
+                      <p className="text-xs text-gray-600 font-medium">${h.usdAmount.toFixed(0)} · {h.entryPrice.toLocaleString()} → {h.exitPrice.toLocaleString()}</p>
                     </div>
                     <div className="text-right">
                       <p className={`font-black text-sm ${h.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>{h.pnl >= 0 ? '+' : ''}${h.pnl.toFixed(2)}</p>
-                      <p className={`text-xs ${h.pnl >= 0 ? 'text-green-500' : 'text-red-500'}`}>{((h.pnl / h.usdAmount) * 100).toFixed(1)}%</p>
+                      <p className={`text-xs font-semibold ${h.pnl >= 0 ? 'text-green-500' : 'text-red-500'}`}>{((h.pnl / h.usdAmount) * 100).toFixed(1)}%</p>
                     </div>
                   </div>
                 ))}
@@ -574,7 +574,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
           )}
         </div>
       </div>
-      <p className="text-center text-xs text-gray-400 mt-4">{t.footer}</p>
+      <p className="text-center text-xs text-gray-500 font-medium mt-4">{t.footer}</p>
     </div>
   );
 }
