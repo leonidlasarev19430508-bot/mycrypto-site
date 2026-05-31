@@ -6,15 +6,6 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-const COIN_MAP: Record<string, string> = {
-  bitcoin: 'bitcoin', btc: 'bitcoin',
-  ethereum: 'ethereum', eth: 'ethereum',
-  solana: 'solana', sol: 'solana',
-  ripple: 'ripple', xrp: 'ripple',
-  cardano: 'cardano', ada: 'cardano',
-  dogecoin: 'dogecoin', doge: 'dogecoin',
-};
-
 function detectExchangeMention(message: string): string | null {
   const lower = message.toLowerCase();
   if (lower.includes('binance')) return 'binance';
@@ -78,36 +69,36 @@ const LANG_CONFIG: Record<string, {
 };
 
 export async function POST(request: Request) {
-  try {
-    const { message, history = [], userLevel = 'unknown', locale = 'uk' } = await request.json();
+  const lang = LANG_CONFIG['uk'];
+  let locale = 'uk';
 
-    const lang = LANG_CONFIG[locale] || LANG_CONFIG['uk'];
+  try {
+    const body = await request.json();
+    const { message, history = [], userLevel = 'unknown' } = body;
+    locale = body.locale || 'uk';
+    const langConfig = LANG_CONFIG[locale] || LANG_CONFIG['uk'];
 
     if (!message) {
       return NextResponse.json({ reply: 'Будь ласка, введіть питання.' });
     }
 
+    // Get news context — silently skip if DB fails
     let newsContext = '';
     try {
-      const newsResult = await pool.query(`
-        SELECT title, summary, sentiment, recommendation
-        FROM ai_news
-        ORDER BY created_at DESC
-        LIMIT 8
-      `);
+      const newsResult = await pool.query(
+        `SELECT title, sentiment, recommendation FROM ai_news ORDER BY created_at DESC LIMIT 5`
+      );
       if (newsResult.rows.length > 0) {
         newsContext = '\n\nLATEST CRYPTO NEWS:\n';
-        newsResult.rows.forEach((n, i) => {
-          newsContext += `${i + 1}. [${n.sentiment?.toUpperCase()}] ${n.title}\n`;
-          newsContext += `   ${n.summary?.slice(0, 120)}...\n`;
-          newsContext += `   → ${n.recommendation}\n\n`;
+        newsResult.rows.forEach((n: { title: string; sentiment: string; recommendation: string }, i: number) => {
+          newsContext += `${i + 1}. [${(n.sentiment || 'neutral').toUpperCase()}] ${n.title} → ${n.recommendation || ''}\n`;
         });
       }
-    } catch (dbError) {
-      console.error('DB Error:', dbError);
+    } catch {
+      // DB unavailable — continue without news context
     }
 
-    const levelInstruction = lang.levelInstructions[userLevel] || lang.levelInstructions['unknown'];
+    const levelInstruction = langConfig.levelInstructions[userLevel] || langConfig.levelInstructions['unknown'];
 
     const claudeHistory = history
       .slice(-10)
@@ -119,12 +110,12 @@ export async function POST(request: Request) {
     claudeHistory.push({ role: 'user', content: message });
 
     const systemPrompt = `You are CryptoBot, an expert AI crypto consultant on CryptoNavigator (cryptotop.chat).
-IMPORTANT: Always respond in ${lang.language}. Never switch languages.
+IMPORTANT: Always respond in ${langConfig.language}. Never switch languages.
 
 USER LEVEL: ${levelInstruction}
 
 RESPONSE STYLE:
-- Respond ONLY in ${lang.language}
+- Respond ONLY in ${langConfig.language}
 - Structure: short summary → details → practical advice
 - Use emojis organically
 - Length: 4-7 sentences for simple questions, up to 10 for complex ones
@@ -154,7 +145,7 @@ ${newsContext}`;
 
     let reply = response.content[0].type === 'text'
       ? response.content[0].text
-      : lang.errorMsg;
+      : langConfig.errorMsg;
 
     let ctaData = null;
 
@@ -171,10 +162,9 @@ ${newsContext}`;
 
     return NextResponse.json({ reply: reply.trim(), cta: ctaData });
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Chat API error:', error);
-    return NextResponse.json({
-      reply: '🤖 Sorry, an error occurred. Please try again!'
-    });
+    const errMsg = LANG_CONFIG[locale]?.errorMsg || lang.errorMsg;
+    return NextResponse.json({ reply: errMsg });
   }
 }
