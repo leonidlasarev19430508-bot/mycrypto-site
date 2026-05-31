@@ -372,7 +372,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
 
       <div className="mb-4 border border-gray-200 rounded-xl overflow-hidden">
         <button onClick={() => setHowOpen(!howOpen)} className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition text-left">
-          <span className="font-semibold text-gray-600 text-sm">{t.howTitle}</span>
+          <span className="font-semibold text-gray-800 text-sm">{t.howTitle}</span>
           <span className="text-gray-400">{howOpen ? '▲' : '▼'}</span>
         </button>
         {howOpen && (
@@ -382,7 +382,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
                 <div className="shrink-0 w-7 h-7 rounded-full bg-orange-500 text-white flex items-center justify-center font-black text-xs">{item.n}</div>
                 <div>
                   <p className="font-bold text-gray-800 text-sm">{item.icon} {item.t}</p>
-                  <p className="text-gray-500 text-xs mt-0.5 leading-relaxed">{item.d}</p>
+                  <p className="text-gray-700 text-xs mt-0.5 leading-relaxed">{item.d}</p>
                 </div>
               </div>
             ))}
