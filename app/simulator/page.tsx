@@ -366,7 +366,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
             <h1 className="text-2xl md:text-3xl font-black text-gray-900">🎮 CryptoNavigator Simulator</h1>
             <p className="text-gray-500 text-sm mt-1">{t.subtitle}</p>
           </div>
-          <button onClick={reset} className="text-xs text-gray-600 hover:text-red-500 underline transition font-medium">{t.reset}</button>
+          <button onClick={reset} className="text-sm text-gray-700 hover:text-red-500 underline transition font-semibold">{t.reset}</button>
         </div>
       </div>
 
@@ -430,7 +430,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
                 <button key={coin.id} onClick={() => setSelectedCoin(coin)}
                   className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-bold transition ${selectedCoin.id === coin.id ? 'bg-gray-900 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:border-gray-400'}`}>
                   <span>{coin.symbol}</span>
-                  {p && <span className={`text-xs font-normal ${selectedCoin.id === coin.id ? 'text-gray-300' : up ? 'text-green-500' : 'text-red-500'}`}>${p > 1000 ? (p / 1000).toFixed(1) + 'K' : p.toFixed(2)}</span>}
+                  {p && <span className={`text-sm font-black ${selectedCoin.id === coin.id ? "text-gray-200" : up ? "text-green-700" : "text-red-700"}`}>${p > 1000 ? (p / 1000).toFixed(1) + 'K' : p.toFixed(2)}</span>}
                 </button>
               );
             })}
