@@ -366,7 +366,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
             <h1 className="text-2xl md:text-3xl font-black text-gray-900">🎮 CryptoNavigator Simulator</h1>
             <p className="text-gray-500 text-sm mt-1">{t.subtitle}</p>
           </div>
-          <button onClick={reset} className="text-xs text-gray-400 hover:text-red-500 underline transition">{t.reset}</button>
+          <button onClick={reset} className="text-xs text-gray-600 hover:text-red-500 underline transition font-medium">{t.reset}</button>
         </div>
       </div>
 
