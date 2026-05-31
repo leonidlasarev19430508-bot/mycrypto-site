@@ -56,7 +56,8 @@ export default function ClientHeader() {
     { href: getLocalizedPath(locale, 'faq'), label: 'FAQ' },
     { href: getLocalizedPath(locale, 'about'), label: labels.about[locale] },
     { href: getLocalizedPath(locale, 'learn'), label: labels.learn[locale] },
-  ];
+    { href: getLocalizedPath(locale, 'simulator'), label: { uk: '🎮 Симулятор', en: '🎮 Simulator', pl: '🎮 Symulator', de: '🎮 Simulator' }[locale] },
+   ];
 
   return (
     <header className="bg-black text-white">
