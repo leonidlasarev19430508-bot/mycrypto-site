@@ -73,7 +73,26 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   const sentiment = article.sentiment?.toLowerCase() || 'neutral';
   const rec = article.recommendation?.toLowerCase() || 'hold';
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": article.title,
+    "description": article.summary?.slice(0, 160) || "",
+    "datePublished": article.published_at,
+    "dateModified": article.published_at,
+    "author": { "@type": "Organization", "name": "CryptoNavigator" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "CryptoNavigator",
+      "logo": { "@type": "ImageObject", "url": "https://cryptotop.chat/favicon.ico" }
+    },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": `https://cryptotop.chat/blog/${article.id}` },
+    "keywords": (article.coin_name || "") + ", cryptocurrency, crypto news",
+  };
+
   return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     <div className="max-w-3xl mx-auto px-4 py-10">
       <Link href="/blog" className="text-orange-500 hover:underline text-sm font-semibold mb-6 inline-block">
         ← Назад до блогу
@@ -134,5 +153,6 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         </a>
       )}
     </div>
+    </>
   );
 }
