@@ -27,8 +27,9 @@ async function getArticle(id: string): Promise<Article | null> {
   } catch { return null; }
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const article = await getArticle(params.id);
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const article = await getArticle(id);
   if (!article) return { title: 'Article not found' };
   return {
     title: `${article.title} | CryptoNavigator Blog`,
@@ -37,7 +38,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
       title: article.title,
       description: article.summary?.slice(0, 160) || '',
       type: 'article',
-      url: `https://cryptotop.chat/blog/${params.id}`,
+      url: `https://cryptotop.chat/blog/${id}`,
     },
   };
 }
@@ -60,8 +61,9 @@ const REC_LABELS: Record<string, string> = {
   hold: '⏸ Тримати',
 };
 
-export default async function ArticlePage({ params }: { params: { id: string } }) {
-  const article = await getArticle(params.id);
+export default async function ArticlePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const article = await getArticle(id);
   if (!article) notFound();
 
   const date = new Date(article.published_at).toLocaleDateString('uk-UA', {
