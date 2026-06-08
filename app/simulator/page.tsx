@@ -429,7 +429,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
               return (
                 <button key={coin.id} onClick={() => setSelectedCoin(coin)}
                   className={`flex items-center gap-2 px-3 py-2 rounded-xl font-black transition ${selectedCoin.id === coin.id ? 'bg-gray-900 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:border-gray-400'}`}>
-                  <span className="text-lg font-black">{coin.symbol}</span>
+                  <span className="text-lg font-black">{coin.symbol}/USDT</span>
                   {p && <span className={`text-base font-black ${selectedCoin.id === coin.id ? "text-gray-200" : up ? "text-green-700" : "text-red-700"}`}>${p > 1000 ? (p / 1000).toFixed(1) + 'K' : p.toFixed(2)}</span>}
                 </button>
               );
@@ -574,7 +574,37 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
           )}
         </div>
       </div>
-      <p className="text-center text-sm text-gray-700 font-semibold mt-4">{t.footer}</p>
+      {/* Exchange CTA Block */}
+      <div className="mt-6 bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-2xl p-5">
+        <p className="text-center font-black text-gray-900 mb-1 text-base">
+          {locale === 'uk' ? '🚀 Готовий торгувати реально?' : locale === 'de' ? '🚀 Bereit für echten Handel?' : locale === 'pl' ? '🚀 Gotowy na prawdziwy handel?' : '🚀 Ready to trade for real?'}
+        </p>
+        <p className="text-center text-sm text-gray-600 font-semibold mb-4">
+          {locale === 'uk' ? 'Відкрий рахунок на надійній біржі з бонусом' : locale === 'de' ? 'Eröffne ein Konto mit Bonus' : locale === 'pl' ? 'Otwórz konto z bonusem' : 'Open an account on a trusted exchange with bonus'}
+        </p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <a href="https://www.binance.com/register?ref=Q5HR1JVW" target="_blank" rel="noopener noreferrer"
+            className="flex flex-col items-center gap-1 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-black rounded-xl py-3 px-2 transition text-center">
+            <span className="text-base">🏆 Binance</span>
+            <span className="text-xs font-bold">Бонус $600</span>
+          </a>
+          <a href="https://www.bybit.com/register?ref=CRYPTONAV" target="_blank" rel="noopener noreferrer"
+            className="flex flex-col items-center gap-1 bg-orange-500 hover:bg-orange-600 text-white font-black rounded-xl py-3 px-2 transition text-center">
+            <span className="text-base">⚡ Bybit</span>
+            <span className="text-xs font-bold">Бонус $30K</span>
+          </a>
+          <a href="https://www.okx.com/join/CRYPTONAV" target="_blank" rel="noopener noreferrer"
+            className="flex flex-col items-center gap-1 bg-gray-900 hover:bg-gray-700 text-white font-black rounded-xl py-3 px-2 transition text-center">
+            <span className="text-base">🌐 OKX</span>
+            <span className="text-xs font-bold">Mystery Box</span>
+          </a>
+          <a href="https://www.kucoin.com/r/rf/CXEPY4S5" target="_blank" rel="noopener noreferrer"
+            className="flex flex-col items-center gap-1 bg-green-500 hover:bg-green-600 text-white font-black rounded-xl py-3 px-2 transition text-center">
+            <span className="text-base">🟢 KuCoin</span>
+            <span className="text-xs font-bold">Бонус $500</span>
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
