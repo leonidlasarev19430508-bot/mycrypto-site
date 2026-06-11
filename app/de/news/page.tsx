@@ -1,5 +1,5 @@
-import NewsPage from '../../news/page';
-export const dynamic = 'force-dynamic';
-export default function DENewsPage() {
-  return <NewsPage locale="de" />;
+import { redirect } from 'next/navigation';
+
+export default function NewsPage() {
+  redirect('/de/blog');
 }
