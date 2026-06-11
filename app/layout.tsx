@@ -1,5 +1,6 @@
 import ClientHeader from './components/ClientHeader';
 import LocaleWelcomeBubble from './components/LocaleWelcomeBubble';
+import Footer from './components/Footer';
 import "./globals.css";
 
 export const metadata = {
@@ -65,7 +66,7 @@ const faqJsonLd = {
       name: 'З якої біржі краще почати новачку?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Для початківців найкраще підходять Binance або WhiteBIT. Binance — найбільша біржа світу. WhiteBIT — українська біржа з простим інтерфейсом.',
+        text: 'Для початківців найкраще підходять Binance або Bybit. Binance — найбільша біржа світу з низькими комісіями.',
       },
     },
     {
@@ -93,7 +94,7 @@ const exchangesJsonLd = {
         '@type': 'FinancialService',
         name: 'Binance',
         description: 'Найбільша криптовалютна біржа у світі з низькими комісіями 0.1%',
-        url: 'https://www.binance.com/register?ref=GRO_28502_BIO0R',
+        url: 'https://www.binance.com/register?ref=Q5HR1JVW',
         aggregateRating: {
           '@type': 'AggregateRating',
           ratingValue: '4.8',
@@ -117,7 +118,7 @@ const exchangesJsonLd = {
         '@type': 'FinancialService',
         name: 'Bybit',
         description: 'Провідна біржа для активних трейдерів з плечем до 100x',
-        url: 'https://www.bybit.com/register',
+        url: 'https://www.bybit.com/register?ref=CRYPTONAV',
         aggregateRating: {
           '@type': 'AggregateRating',
           ratingValue: '4.6',
@@ -181,12 +182,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{
             __html: `
               document.addEventListener('DOMContentLoaded', function() {
-                document.querySelectorAll('a[href*="binance.com"], a[href*="bybit.com"], a[href*="okx.com"], a[href*="whitebit.com"]').forEach(function(link) {
+                document.querySelectorAll('a[href*="binance.com"], a[href*="bybit.com"], a[href*="okx.com"], a[href*="kucoin.com"]').forEach(function(link) {
                   link.addEventListener('click', function() {
                     var exchange = link.href.includes('binance') ? 'Binance'
                       : link.href.includes('bybit') ? 'Bybit'
                       : link.href.includes('okx') ? 'OKX'
-                      : 'WhiteBIT';
+                      : 'KuCoin';
                     gtag('event', 'exchange_click', {
                       'exchange_name': exchange,
                       'page_location': window.location.pathname
@@ -223,12 +224,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="min-h-screen">
           {children}
         </main>
-        <footer className="bg-gray-100 text-gray-600 text-center py-6 mt-12">
-          <div className="max-w-6xl mx-auto px-4">
-            <p>© 2026 CryptoNavigator. AI-powered crypto insights.</p>
-          </div>
-        </footer>
-        {/* Welcome Bubble — AI асистент */}
+        <Footer />
         <LocaleWelcomeBubble />
       </body>
     </html>
