@@ -83,7 +83,9 @@ export default function Footer() {
         </div>
 
         {/* Bottom line */}
-        <div className="border-t border-gray-800 mt-6 pt-4 text-center text-sm">
+        <<div className="border-t border-gray-800 mt-6 pt-4 text-center text-xs">
+            <p>{t.rights}</p>
+          </div>-6 pt-4 text-center text-sm">
           <p>{t.rights}</p>
         </div>
       </div>
