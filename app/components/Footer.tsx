@@ -66,7 +66,7 @@ export default function Footer() {
           </div>
 
           {/* Legal links */}
-          <nav className="flex flex-wrap gap-4 text-xs justify-center">
+          <nav className="flex flex-wrap gap-4 text-sm justify-center">
             <Link href={`${prefix}/disclaimer`} className="hover:text-orange-400 transition">
               {t.disclaimer}
             </Link>
@@ -83,7 +83,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom line */}
-        <div className="border-t border-gray-800 mt-6 pt-4 text-center text-xs">
+        <div className="border-t border-gray-800 mt-6 pt-4 text-center text-sm">
           <p>{t.rights}</p>
         </div>
       </div>
