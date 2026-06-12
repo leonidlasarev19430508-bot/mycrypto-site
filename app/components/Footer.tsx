@@ -82,10 +82,24 @@ export default function Footer() {
           </nav>
         </div>
 
+        {/* Product Hunt Badge */}
+        <div className="flex justify-center mt-6">
+          <a
+            href="https://www.producthunt.com/posts/cryptonavigator"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=cryptonavigator&theme=dark"
+              alt="CryptoNavigator - Featured on Product Hunt"
+              width="250"
+              height="54"
+            />
+          </a>
+        </div>
+
         {/* Bottom line */}
-        <<div className="border-t border-gray-800 mt-6 pt-4 text-center text-xs">
-            <p>{t.rights}</p>
-          </div>-6 pt-4 text-center text-sm">
+        <div className="border-t border-gray-800 mt-6 pt-4 text-center text-xs">
           <p>{t.rights}</p>
         </div>
       </div>
