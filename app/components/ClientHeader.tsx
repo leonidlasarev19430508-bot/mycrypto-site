@@ -13,6 +13,23 @@ const LOCALE_LABELS: Record<Locale, string> = {
 
 const LOCALES: Locale[] = ['uk', 'pl', 'de', 'en'];
 
+// Сторінки, для яких реально існують локалізовані версії під /en, /de, /pl.
+// Усе, чого тут немає (монети, окремі статті блогу, юридичні сторінки тощо),
+// при перемиканні мови веде на головну сторінку обраної локалі, а не на биту адресу.
+const LOCALIZABLE_PAGES = new Set([
+  '',
+  'coins',
+  'bonuses',
+  'markets',
+  'news',
+  'assistant',
+  'blog',
+  'faq',
+  'about',
+  'learn',
+  'simulator',
+]);
+
 function getLocalizedPath(locale: Locale, page: string): string {
   const prefix = locale === 'uk' ? '' : `/${locale}`;
   return page === '' ? (prefix || '/') : `${prefix}/${page}`;
@@ -22,6 +39,16 @@ function getCurrentPage(pathname: string, locale: Locale): string {
   const prefix = locale === 'uk' ? '' : `/${locale}`;
   const page = prefix ? pathname.replace(prefix, '') : pathname;
   return page.replace(/^\//, '') || '';
+}
+
+// Безпечний шлях для перемикача мов: якщо поточна сторінка не має
+// локалізованої версії — ведемо на головну цієї локалі замість 404.
+function getSafeSwitchPath(locale: Locale, currentPage: string): string {
+  const baseSegment = currentPage.split('/')[0] || '';
+  if (LOCALIZABLE_PAGES.has(baseSegment)) {
+    return getLocalizedPath(locale, currentPage);
+  }
+  return getLocalizedPath(locale, '');
 }
 
 export default function ClientHeader() {
@@ -80,7 +107,7 @@ export default function ClientHeader() {
           {/* Language switcher */}
           <div className="flex gap-1 ml-2 border-l border-gray-600 pl-3">
             {LOCALES.map(l => (
-              <Link key={l} href={getLocalizedPath(l, currentPage)}
+              <Link key={l} href={getSafeSwitchPath(l, currentPage)}
                 className={`text-xs px-2 py-1 rounded transition-colors ${
                   locale === l ? 'text-white font-bold bg-gray-700' : 'text-gray-400 hover:text-white hover:bg-gray-800'
                 }`}>
@@ -95,7 +122,7 @@ export default function ClientHeader() {
           {/* Language switcher mobile */}
           <div className="flex gap-1">
             {LOCALES.map(l => (
-              <Link key={l} href={getLocalizedPath(l, currentPage)}
+              <Link key={l} href={getSafeSwitchPath(l, currentPage)}
                 className={`text-xs px-1.5 py-1 rounded transition-colors ${
                   locale === l ? 'text-white font-bold bg-gray-700' : 'text-gray-400 hover:text-white'
                 }`}>
