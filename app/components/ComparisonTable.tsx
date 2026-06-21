@@ -68,7 +68,7 @@ export default function ComparisonTable({ locale = 'uk' }: ComparisonTableProps)
                 <td className="px-4 py-4 text-center font-semibold text-gray-700">{ex.coins}</td>
                 <td className="px-4 py-4 text-center text-sm font-bold text-green-600">{ex.bonus}</td>
                 <td className="px-4 py-4 text-center">
-                  <a href={ex.affiliate} target="_blank" rel="noopener noreferrer"
+                  <a href={ex.affiliate} target="_blank" rel="sponsored noopener noreferrer"
                     className="inline-block bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold px-4 py-2 rounded-lg transition whitespace-nowrap">
                     {l.register}
                   </a>
@@ -104,7 +104,7 @@ export default function ComparisonTable({ locale = 'uk' }: ComparisonTableProps)
                 <p className="font-bold text-sm">{ex.rating}</p>
               </div>
             </div>
-            <a href={ex.affiliate} target="_blank" rel="noopener noreferrer"
+            <a href={ex.affiliate} target="_blank" rel="sponsored noopener noreferrer"
               className="block w-full text-center bg-orange-500 text-white font-bold py-2 rounded-lg text-sm">
               {l.register}
             </a>

@@ -122,7 +122,7 @@ export default function BonusesPage() {
                   <p className="text-xl font-black text-gray-900">{ex.fee}</p>
                   <p className="text-xs text-green-600 font-semibold">{ex.feeDiscount}</p>
                 </div>
-                <a href={ex.affiliate} target="_blank" rel="noopener noreferrer"
+                <a href={ex.affiliate} target="_blank" rel="sponsored noopener noreferrer"
                   className="block w-full text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-xl transition text-sm">
                   Отримати бонус →
                 </a>

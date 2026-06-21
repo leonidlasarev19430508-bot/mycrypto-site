@@ -250,7 +250,7 @@ export default async function ExchangePage({ params }: PageProps) {
             </div>
           </div>
           <p className="text-lg opacity-90 max-w-2xl leading-relaxed">{ex.description}</p>
-          <a href={ex.affiliate} target="_blank" rel="noopener noreferrer"
+          <a href={ex.affiliate} target="_blank" rel="sponsored noopener noreferrer"
             className="inline-block mt-6 bg-white text-gray-900 font-black px-8 py-3 rounded-2xl hover:scale-105 transition-transform text-sm">
             Зареєструватись на {ex.name} →
           </a>
@@ -280,7 +280,7 @@ export default async function ExchangePage({ params }: PageProps) {
           <p className="text-3xl font-black">{ex.bonus}</p>
           <p className="text-orange-100 text-sm mt-1">{ex.bonusDetails}</p>
         </div>
-        <a href={ex.affiliate} target="_blank" rel="noopener noreferrer"
+        <a href={ex.affiliate} target="_blank" rel="sponsored noopener noreferrer"
           className="shrink-0 bg-white text-orange-600 font-black px-6 py-3 rounded-xl hover:bg-orange-50 transition text-sm whitespace-nowrap">
           Отримати бонус →
         </a>
@@ -372,7 +372,7 @@ export default async function ExchangePage({ params }: PageProps) {
       <div className="text-center bg-gray-900 rounded-3xl p-10 text-white">
         <p className="text-3xl font-black mb-2">Готовий почати?</p>
         <p className="text-gray-400 mb-6">Зареєструйся на {ex.name} і отримай бонус {ex.bonus}</p>
-        <a href={ex.affiliate} target="_blank" rel="noopener noreferrer"
+        <a href={ex.affiliate} target="_blank" rel="sponsored noopener noreferrer"
           className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-black px-10 py-4 rounded-2xl transition text-lg">
           Зареєструватись на {ex.name} →
         </a>
