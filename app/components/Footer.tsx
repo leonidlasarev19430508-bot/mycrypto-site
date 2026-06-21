@@ -1,10 +1,17 @@
 'use client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-export default function Footer() {
+function FooterInner() {
   const pathname = usePathname();
-  const locale = pathname.startsWith('/en') ? 'en'
+  const searchParams = useSearchParams();
+  const langParam = searchParams.get('lang');
+  const isArticlePage = /^\/blog\/[^/]+$/.test(pathname);
+
+  const locale = isArticlePage && (langParam === 'en' || langParam === 'pl' || langParam === 'de')
+    ? langParam
+    : pathname.startsWith('/en') ? 'en'
     : pathname.startsWith('/pl') ? 'pl'
     : pathname.startsWith('/de') ? 'de'
     : 'uk';
@@ -116,5 +123,14 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+  );
+}
+
+// Suspense-обгортка: useSearchParams() у Next.js 16 вимагає Suspense-межі
+export default function Footer() {
+  return (
+    <Suspense fallback={null}>
+      <FooterInner />
+    </Suspense>
   );
 }
