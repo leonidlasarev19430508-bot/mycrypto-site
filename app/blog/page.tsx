@@ -177,7 +177,7 @@ export default function BlogPage() {
       {/* Header */}
       <div className="text-center mb-10">
         <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-3">{t.title}</h1>
-        <p className="text-gray-500 text-lg">{t.subtitle}</p>
+        <p className="text-gray-600 text-lg">{t.subtitle}</p>
       </div>
 
       {/* Sentiment filter */}
@@ -194,7 +194,7 @@ export default function BlogPage() {
             className={`px-4 py-2 rounded-xl text-sm font-semibold transition ${
               sentiment === value
                 ? 'bg-orange-500 text-white shadow-md'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
             {label}
@@ -204,7 +204,7 @@ export default function BlogPage() {
 
       {/* Stats */}
       {!loading && (
-        <p className="text-center text-sm text-gray-400 mb-6">
+        <p className="text-center text-sm text-gray-500 mb-6">
           {total} {locale === 'uk' ? 'статей' : locale === 'pl' ? 'artykułów' : locale === 'de' ? 'Artikel' : 'articles'}
         </p>
       )}
@@ -213,10 +213,10 @@ export default function BlogPage() {
       {loading && articles.length === 0 ? (
         <div className="text-center py-20">
           <div className="inline-block w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mb-4" />
-          <p className="text-gray-500">{t.loading}</p>
+          <p className="text-gray-600">{t.loading}</p>
         </div>
       ) : articles.length === 0 ? (
-        <div className="text-center py-20 text-gray-400">
+        <div className="text-center py-20 text-gray-500">
           <p className="text-3xl mb-2">📭</p>
           <p>{t.noArticles}</p>
         </div>
@@ -237,16 +237,16 @@ export default function BlogPage() {
                     {article.sentiment === 'positive' ? '📈' : article.sentiment === 'negative' ? '📉' : '⚖️'}
                   </span>
                 </div>
-                <span className="text-xs text-gray-400">{timeAgo(article.published_at, locale)}</span>
+                <span className="text-xs text-gray-500">{timeAgo(article.published_at, locale)}</span>
               </div>
 
               {/* Title */}
-              <h2 className="font-bold text-gray-900 text-sm leading-snug mb-3 flex-1 line-clamp-3">
+              <h2 className="font-bold text-gray-900 text-base leading-snug mb-3 flex-1 line-clamp-3">
                 {article.title}
               </h2>
 
               {/* Summary */}
-              <p className="text-xs text-gray-500 leading-relaxed mb-4 line-clamp-5">
+              <p className="text-sm text-gray-700 leading-relaxed mb-4 line-clamp-5">
                 {article.summary}
               </p>
 
