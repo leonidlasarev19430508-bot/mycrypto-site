@@ -255,7 +255,7 @@ export default function BlogPage() {
                 <span className={`text-xs font-bold px-2 py-1 rounded-lg border ${recommendationColor(article.recommendation)}`}>
                   {recommendationLabel(article.recommendation)}
                 </span>
-                
+                <a
                   href={article.source_url}
                   target="_blank"
                   rel="noopener noreferrer"
