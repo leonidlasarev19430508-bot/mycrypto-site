@@ -10,11 +10,33 @@ function getSql() {
   return neon(process.env.DATABASE_URL);
 }
 
-const BINANCE_KLINES_URL = 'https://api.binance.com/api/v3/klines';
+const KRAKEN_OHLC_URL = 'https://api.kraken.com/0/public/OHLC';
 
-// Дозволені інтервали (відповідають Binance API)
+// Дозволені інтервали (наша внутрішня нотація)
 const ALLOWED_INTERVALS = ['1m', '5m', '15m', '1h', '4h', '1d'] as const;
 type Interval = typeof ALLOWED_INTERVALS[number];
+
+// Kraken очікує інтервал у хвилинах
+const INTERVAL_TO_MINUTES: Record<Interval, number> = {
+  '1m': 1,
+  '5m': 5,
+  '15m': 15,
+  '1h': 60,
+  '4h': 240,
+  '1d': 1440,
+};
+
+// Мапа наших символів (у стилі Binance, напр. BTCUSDT) на пари Kraken.
+// Розширюйте за потреби, коли додаватимете нові монети.
+const SYMBOL_TO_KRAKEN_PAIR: Record<string, string> = {
+  BTCUSDT: 'XBTUSDT',
+  ETHUSDT: 'ETHUSDT',
+  SOLUSDT: 'SOLUSDT',
+  XRPUSDT: 'XRPUSDT',
+  ADAUSDT: 'ADAUSDT',
+  DOGEUSDT: 'DOGEUSDT',
+  BNBUSDT: 'BNBUSDT',
+};
 
 interface Candle {
   openTime: number;
@@ -53,6 +75,14 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  const krakenPair = SYMBOL_TO_KRAKEN_PAIR[symbol];
+  if (!krakenPair) {
+    return NextResponse.json(
+      { error: `Символ ${symbol} поки не підтримується. Додайте мапінг у SYMBOL_TO_KRAKEN_PAIR.` },
+      { status: 400 }
+    );
+  }
+
   const fromTs = parseInt(from, 10);
   const toTs = parseInt(to, 10);
 
@@ -72,8 +102,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ candles: cached, source: 'cache' });
     }
 
-    // 3. Інакше тягнемо свіжі дані з Binance і кешуємо
-    const fresh = await fetchFromBinance(symbol, interval, fromTs, toTs);
+    // 3. Інакше тягнемо свіжі дані з Kraken і кешуємо
+    const fresh = await fetchFromKraken(krakenPair, interval, fromTs, toTs);
 
     if (fresh.length === 0) {
       return NextResponse.json(
@@ -84,11 +114,11 @@ export async function GET(request: NextRequest) {
 
     await cacheCandles(symbol, interval, fresh);
 
-    return NextResponse.json({ candles: fresh, source: 'binance' });
+    return NextResponse.json({ candles: fresh, source: 'kraken' });
   } catch (error) {
     console.error('Помилка отримання historical candles:', error);
     return NextResponse.json(
-      { error: 'Внутрішня помилка сервера при отриманні даних' },
+      { error: 'Внутрішня помилка сервера при отриманні даних', details: String(error) },
       { status: 500 }
     );
   }
@@ -126,8 +156,6 @@ async function getCachedCandles(
 
 /**
  * Перевіряє, чи кеш покриває весь запитаний діапазон без великих "дірок".
- * Спрощена евристика: порівнюємо кількість отриманих свічок з очікуваною
- * кількістю для даного інтервалу й діапазону.
  */
 function isCoverageComplete(
   candles: Candle[],
@@ -143,70 +171,75 @@ function isCoverageComplete(
 }
 
 function intervalToMs(interval: Interval): number {
-  const map: Record<Interval, number> = {
-    '1m': 60_000,
-    '5m': 5 * 60_000,
-    '15m': 15 * 60_000,
-    '1h': 60 * 60_000,
-    '4h': 4 * 60 * 60_000,
-    '1d': 24 * 60 * 60_000,
-  };
-  return map[interval];
+  return INTERVAL_TO_MINUTES[interval] * 60_000;
 }
 
 /**
- * Тягне історичні свічки з Binance public API.
- * Binance віддає максимум 1000 свічок за один запит — за потреби робимо пагінацію.
+ * Тягне історичні свічки з Kraken public API.
+ * Kraken повертає максимум 720 свічок за один запит — робимо пагінацію через `since`.
+ * Документація: https://docs.kraken.com/api/docs/rest-api/get-ohlc-data
  */
-async function fetchFromBinance(
-  symbol: string,
+async function fetchFromKraken(
+  pair: string,
   interval: Interval,
   from: number,
   to: number
 ): Promise<Candle[]> {
   const allCandles: Candle[] = [];
-  let currentFrom = from;
-  const MAX_LIMIT = 1000;
+  const minutes = INTERVAL_TO_MINUTES[interval];
+  let sinceSeconds = Math.floor(from / 1000);
+  const toSeconds = Math.floor(to / 1000);
 
-  while (currentFrom < to) {
-    const url = new URL(BINANCE_KLINES_URL);
-    url.searchParams.set('symbol', symbol);
-    url.searchParams.set('interval', interval);
-    url.searchParams.set('startTime', currentFrom.toString());
-    url.searchParams.set('endTime', to.toString());
-    url.searchParams.set('limit', MAX_LIMIT.toString());
+  // Запобіжник від нескінченного циклу
+  let iterations = 0;
+  const MAX_ITERATIONS = 20;
+
+  while (sinceSeconds < toSeconds && iterations < MAX_ITERATIONS) {
+    iterations++;
+
+    const url = new URL(KRAKEN_OHLC_URL);
+    url.searchParams.set('pair', pair);
+    url.searchParams.set('interval', minutes.toString());
+    url.searchParams.set('since', sinceSeconds.toString());
 
     const response = await fetch(url.toString());
 
     if (!response.ok) {
-      // Binance повертає 400 якщо символ невірний тощо
       const errBody = await response.text();
-      throw new Error(`Binance API помилка: ${response.status} ${errBody}`);
+      throw new Error(`Kraken API помилка: ${response.status} ${errBody}`);
     }
 
     const data = await response.json();
 
-    if (!Array.isArray(data) || data.length === 0) {
-      break;
+    if (data.error && data.error.length > 0) {
+      throw new Error(`Kraken API помилка: ${data.error.join(', ')}`);
     }
 
-    for (const k of data) {
+    // Результат лежить під ключем пари, напр. data.result['XBTUSDT']
+    const resultKeys = Object.keys(data.result || {}).filter((k) => k !== 'last');
+    if (resultKeys.length === 0) break;
+
+    const rows: any[] = data.result[resultKeys[0]];
+    if (!Array.isArray(rows) || rows.length === 0) break;
+
+    for (const r of rows) {
+      const openTimeMs = r[0] * 1000;
+      if (openTimeMs < from || openTimeMs > to) continue;
+
       allCandles.push({
-        openTime: k[0],
-        open: parseFloat(k[1]),
-        high: parseFloat(k[2]),
-        low: parseFloat(k[3]),
-        close: parseFloat(k[4]),
-        volume: parseFloat(k[5]),
+        openTime: openTimeMs,
+        open: parseFloat(r[1]),
+        high: parseFloat(r[2]),
+        low: parseFloat(r[3]),
+        close: parseFloat(r[4]),
+        volume: parseFloat(r[6]),
       });
     }
 
-    const lastOpenTime = data[data.length - 1][0];
+    const last = data.result.last;
+    if (!last || last === sinceSeconds) break; // немає прогресу — зупиняємось
 
-    // Якщо отримали менше за ліміт — це останній шматок даних
-    if (data.length < MAX_LIMIT) break;
-
-    currentFrom = lastOpenTime + intervalToMs(interval);
+    sinceSeconds = last;
   }
 
   return allCandles;
@@ -221,7 +254,6 @@ async function cacheCandles(
   candles: Candle[]
 ): Promise<void> {
   const sql = getSql();
-  // Вставляємо пачками, щоб не перевантажити запит
   const BATCH_SIZE = 200;
 
   for (let i = 0; i < candles.length; i += BATCH_SIZE) {
