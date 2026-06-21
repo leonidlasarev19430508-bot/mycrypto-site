@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { neon } from '@neondatabase/serverless';
 
-const sql = neon(process.env.DATABASE_URL!);
+// Lazy-ініціалізація: клієнт створюється лише під час реального запиту,
+// а не під час білда (коли DATABASE_URL ще недоступний у Next.js build step)
+function getSql() {
+  if (!process.env.DATABASE_URL) {
+    throw new Error('DATABASE_URL не налаштований');
+  }
+  return neon(process.env.DATABASE_URL);
+}
 
 const BINANCE_KLINES_URL = 'https://api.binance.com/api/v3/klines';
 
@@ -96,6 +103,7 @@ async function getCachedCandles(
   from: number,
   to: number
 ): Promise<Candle[]> {
+  const sql = getSql();
   const rows = await sql`
     SELECT open_time, open, high, low, close, volume
     FROM historical_candles
@@ -212,6 +220,7 @@ async function cacheCandles(
   interval: string,
   candles: Candle[]
 ): Promise<void> {
+  const sql = getSql();
   // Вставляємо пачками, щоб не перевантажити запит
   const BATCH_SIZE = 200;
 
