@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { getTranslation, type Locale } from '../lib/i18n';
 
 const LOCALE_LABELS: Record<Locale, string> = {
@@ -59,7 +59,7 @@ function getSafeSwitchPath(locale: Locale, currentPage: string): string {
   return getLocalizedPath(locale, '');
 }
 
-export default function ClientHeader() {
+function ClientHeaderInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -178,5 +178,15 @@ export default function ClientHeader() {
         </div>
       )}
     </header>
+  );
+}
+
+// Suspense-обгортка: useSearchParams() у Next.js 16 вимагає Suspense-межі,
+// інакше білд падає на сторінках, що попередньо рендеряться статично.
+export default function ClientHeader() {
+  return (
+    <Suspense fallback={null}>
+      <ClientHeaderInner />
+    </Suspense>
   );
 }
