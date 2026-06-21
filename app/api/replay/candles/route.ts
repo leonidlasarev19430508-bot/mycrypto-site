@@ -10,32 +10,30 @@ function getSql() {
   return neon(process.env.DATABASE_URL);
 }
 
-const KRAKEN_OHLC_URL = 'https://api.kraken.com/0/public/OHLC';
+const COINGECKO_BASE = 'https://api.coingecko.com/api/v3';
 
-// Дозволені інтервали (наша внутрішня нотація)
 const ALLOWED_INTERVALS = ['1m', '5m', '15m', '1h', '4h', '1d'] as const;
 type Interval = typeof ALLOWED_INTERVALS[number];
 
-// Kraken очікує інтервал у хвилинах
-const INTERVAL_TO_MINUTES: Record<Interval, number> = {
-  '1m': 1,
-  '5m': 5,
-  '15m': 15,
-  '1h': 60,
-  '4h': 240,
-  '1d': 1440,
+const INTERVAL_MS: Record<Interval, number> = {
+  '1m': 60_000,
+  '5m': 5 * 60_000,
+  '15m': 15 * 60_000,
+  '1h': 60 * 60_000,
+  '4h': 4 * 60 * 60_000,
+  '1d': 24 * 60 * 60_000,
 };
 
-// Мапа наших символів (у стилі Binance, напр. BTCUSDT) на пари Kraken.
+// Мапа символів (стиль Binance, напр. BTCUSDT) на CoinGecko coin id.
 // Розширюйте за потреби, коли додаватимете нові монети.
-const SYMBOL_TO_KRAKEN_PAIR: Record<string, string> = {
-  BTCUSDT: 'XBTUSDT',
-  ETHUSDT: 'ETHUSDT',
-  SOLUSDT: 'SOLUSDT',
-  XRPUSDT: 'XRPUSDT',
-  ADAUSDT: 'ADAUSDT',
-  DOGEUSDT: 'DOGEUSDT',
-  BNBUSDT: 'BNBUSDT',
+const SYMBOL_TO_COINGECKO_ID: Record<string, string> = {
+  BTCUSDT: 'bitcoin',
+  ETHUSDT: 'ethereum',
+  SOLUSDT: 'solana',
+  XRPUSDT: 'ripple',
+  ADAUSDT: 'cardano',
+  DOGEUSDT: 'dogecoin',
+  BNBUSDT: 'binancecoin',
 };
 
 interface Candle {
@@ -60,7 +58,6 @@ export async function GET(request: NextRequest) {
   const from = searchParams.get('from');
   const to = searchParams.get('to');
 
-  // Валідація вхідних параметрів
   if (!symbol || !interval || !from || !to) {
     return NextResponse.json(
       { error: 'Потрібні параметри: symbol, interval, from, to' },
@@ -75,10 +72,10 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const krakenPair = SYMBOL_TO_KRAKEN_PAIR[symbol];
-  if (!krakenPair) {
+  const coinId = SYMBOL_TO_COINGECKO_ID[symbol];
+  if (!coinId) {
     return NextResponse.json(
-      { error: `Символ ${symbol} поки не підтримується. Додайте мапінг у SYMBOL_TO_KRAKEN_PAIR.` },
+      { error: `Символ ${symbol} поки не підтримується. Додайте мапінг у SYMBOL_TO_COINGECKO_ID.` },
       { status: 400 }
     );
   }
@@ -94,16 +91,13 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    // 1. Спершу перевіряємо кеш у БД
     const cached = await getCachedCandles(symbol, interval, fromTs, toTs);
 
-    // 2. Якщо в кеші достатньо даних — віддаємо одразу
     if (cached.length > 0 && isCoverageComplete(cached, fromTs, toTs, interval)) {
       return NextResponse.json({ candles: cached, source: 'cache' });
     }
 
-    // 3. Інакше тягнемо свіжі дані з Kraken і кешуємо
-    const fresh = await fetchFromKraken(krakenPair, interval, fromTs, toTs);
+    const fresh = await fetchFromCoinGecko(coinId, interval, fromTs, toTs);
 
     if (fresh.length === 0) {
       return NextResponse.json(
@@ -114,7 +108,7 @@ export async function GET(request: NextRequest) {
 
     await cacheCandles(symbol, interval, fresh);
 
-    return NextResponse.json({ candles: fresh, source: 'kraken' });
+    return NextResponse.json({ candles: fresh, source: 'coingecko' });
   } catch (error) {
     console.error('Помилка отримання historical candles:', error);
     return NextResponse.json(
@@ -124,9 +118,6 @@ export async function GET(request: NextRequest) {
   }
 }
 
-/**
- * Дістає свічки з кешу (Neon Postgres)
- */
 async function getCachedCandles(
   symbol: string,
   interval: string,
@@ -154,100 +145,104 @@ async function getCachedCandles(
   }));
 }
 
-/**
- * Перевіряє, чи кеш покриває весь запитаний діапазон без великих "дірок".
- */
 function isCoverageComplete(
   candles: Candle[],
   from: number,
   to: number,
   interval: Interval
 ): boolean {
-  const intervalMs = intervalToMs(interval);
+  const intervalMs = INTERVAL_MS[interval];
   const expectedCount = Math.floor((to - from) / intervalMs);
-
-  // Допускаємо невелику похибку (наприклад, відсутність останньої незакритої свічки)
   return candles.length >= expectedCount - 1;
 }
 
-function intervalToMs(interval: Interval): number {
-  return INTERVAL_TO_MINUTES[interval] * 60_000;
-}
-
 /**
- * Тягне історичні свічки з Kraken public API.
- * Kraken повертає максимум 720 свічок за один запит — робимо пагінацію через `since`.
- * Документація: https://docs.kraken.com/api/docs/rest-api/get-ohlc-data
+ * Тягне історичні ціни з CoinGecko (market_chart/range — підтримує довільний
+ * діапазон from/to, на відміну від /ohlc, який рахує дні назад від "зараз").
+ * Цей ендпоінт віддає не готові свічки, а серію точок ціни/обсягу,
+ * тому ми самостійно "збираємо" їх у candle потрібного інтервалу.
+ * Документація: https://docs.coingecko.com/reference/coins-id-market-chart-range
  */
-async function fetchFromKraken(
-  pair: string,
+async function fetchFromCoinGecko(
+  coinId: string,
   interval: Interval,
   from: number,
   to: number
 ): Promise<Candle[]> {
-  const allCandles: Candle[] = [];
-  const minutes = INTERVAL_TO_MINUTES[interval];
-  let sinceSeconds = Math.floor(from / 1000);
-  const toSeconds = Math.floor(to / 1000);
+  const url = new URL(`${COINGECKO_BASE}/coins/${coinId}/market_chart/range`);
+  url.searchParams.set('vs_currency', 'usd');
+  url.searchParams.set('from', Math.floor(from / 1000).toString());
+  url.searchParams.set('to', Math.floor(to / 1000).toString());
 
-  // Запобіжник від нескінченного циклу
-  let iterations = 0;
-  const MAX_ITERATIONS = 20;
+  const headers: Record<string, string> = {};
+  const apiKey = process.env.COINGECKO_API_KEY;
+  if (apiKey) headers['x-cg-demo-api-key'] = apiKey;
 
-  while (sinceSeconds < toSeconds && iterations < MAX_ITERATIONS) {
-    iterations++;
+  const response = await fetch(url.toString(), { headers });
 
-    const url = new URL(KRAKEN_OHLC_URL);
-    url.searchParams.set('pair', pair);
-    url.searchParams.set('interval', minutes.toString());
-    url.searchParams.set('since', sinceSeconds.toString());
-
-    const response = await fetch(url.toString());
-
-    if (!response.ok) {
-      const errBody = await response.text();
-      throw new Error(`Kraken API помилка: ${response.status} ${errBody}`);
-    }
-
-    const data = await response.json();
-
-    if (data.error && data.error.length > 0) {
-      throw new Error(`Kraken API помилка: ${data.error.join(', ')}`);
-    }
-
-    // Результат лежить під ключем пари, напр. data.result['XBTUSDT']
-    const resultKeys = Object.keys(data.result || {}).filter((k) => k !== 'last');
-    if (resultKeys.length === 0) break;
-
-    const rows: any[] = data.result[resultKeys[0]];
-    if (!Array.isArray(rows) || rows.length === 0) break;
-
-    for (const r of rows) {
-      const openTimeMs = r[0] * 1000;
-      if (openTimeMs < from || openTimeMs > to) continue;
-
-      allCandles.push({
-        openTime: openTimeMs,
-        open: parseFloat(r[1]),
-        high: parseFloat(r[2]),
-        low: parseFloat(r[3]),
-        close: parseFloat(r[4]),
-        volume: parseFloat(r[6]),
-      });
-    }
-
-    const last = data.result.last;
-    if (!last || last === sinceSeconds) break; // немає прогресу — зупиняємось
-
-    sinceSeconds = last;
+  if (!response.ok) {
+    const errBody = await response.text();
+    throw new Error(`CoinGecko API помилка: ${response.status} ${errBody}`);
   }
 
-  return allCandles;
+  const data = await response.json();
+  const prices: [number, number][] = data.prices || [];
+  const volumes: [number, number][] = data.total_volumes || [];
+
+  if (prices.length === 0) return [];
+
+  // Мапа часу -> обсяг для швидкого пошуку під час групування
+  const volumeByTime = new Map<number, number>();
+  for (const [t, v] of volumes) volumeByTime.set(t, v);
+
+  return bucketPricesIntoCandles(prices, volumeByTime, INTERVAL_MS[interval], from, to);
 }
 
 /**
- * Зберігає свічки в кеш. Використовує ON CONFLICT для уникнення дублікатів.
+ * Групує серію точок [timestamp, price] у свічки заданого інтервалу:
+ * open — перша ціна в "кошику", close — остання, high/low — екстремуми,
+ * volume — сума обсягів точок, що потрапили в цей кошик.
  */
+function bucketPricesIntoCandles(
+  prices: [number, number][],
+  volumeByTime: Map<number, number>,
+  intervalMs: number,
+  from: number,
+  to: number
+): Candle[] {
+  const buckets = new Map<number, { prices: number[]; volume: number }>();
+
+  for (const [time, price] of prices) {
+    if (time < from || time > to) continue;
+
+    const bucketStart = Math.floor((time - from) / intervalMs) * intervalMs + from;
+
+    if (!buckets.has(bucketStart)) {
+      buckets.set(bucketStart, { prices: [], volume: 0 });
+    }
+    const bucket = buckets.get(bucketStart)!;
+    bucket.prices.push(price);
+    bucket.volume += volumeByTime.get(time) || 0;
+  }
+
+  const candles: Candle[] = [];
+  const sortedKeys = Array.from(buckets.keys()).sort((a, b) => a - b);
+
+  for (const key of sortedKeys) {
+    const { prices: p, volume } = buckets.get(key)!;
+    candles.push({
+      openTime: key,
+      open: p[0],
+      high: Math.max(...p),
+      low: Math.min(...p),
+      close: p[p.length - 1],
+      volume,
+    });
+  }
+
+  return candles;
+}
+
 async function cacheCandles(
   symbol: string,
   interval: string,
