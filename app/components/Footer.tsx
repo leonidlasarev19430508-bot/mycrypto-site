@@ -49,12 +49,17 @@ export default function Footer() {
   const t = links[locale as keyof typeof links] || links.uk;
 
   return (
-    <footer className="bg-gray-900 text-gray-400 mt-16">
+    <footer className="bg-gray-900 text-gray-300 mt-16">
       {/* Disclaimer banner */}
       <div className="bg-yellow-900/40 border-t border-yellow-700/30 px-4 py-3">
-        <p className="text-center text-yellow-300 text-xs font-medium">
+        <p className="text-center text-yellow-200 text-sm font-medium">
           {t.notAdvice}
         </p>
+        {locale === 'uk' && (
+          <p className="text-center text-yellow-300/70 text-xs italic mt-1">
+            Обпікся на молоці — дутимеш і на воду 🔥💧 Зважайте на ризики.
+          </p>
+        )}
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
@@ -62,11 +67,11 @@ export default function Footer() {
           {/* Logo */}
           <div>
             <span className="text-white font-black text-lg">CryptoNavigator</span>
-            <p className="text-xs mt-1">cryptotop.chat</p>
+            <p className="text-sm text-gray-300 mt-1">cryptotop.chat</p>
           </div>
 
           {/* Legal links */}
-          <nav className="flex flex-wrap gap-4 text-sm justify-center">
+          <nav className="flex flex-wrap gap-4 text-sm justify-center text-gray-300">
             <Link href={`${prefix}/disclaimer`} className="hover:text-orange-400 transition">
               {t.disclaimer}
             </Link>
@@ -99,7 +104,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom line */}
-        <div className="border-t border-gray-800 mt-6 pt-4 text-center text-xs">
+        <div className="border-t border-gray-800 mt-6 pt-4 text-center text-sm text-gray-400">
           <p>{t.rights}</p>
         </div>
       </div>

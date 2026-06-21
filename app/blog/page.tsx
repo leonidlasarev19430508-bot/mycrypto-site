@@ -1,291 +1,223 @@
-'use client';
-import { useState, useEffect } from 'react';
+import { Metadata } from 'next';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { notFound } from 'next/navigation';
 
-type Article = {
+interface Article {
   id: number;
   title: string;
+  title_uk: string;
   coin_slug: string;
   coin_name: string;
   sentiment: string;
   recommendation: string;
-  source_name: string;
   source_url: string;
+  source_name: string;
   published_at: string;
   summary: string;
-};
-
-const UI = {
-  uk: {
-    title: '📰 Крипто Блог',
-    subtitle: 'AI-аналіз новин криптовалютного ринку',
-    all: 'Всі',
-    positive: '📈 Позитивні',
-    negative: '📉 Негативні',
-    neutral: '⚖️ Нейтральні',
-    readMore: 'Читати далі →',
-    source: 'Джерело',
-    loading: 'Завантаження...',
-    noArticles: 'Статей не знайдено',
-    loadMore: 'Завантажити ще',
-    buy: '🟢 Купити',
-    sell: '🔴 Продати',
-    hold: '🟡 Тримати',
-  },
-  en: {
-    title: '📰 Crypto Blog',
-    subtitle: 'AI analysis of cryptocurrency market news',
-    all: 'All',
-    positive: '📈 Positive',
-    negative: '📉 Negative',
-    neutral: '⚖️ Neutral',
-    readMore: 'Read more →',
-    source: 'Source',
-    loading: 'Loading...',
-    noArticles: 'No articles found',
-    loadMore: 'Load more',
-    buy: '🟢 Buy',
-    sell: '🔴 Sell',
-    hold: '🟡 Hold',
-  },
-  pl: {
-    title: '📰 Blog Krypto',
-    subtitle: 'Analiza AI wiadomości rynku kryptowalut',
-    all: 'Wszystkie',
-    positive: '📈 Pozytywne',
-    negative: '📉 Negatywne',
-    neutral: '⚖️ Neutralne',
-    readMore: 'Czytaj więcej →',
-    source: 'Źródło',
-    loading: 'Ładowanie...',
-    noArticles: 'Nie znaleziono artykułów',
-    loadMore: 'Załaduj więcej',
-    buy: '🟢 Kupuj',
-    sell: '🔴 Sprzedaj',
-    hold: '🟡 Trzymaj',
-  },
-  de: {
-    title: '📰 Krypto Blog',
-    subtitle: 'KI-Analyse der Kryptowährungsmarktnachrichten',
-    all: 'Alle',
-    positive: '📈 Positiv',
-    negative: '📉 Negativ',
-    neutral: '⚖️ Neutral',
-    readMore: 'Mehr lesen →',
-    source: 'Quelle',
-    loading: 'Laden...',
-    noArticles: 'Keine Artikel gefunden',
-    loadMore: 'Mehr laden',
-    buy: '🟢 Kaufen',
-    sell: '🔴 Verkaufen',
-    hold: '🟡 Halten',
-  },
-};
-
-function timeAgo(dateStr: string, locale: string): string {
-  const diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
-  if (locale === 'uk') {
-    if (diff < 3600) return Math.floor(diff / 60) + ' хв тому';
-    if (diff < 86400) return Math.floor(diff / 3600) + ' год тому';
-    return Math.floor(diff / 86400) + ' дн тому';
-  }
-  if (locale === 'pl') {
-    if (diff < 3600) return Math.floor(diff / 60) + ' min temu';
-    if (diff < 86400) return Math.floor(diff / 3600) + ' godz temu';
-    return Math.floor(diff / 86400) + ' dni temu';
-  }
-  if (locale === 'de') {
-    if (diff < 3600) return 'vor ' + Math.floor(diff / 60) + ' Min';
-    if (diff < 86400) return 'vor ' + Math.floor(diff / 3600) + ' Std';
-    return 'vor ' + Math.floor(diff / 86400) + ' Tagen';
-  }
-  if (diff < 3600) return Math.floor(diff / 60) + ' min ago';
-  if (diff < 86400) return Math.floor(diff / 3600) + ' h ago';
-  return Math.floor(diff / 86400) + ' days ago';
+  summary_en: string;
+  summary_pl: string;
+  summary_de: string;
+  full_article_uk: string;
+  full_article_en: string;
+  meta_description_uk: string;
+  meta_description_en: string;
+  tags: string[];
 }
 
-export default function BlogPage() {
-  const pathname = usePathname();
-  const locale = pathname.startsWith('/en') ? 'en'
-    : pathname.startsWith('/pl') ? 'pl'
-    : pathname.startsWith('/de') ? 'de'
-    : 'uk';
-  const t = UI[locale as keyof typeof UI] || UI.uk;
+async function getArticle(id: string): Promise<Article | null> {
+  try {
+    const res = await fetch(`https://cryptotop.chat/api/blog/${id}`, { next: { revalidate: 3600 } });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.article || null;
+  } catch { return null; }
+}
 
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [sentiment, setSentiment] = useState('');
-  const [offset, setOffset] = useState(0);
-  const [total, setTotal] = useState(0);
-  const LIMIT = 12;
-
-  const fetchArticles = async (newOffset = 0, newSentiment = sentiment, append = false) => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams({
-        locale,
-        limit: String(LIMIT),
-        offset: String(newOffset),
-      });
-      if (newSentiment) params.set('sentiment', newSentiment);
-      const res = await fetch(`/api/blog?${params}`);
-      const data = await res.json();
-      if (append) {
-        setArticles(prev => [...prev, ...data.articles]);
-      } else {
-        setArticles(data.articles || []);
-      }
-      setTotal(data.total || 0);
-      setOffset(newOffset);
-    } catch {
-      setArticles([]);
-    } finally {
-      setLoading(false);
-    }
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const article = await getArticle(id);
+  if (!article) return { title: 'Article not found' };
+  const title = article.title_uk || article.title;
+  const description = article.meta_description_uk || article.summary?.slice(0, 160) || '';
+  return {
+    title: `${title} | CryptoNavigator`,
+    description,
+    alternates: { canonical: `https://cryptotop.chat/blog/${id}` },
+    openGraph: {
+      title,
+      description,
+      type: 'article',
+      url: `https://cryptotop.chat/blog/${id}`,
+    },
   };
+}
 
-  useEffect(() => {
-    fetchArticles(0, '');
-  }, []);
+const SENTIMENT_COLORS: Record<string, string> = {
+  positive: 'bg-green-100 text-green-700',
+  negative: 'bg-red-100 text-red-700',
+  neutral: 'bg-gray-100 text-gray-700',
+};
 
-  const handleSentimentChange = (s: string) => {
-    setSentiment(s);
-    fetchArticles(0, s);
-  };
+const RECOMMENDATION_COLORS: Record<string, string> = {
+  buy: 'bg-green-500 text-white',
+  sell: 'bg-red-500 text-white',
+  hold: 'bg-yellow-400 text-gray-900',
+};
 
-  const sentimentColor = (s: string) => {
-    if (s === 'positive') return 'bg-green-100 text-green-700';
-    if (s === 'negative') return 'bg-red-100 text-red-700';
-    return 'bg-gray-100 text-gray-600';
-  };
+const REC_LABELS: Record<string, string> = {
+  buy: '📈 Купити',
+  sell: '📉 Продати',
+  hold: '⏸ Тримати',
+};
 
-  const recommendationLabel = (r: string) => {
-    if (r === 'buy') return t.buy;
-    if (r === 'sell') return t.sell;
-    return t.hold;
-  };
+export default async function ArticlePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const article = await getArticle(id);
+  if (!article) notFound();
 
-  const recommendationColor = (r: string) => {
-    if (r === 'buy') return 'bg-green-50 text-green-700 border-green-200';
-    if (r === 'sell') return 'bg-red-50 text-red-700 border-red-200';
-    return 'bg-yellow-50 text-yellow-700 border-yellow-200';
+  const date = new Date(article.published_at).toLocaleDateString('uk-UA', {
+    year: 'numeric', month: 'long', day: 'numeric',
+  });
+
+  const sentiment = article.sentiment?.toLowerCase() || 'neutral';
+  const rec = article.recommendation?.toLowerCase() || 'hold';
+  const displayTitle = article.title_uk || article.title;
+  const hasFullArticle = !!(article.full_article_uk && article.full_article_uk.length > 50);
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    "headline": displayTitle,
+    "description": article.meta_description_uk || article.summary?.slice(0, 160) || "",
+    "datePublished": article.published_at,
+    "dateModified": article.published_at,
+    "author": {
+      "@type": "Organization",
+      "name": "CryptoNavigator",
+      "url": "https://cryptotop.chat"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "CryptoNavigator",
+      "logo": { "@type": "ImageObject", "url": "https://cryptotop.chat/favicon.ico" }
+    },
+    "mainEntityOfPage": { "@type": "WebPage", "@id": `https://cryptotop.chat/blog/${article.id}` },
+    "keywords": [article.coin_name, "криптовалюта", "крипто новини", ...(article.tags || [])].filter(Boolean).join(", "),
+    "inLanguage": "uk",
+    "isAccessibleForFree": true,
   };
 
   return (
-    <main className="max-w-6xl mx-auto px-4 py-10">
-      {/* Header */}
-      <div className="text-center mb-10">
-        <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-3">{t.title}</h1>
-        <p className="text-gray-600 text-lg">{t.subtitle}</p>
-      </div>
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <div className="max-w-3xl mx-auto px-4 py-10">
 
-      {/* Sentiment filter */}
-      <div className="flex flex-wrap gap-2 justify-center mb-8">
-        {[
-          { value: '', label: t.all },
-          { value: 'positive', label: t.positive },
-          { value: 'negative', label: t.negative },
-          { value: 'neutral', label: t.neutral },
-        ].map(({ value, label }) => (
-          <button
-            key={value}
-            onClick={() => handleSentimentChange(value)}
-            className={`px-4 py-2 rounded-xl text-sm font-semibold transition ${
-              sentiment === value
-                ? 'bg-orange-500 text-white shadow-md'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+        {/* Навігація */}
+        <Link href="/blog" className="text-orange-600 hover:underline text-sm font-semibold mb-6 inline-block">
+          ← Назад до блогу
+        </Link>
 
-      {/* Stats */}
-      {!loading && (
-        <p className="text-center text-sm text-gray-500 mb-6">
-          {total} {locale === 'uk' ? 'статей' : locale === 'pl' ? 'artykułów' : locale === 'de' ? 'Artikel' : 'articles'}
-        </p>
-      )}
-
-      {/* Articles grid */}
-      {loading && articles.length === 0 ? (
-        <div className="text-center py-20">
-          <div className="inline-block w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mb-4" />
-          <p className="text-gray-600">{t.loading}</p>
+        {/* Бейджі */}
+        <div className="flex items-center gap-2 mb-4 flex-wrap">
+          {article.coin_name && (
+            <span className="bg-orange-100 text-orange-700 text-xs font-bold px-3 py-1 rounded-full uppercase">
+              {article.coin_name}
+            </span>
+          )}
+          <span className={`text-xs font-bold px-3 py-1 rounded-full capitalize ${SENTIMENT_COLORS[sentiment] || SENTIMENT_COLORS.neutral}`}>
+            {sentiment === 'positive' ? '📈 Позитив' : sentiment === 'negative' ? '📉 Негатив' : '⚖️ Нейтрально'}
+          </span>
+          <span className={`text-xs font-bold px-3 py-1 rounded-full ${RECOMMENDATION_COLORS[rec] || RECOMMENDATION_COLORS.hold}`}>
+            {REC_LABELS[rec] || rec}
+          </span>
+          <span className="text-sm text-gray-500 ml-auto">{date}</span>
         </div>
-      ) : articles.length === 0 ? (
-        <div className="text-center py-20 text-gray-500">
-          <p className="text-3xl mb-2">📭</p>
-          <p>{t.noArticles}</p>
+
+        {/* Заголовок */}
+        <h1 className="text-2xl md:text-3xl font-black text-gray-900 mb-6 leading-tight">
+          {displayTitle}
+        </h1>
+
+        {/* Disclaimer */}
+        <div className="bg-yellow-50 border border-yellow-200 rounded-xl px-4 py-3 flex items-start gap-2 mb-6">
+          <span className="text-yellow-600 font-bold text-sm mt-0.5">⚠️</span>
+          <p className="text-yellow-800 text-sm leading-relaxed">
+            Аналіз згенеровано штучним інтелектом і не є фінансовою порадою. Рекомендації носять виключно інформаційний характер.
+          </p>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {articles.map((article) => (
-            <Link key={article.id} href={`/blog/${article.id}`}
-              className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition flex flex-col cursor-pointer">
-              {/* Top badges */}
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  {article.coin_name && (
-                    <span className="text-xs font-bold bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full">
-                      {article.coin_name}
-                    </span>
-                  )}
-                  <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${sentimentColor(article.sentiment)}`}>
-                    {article.sentiment === 'positive' ? '📈' : article.sentiment === 'negative' ? '📉' : '⚖️'}
-                  </span>
-                </div>
-                <span className="text-xs text-gray-500">{timeAgo(article.published_at, locale)}</span>
+
+        {/* Повна стаття або короткий summary */}
+        {hasFullArticle ? (
+          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm mb-6">
+            <div className="prose prose-gray max-w-none">
+              {article.full_article_uk.split('\n').filter(p => p.trim()).map((paragraph, i) => (
+                <p key={i} className="text-gray-800 text-base leading-relaxed mb-4">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm mb-6">
+            <p className="text-gray-800 text-base leading-relaxed font-medium">
+              {article.summary}
+            </p>
+          </div>
+        )}
+
+        {/* Переклади (показуємо якщо немає повної статті) */}
+        {!hasFullArticle && (article.summary_en || article.summary_pl || article.summary_de) && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            {article.summary_en && (
+              <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                <p className="text-xs font-bold text-gray-500 uppercase mb-2">🇬🇧 English</p>
+                <p className="text-sm text-gray-800 leading-relaxed">{article.summary_en}</p>
               </div>
-
-              {/* Title */}
-              <h2 className="font-bold text-gray-900 text-base leading-snug mb-3 flex-1 line-clamp-3">
-                {article.title}
-              </h2>
-
-              {/* Summary */}
-              <p className="text-sm text-gray-700 leading-relaxed mb-4 line-clamp-5">
-                {article.summary}
-              </p>
-
-              {/* Footer */}
-              <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-50">
-                <span className={`text-xs font-bold px-2 py-1 rounded-lg border ${recommendationColor(article.recommendation)}`}>
-                  {recommendationLabel(article.recommendation)}
-                </span>
-                <a
-                  href={article.source_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-orange-600 hover:underline font-semibold"
-                >
-                  {article.source_name} →
-                </a>
+            )}
+            {article.summary_pl && (
+              <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                <p className="text-xs font-bold text-gray-500 uppercase mb-2">🇵🇱 Polski</p>
+                <p className="text-sm text-gray-800 leading-relaxed">{article.summary_pl}</p>
               </div>
-            </Link>
-          ))}
-        </div>
-      )}
+            )}
+            {article.summary_de && (
+              <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                <p className="text-xs font-bold text-gray-500 uppercase mb-2">🇩🇪 Deutsch</p>
+                <p className="text-sm text-gray-800 leading-relaxed">{article.summary_de}</p>
+              </div>
+            )}
+          </div>
+        )}
 
-      {/* Load more */}
-      {!loading && articles.length < total && (
-        <div className="text-center mt-10">
-          <button
-            onClick={() => fetchArticles(offset + LIMIT, sentiment, true)}
-            className="bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-3 rounded-xl transition"
-          >
-            {t.loadMore}
-          </button>
-        </div>
-      )}
+        {/* Теги */}
+        {article.tags && article.tags.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-6">
+            {article.tags.map((tag, i) => (
+              <span key={i} className="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
 
-      {loading && articles.length > 0 && (
-        <div className="text-center mt-6">
-          <div className="inline-block w-6 h-6 border-3 border-orange-500 border-t-transparent rounded-full animate-spin" />
+        {/* CTA симулятор */}
+        <div className="bg-orange-50 border border-orange-200 rounded-2xl p-6 mb-6">
+          <p className="font-bold text-orange-800 mb-2">🎮 Хочеш перевірити стратегію?</p>
+          <p className="text-orange-700 text-sm mb-4">Спробуй безкоштовний симулятор торгівлі — без ризику для реальних грошей.</p>
+          <Link href="/simulator" className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-2 rounded-xl text-sm transition">
+            Відкрити симулятор →
+          </Link>
         </div>
-      )}
-    </main>
+
+        {/* Посилання на оригінал */}
+        {article.source_url && (
+          <a href={article.source_url} target="_blank" rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-gray-900 hover:bg-gray-700 text-white font-bold px-6 py-3 rounded-xl transition text-sm">
+            Читати оригінал на {article.source_name || 'джерелі'} →
+          </a>
+        )}
+
+      </div>
+    </>
   );
 }
