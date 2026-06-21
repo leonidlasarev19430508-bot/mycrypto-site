@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { getTranslation, type Locale } from '../lib/i18n';
 
@@ -44,7 +44,15 @@ function getCurrentPage(pathname: string, locale: Locale): string {
 // Безпечний шлях для перемикача мов: якщо поточна сторінка не має
 // локалізованої версії — ведемо на головну цієї локалі замість 404.
 function getSafeSwitchPath(locale: Locale, currentPage: string): string {
-  const baseSegment = currentPage.split('/')[0] || '';
+  const segments = currentPage.split('/').filter(Boolean);
+  const baseSegment = segments[0] || '';
+
+  // Окрема стаття блогу (blog/<id>): зберігаємо статтю, перемикаємо лише мову
+  if (baseSegment === 'blog' && segments.length >= 2) {
+    const articleId = segments[1];
+    return locale === 'uk' ? `/blog/${articleId}` : `/blog/${articleId}?lang=${locale}`;
+  }
+
   if (LOCALIZABLE_PAGES.has(baseSegment)) {
     return getLocalizedPath(locale, currentPage);
   }
@@ -53,9 +61,15 @@ function getSafeSwitchPath(locale: Locale, currentPage: string): string {
 
 export default function ClientHeader() {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const locale: Locale = pathname.startsWith('/pl') ? 'pl'
+  const langParam = searchParams.get('lang');
+  const isArticlePage = /^\/blog\/[^/]+$/.test(pathname);
+
+  const locale: Locale = isArticlePage && (langParam === 'en' || langParam === 'pl' || langParam === 'de')
+    ? langParam
+    : pathname.startsWith('/pl') ? 'pl'
     : pathname.startsWith('/de') ? 'de'
     : pathname.startsWith('/en') ? 'en'
     : 'uk';
