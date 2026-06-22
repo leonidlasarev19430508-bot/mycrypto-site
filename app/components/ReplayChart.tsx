@@ -156,6 +156,7 @@ export default function ReplayChart({
         layout: {
           background: { type: lc.ColorType.Solid, color: '#ffffff' },
           textColor: '#374151',
+          attributionLogo: false, // прибираємо логотип TradingView
         },
         grid: {
           vertLines: { color: '#f3f4f6' },
@@ -194,7 +195,13 @@ export default function ReplayChart({
       candleSeries.setData(initialData);
       setCurrentIndex(initialCount);
       onPriceUpdate(candles[initialCount - 1]?.close || 0);
+      // Показуємо останні 60 свічок щоб вони були достатньо широкими
       chart.timeScale().fitContent();
+      if (initialData.length > 0) {
+        const lastTime = initialData[initialData.length - 1].time as number;
+        const firstTime = initialData[Math.max(0, initialData.length - 60)].time as number;
+        chart.timeScale().setVisibleRange({ from: firstTime as any, to: (lastTime + 3600) as any });
+      }
 
       const resizeObserver = new ResizeObserver(() => {
         if (chartContainerRef.current && chartRef.current) {
