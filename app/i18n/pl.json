@@ -108,5 +108,46 @@
       "💡 Co to jest staking?",
       "🛡️ Jak bezpiecznie przechowywać krypto?"
     ]
+  },
+  "markets": {
+    "title": "🧠 Sentyment Rynku AI",
+    "subtitle": "Analiza sentymentu rynku kryptowalut na podstawie przetwarzania wiadomości wspieranego przez AI",
+    "search_placeholder": "🔍 Szukaj monety...",
+    "filters": {
+      "all": "🌐 Wszystkie",
+      "bullish": "📈 Zwyżkowe",
+      "bearish": "📉 Zniżkowe",
+      "neutral": "⚖️ Neutralne"
+    },
+    "stats": {
+      "bullish": "📈 Zwyżkowych",
+      "neutral": "⚖️ Neutralnych",
+      "bearish": "📉 Zniżkowych"
+    },
+    "sentiment": {
+      "very_positive": "🚀 Bardzo pozytywny",
+      "positive": "📈 Pozytywny",
+      "very_negative": "💥 Bardzo negatywny",
+      "negative": "📉 Negatywny",
+      "neutral": "⚖️ Neutralny"
+    },
+    "recommendation": {
+      "buy": "🟢 Kupić",
+      "sell": "🔴 Sprzedać",
+      "hold": "🟡 Trzymać"
+    },
+    "loading": "Wczytywanie analizy AI...",
+    "no_results": "Nic nie znaleziono",
+    "time_ago": {
+      "minutes": "minut temu",
+      "hours": "godzin temu",
+      "days": "dni temu"
+    },
+    "card_footer": "wiadomości",
+    "footer": "Analiza AI na podstawie wiadomości z CoinTelegraph, CoinDesk, Decrypt, CryptoSlate · Nie jest porądą finansową"
+  },
+  "faq": {
+    "cta_text": "Nie wiesz którą giełdę wybrać?",
+    "cta_button": "🎯 Przejdź quiz giełdowy"
   }
 }

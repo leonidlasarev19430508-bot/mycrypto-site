@@ -101,5 +101,46 @@
       "💡 Що таке стейкінг?",
       "🛡️ Як безпечно зберігати крипту?"
     ]
+  },
+  "markets": {
+    "title": "🧠 AI Sentiment Ринків",
+    "subtitle": "Аналіз настрою крипторинку на основі AI-обробки новин",
+    "search_placeholder": "🔍 Пошук монети...",
+    "filters": {
+      "all": "🌐 Всі",
+      "bullish": "📈 Бичачі",
+      "bearish": "📉 Ведмежі",
+      "neutral": "⚖️ Нейтральні"
+    },
+    "stats": {
+      "bullish": "📈 Бичачих",
+      "neutral": "⚖️ Нейтральних",
+      "bearish": "📉 Ведмежих"
+    },
+    "sentiment": {
+      "very_positive": "🚀 Дуже позитивний",
+      "positive": "📈 Позитивний",
+      "very_negative": "💥 Дуже негативний",
+      "negative": "📉 Негативний",
+      "neutral": "⚖️ Нейтральний"
+    },
+    "recommendation": {
+      "buy": "🟢 Купити",
+      "sell": "🔴 Продати",
+      "hold": "🟡 Тримати"
+    },
+    "loading": "Завантаження AI-аналізу...",
+    "no_results": "Нічого не знайдено",
+    "time_ago": {
+      "minutes": "хв тому",
+      "hours": "год тому",
+      "days": "дн тому"
+    },
+    "card_footer": "новин",
+    "footer": "AI-аналіз на основі новин з CoinTelegraph, CoinDesk, Decrypt, CryptoSlate · Не є фінансовою порадою"
+  },
+  "faq": {
+    "cta_text": "Не знаєш яку біржу обрати?",
+    "cta_button": "🎯 Пройти квіз підбору біржи"
   }
 }

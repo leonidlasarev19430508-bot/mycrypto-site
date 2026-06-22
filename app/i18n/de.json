@@ -108,5 +108,46 @@
       "💡 Was ist Staking?",
       "🛡️ Wie sicher Krypto aufbewahren?"
     ]
+  },
+  "markets": {
+    "title": "🧠 KI-Marktsentiment",
+    "subtitle": "Analyse der Kryptomarkt-Stimmung basierend auf KI-gestützter Nachrichtenverarbeitung",
+    "search_placeholder": "🔍 Münze suchen...",
+    "filters": {
+      "all": "🌐 Alle",
+      "bullish": "📈 Bullisch",
+      "bearish": "📉 Bearisch",
+      "neutral": "⚖️ Neutral"
+    },
+    "stats": {
+      "bullish": "📈 Bullisch",
+      "neutral": "⚖️ Neutral",
+      "bearish": "📉 Bearisch"
+    },
+    "sentiment": {
+      "very_positive": "🚀 Sehr Positiv",
+      "positive": "📈 Positiv",
+      "very_negative": "💥 Sehr Negativ",
+      "negative": "📉 Negativ",
+      "neutral": "⚖️ Neutral"
+    },
+    "recommendation": {
+      "buy": "🟢 Kaufen",
+      "sell": "🔴 Verkaufen",
+      "hold": "🟡 Halten"
+    },
+    "loading": "KI-Analyse wird geladen...",
+    "no_results": "Nichts gefunden",
+    "time_ago": {
+      "minutes": "Minuten vor",
+      "hours": "Stunden vor",
+      "days": "Tage vor"
+    },
+    "card_footer": "Nachrichten",
+    "footer": "KI-Analyse basierend auf Nachrichten von CoinTelegraph, CoinDesk, Decrypt, CryptoSlate · Keine Finanzberatung"
+  },
+  "faq": {
+    "cta_text": "Weiß nicht, welche Börse du wählen sollst?",
+    "cta_button": "🎯 Börsen-Quiz starten"
   }
 }

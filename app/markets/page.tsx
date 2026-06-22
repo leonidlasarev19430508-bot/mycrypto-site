@@ -1,6 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useTranslation } from '../lib/i18n';
 
 type CoinSentiment = {
   coin_slug: string;
@@ -15,6 +17,10 @@ type CoinSentiment = {
 };
 
 export default function MarketsPage() {
+  const pathname = usePathname();
+  const locale = pathname.startsWith('/en') ? 'en' : pathname.startsWith('/pl') ? 'pl' : pathname.startsWith('/de') ? 'de' : 'uk';
+  const t = useTranslation(locale);
+
   const [coins, setCoins] = useState<CoinSentiment[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'bullish' | 'bearish' | 'neutral'>('all');
@@ -42,24 +48,24 @@ export default function MarketsPage() {
   });
 
   const getSentimentLabel = (score: number) => {
-    if (score > 0.5) return { label: '🚀 Дуже позитивний', color: 'text-green-700', bg: 'bg-green-50', border: 'border-green-200' };
-    if (score > 0.2) return { label: '📈 Позитивний', color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-100' };
-    if (score < -0.5) return { label: '💥 Дуже негативний', color: 'text-red-700', bg: 'bg-red-50', border: 'border-red-200' };
-    if (score < -0.2) return { label: '📉 Негативний', color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-100' };
-    return { label: '⚖️ Нейтральний', color: 'text-gray-600', bg: 'bg-gray-50', border: 'border-gray-100' };
+    if (score > 0.5) return { label: t.markets.sentiment.very_positive, color: 'text-green-700', bg: 'bg-green-50', border: 'border-green-200' };
+    if (score > 0.2) return { label: t.markets.sentiment.positive, color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-100' };
+    if (score < -0.5) return { label: t.markets.sentiment.very_negative, color: 'text-red-700', bg: 'bg-red-50', border: 'border-red-200' };
+    if (score < -0.2) return { label: t.markets.sentiment.negative, color: 'text-red-600', bg: 'bg-red-50', border: 'border-red-100' };
+    return { label: t.markets.sentiment.neutral, color: 'text-gray-600', bg: 'bg-gray-50', border: 'border-gray-100' };
   };
 
   const getRecLabel = (rec: string) => {
-    if (rec === 'buy') return { label: '🟢 Купити', color: 'text-green-700', bg: 'bg-green-100' };
-    if (rec === 'sell') return { label: '🔴 Продати', color: 'text-red-700', bg: 'bg-red-100' };
-    return { label: '🟡 Тримати', color: 'text-yellow-700', bg: 'bg-yellow-100' };
+    if (rec === 'buy') return { label: t.markets.recommendation.buy, color: 'text-green-700', bg: 'bg-green-100' };
+    if (rec === 'sell') return { label: t.markets.recommendation.sell, color: 'text-red-700', bg: 'bg-red-100' };
+    return { label: t.markets.recommendation.hold, color: 'text-yellow-700', bg: 'bg-yellow-100' };
   };
 
   const timeAgo = (dateStr: string) => {
     const diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
-    if (diff < 3600) return Math.floor(diff / 60) + ' хв тому';
-    if (diff < 86400) return Math.floor(diff / 3600) + ' год тому';
-    return Math.floor(diff / 86400) + ' дн тому';
+    if (diff < 3600) return Math.floor(diff / 60) + ' ' + t.markets.time_ago.minutes;
+    if (diff < 86400) return Math.floor(diff / 3600) + ' ' + t.markets.time_ago.hours;
+    return Math.floor(diff / 86400) + ' ' + t.markets.time_ago.days;
   };
 
   const bullish = coins.filter(c => c.sentiment_score > 0.2).length;
@@ -71,10 +77,10 @@ export default function MarketsPage() {
       {/* Header */}
       <div className="text-center mb-10">
         <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-3">
-          🧠 AI Sentiment Ринків
+          {t.markets.title}
         </h1>
         <p className="text-gray-500 text-lg">
-          Аналіз настрою крипторинку на основі AI-обробки новин
+          {t.markets.subtitle}
         </p>
       </div>
 
@@ -84,17 +90,17 @@ export default function MarketsPage() {
           <div onClick={() => setFilter('bullish')}
             className="bg-green-50 border border-green-100 rounded-2xl p-4 text-center cursor-pointer hover:shadow-md transition">
             <p className="text-3xl font-black text-green-600">{bullish}</p>
-            <p className="text-sm text-gray-500 mt-1">📈 Бичачих</p>
+            <p className="text-sm text-gray-500 mt-1">{t.markets.stats.bullish}</p>
           </div>
           <div onClick={() => setFilter('neutral')}
             className="bg-gray-50 border border-gray-100 rounded-2xl p-4 text-center cursor-pointer hover:shadow-md transition">
             <p className="text-3xl font-black text-gray-600">{neutral}</p>
-            <p className="text-sm text-gray-500 mt-1">⚖️ Нейтральних</p>
+            <p className="text-sm text-gray-500 mt-1">{t.markets.stats.neutral}</p>
           </div>
           <div onClick={() => setFilter('bearish')}
             className="bg-red-50 border border-red-100 rounded-2xl p-4 text-center cursor-pointer hover:shadow-md transition">
             <p className="text-3xl font-black text-red-600">{bearish}</p>
-            <p className="text-sm text-gray-500 mt-1">📉 Ведмежих</p>
+            <p className="text-sm text-gray-500 mt-1">{t.markets.stats.bearish}</p>
           </div>
         </div>
       )}
@@ -103,17 +109,17 @@ export default function MarketsPage() {
       <div className="flex flex-col sm:flex-row gap-3 mb-6">
         <input
           type="text"
-          placeholder="🔍 Пошук монети..."
+          placeholder={t.markets.search_placeholder}
           value={search}
           onChange={e => setSearch(e.target.value)}
           className="flex-1 border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400 text-sm bg-white"
         />
         <div className="flex gap-2">
           {[
-            { value: 'all', label: '🌐 Всі' },
-            { value: 'bullish', label: '📈 Бичачі' },
-            { value: 'bearish', label: '📉 Ведмежі' },
-            { value: 'neutral', label: '⚖️ Нейтральні' },
+            { value: 'all', label: t.markets.filters.all },
+            { value: 'bullish', label: t.markets.filters.bullish },
+            { value: 'bearish', label: t.markets.filters.bearish },
+            { value: 'neutral', label: t.markets.filters.neutral },
           ].map(f => (
             <button key={f.value} onClick={() => setFilter(f.value as typeof filter)}
               className={`px-3 py-3 rounded-xl text-sm font-semibold transition whitespace-nowrap ${
@@ -129,7 +135,7 @@ export default function MarketsPage() {
       {loading && (
         <div className="text-center py-20">
           <div className="inline-block w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mb-4" />
-          <p className="text-gray-500">Завантаження AI-аналізу...</p>
+          <p className="text-gray-500">{t.markets.loading}</p>
         </div>
       )}
 
@@ -181,7 +187,7 @@ export default function MarketsPage() {
 
                 {/* Footer */}
                 <div className="flex justify-between items-center text-xs text-gray-400">
-                  <span>📰 {coin.total_news} новин</span>
+                  <span>📰 {coin.total_news} {t.markets.card_footer}</span>
                   <span>{timeAgo(coin.latest_news_at)}</span>
                 </div>
               </Link>
@@ -193,12 +199,12 @@ export default function MarketsPage() {
       {!loading && filtered.length === 0 && (
         <div className="text-center py-20 text-gray-400">
           <p className="text-3xl mb-2">🔍</p>
-          <p>Нічого не знайдено</p>
+          <p>{t.markets.no_results}</p>
         </div>
       )}
 
       <p className="text-center text-xs text-gray-400 mt-8">
-        AI-аналіз на основі новин з CoinTelegraph, CoinDesk, Decrypt, CryptoSlate · Не є фінансовою порадою
+        {t.markets.footer}
       </p>
     </main>
   );

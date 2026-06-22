@@ -108,5 +108,46 @@
       "💡 What is staking?",
       "🛡️ How to safely store crypto?"
     ]
+  },
+  "markets": {
+    "title": "🧠 AI Market Sentiment",
+    "subtitle": "Crypto market sentiment analysis based on AI-powered news processing",
+    "search_placeholder": "🔍 Search coin...",
+    "filters": {
+      "all": "🌐 All",
+      "bullish": "📈 Bullish",
+      "bearish": "📉 Bearish",
+      "neutral": "⚖️ Neutral"
+    },
+    "stats": {
+      "bullish": "📈 Bullish",
+      "neutral": "⚖️ Neutral",
+      "bearish": "📉 Bearish"
+    },
+    "sentiment": {
+      "very_positive": "🚀 Very Positive",
+      "positive": "📈 Positive",
+      "very_negative": "💥 Very Negative",
+      "negative": "📉 Negative",
+      "neutral": "⚖️ Neutral"
+    },
+    "recommendation": {
+      "buy": "🟢 Buy",
+      "sell": "🔴 Sell",
+      "hold": "🟡 Hold"
+    },
+    "loading": "Loading AI analysis...",
+    "no_results": "Nothing found",
+    "time_ago": {
+      "minutes": "minutes ago",
+      "hours": "hours ago",
+      "days": "days ago"
+    },
+    "card_footer": "news",
+    "footer": "AI analysis based on news from CoinTelegraph, CoinDesk, Decrypt, CryptoSlate · Not financial advice"
+  },
+  "faq": {
+    "cta_text": "Don't know which exchange to choose?",
+    "cta_button": "🎯 Take exchange quiz"
   }
 }

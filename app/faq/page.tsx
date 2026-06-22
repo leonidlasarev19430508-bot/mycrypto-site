@@ -57,10 +57,10 @@ const FAQS = {
 };
 
 const LOCALE_UI = {
-  uk: { title: '❓ Часті питання', subtitle: 'Відповіді на найпоширеніші питання про крипту та біржі', backHome: '← На головну', quiz: '🎯 Пройти квіз підбору біржі' },
-  en: { title: '❓ Frequently Asked Questions', subtitle: 'Answers to the most common questions about crypto and exchanges', backHome: '← Back to Home', quiz: '🎯 Take exchange quiz' },
-  pl: { title: '❓ Często zadawane pytania', subtitle: 'Odpowiedzi na najczęściej zadawane pytania o krypto i giełdach', backHome: '← Powrót do strony głównej', quiz: '🎯 Przejdź quiz giełdowy' },
-  de: { title: '❓ Häufig gestellte Fragen', subtitle: 'Antworten auf die häufigsten Fragen zu Krypto und Börsen', backHome: '← Zurück zur Startseite', quiz: '🎯 Börsen-Quiz starten' },
+  uk: { title: '❓ Часті питання', subtitle: 'Відповіді на найпоширеніші питання про крипту та біржі', backHome: '← На головну', quiz: '🎯 Пройти квіз підбору біржі', faq_cta: 'Не знаєш яку біржу обрати?', faq_quiz: '🎯 Пройти квіз підбору біржи' },
+  en: { title: '❓ Frequently Asked Questions', subtitle: 'Answers to the most common questions about crypto and exchanges', backHome: '← Back to Home', quiz: '🎯 Take exchange quiz', faq_cta: "Don't know which exchange to choose?", faq_quiz: '🎯 Take exchange quiz' },
+  pl: { title: '❓ Często zadawane pytania', subtitle: 'Odpowiedzi na najczęściej zadawane pytania o krypto i giełdach', backHome: '← Powrót do strony głównej', quiz: '🎯 Przejdź quiz giełdowy', faq_cta: 'Nie wiesz którą giełdę wybrać?', faq_quiz: '🎯 Przejdź quiz giełdowy' },
+  de: { title: '❓ Häufig gestellte Fragen', subtitle: 'Antworten auf die häufigsten Fragen zu Krypto und Börsen', backHome: '← Zurück zur Startseite', quiz: '🎯 Börsen-Quiz starten', faq_cta: 'Weiß nicht, welche Börse du wählen sollst?', faq_quiz: '🎯 Börsen-Quiz starten' },
 };
 
 export default function FAQPage({ locale = 'uk' }: { locale?: string }) {
@@ -90,9 +90,9 @@ export default function FAQPage({ locale = 'uk' }: { locale?: string }) {
       </div>
 
       <div className="mt-10 p-6 bg-blue-50 rounded-2xl text-center">
-        <p className="text-gray-700 mb-4 font-medium">Не знаєш яку біржу обрати?</p>
+        <p className="text-gray-700 mb-4 font-medium">{ui.faq_cta}</p>
         <Link href={homeHref} className="inline-block bg-orange-500 text-white px-6 py-3 rounded-xl hover:bg-orange-600 transition font-semibold">
-          {ui.quiz}
+          {ui.faq_quiz}
         </Link>
       </div>
     </div>
