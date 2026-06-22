@@ -11,11 +11,11 @@ interface Candle {
 }
 
 interface ReplayChartProps {
-  symbol: string;          // 'BTCUSDT'
-  coinGeckoId: string;     // 'bitcoin'
-  onPriceUpdate: (price: number) => void; // передаємо поточну ціну в симулятор
+  symbol: string;
+  coinGeckoId: string;
+  onPriceUpdate: (price: number) => void;
   locale?: string;
-  recordingMode?: boolean; // чистий режим для запису відео (без controls)
+  recordingMode?: boolean;
 }
 
 const SPEED_OPTIONS = [
@@ -25,12 +25,11 @@ const SPEED_OPTIONS = [
   { label: '60×', value: 16 },
 ];
 
-// Готові "драматичні" пресети для відеоконтенту
 const PRESETS = [
-  { label: '📅 Останній тиждень', daysAgo: 7 },
-  { label: '📅 Останній місяць', daysAgo: 30 },
-  { label: '📅 3 місяці', daysAgo: 90 },
-  { label: '📅 Рік', daysAgo: 365 },
+  { label: '7 днів', daysAgo: 7 },
+  { label: '1 місяць', daysAgo: 30 },
+  { label: '3 місяці', daysAgo: 90 },
+  { label: '1 рік', daysAgo: 365 },
 ];
 
 const UI: Record<string, Record<string, string>> = {
@@ -44,7 +43,6 @@ const UI: Record<string, Record<string, string>> = {
     period: 'Період',
     candle: 'Свічка',
     of: 'з',
-    attribution: 'Дані: CoinGecko',
     replayMode: '⏪ Режим Replay',
     interval: 'Інтервал',
   },
@@ -58,7 +56,6 @@ const UI: Record<string, Record<string, string>> = {
     period: 'Period',
     candle: 'Candle',
     of: 'of',
-    attribution: 'Data: CoinGecko',
     replayMode: '⏪ Replay Mode',
     interval: 'Interval',
   },
@@ -72,7 +69,6 @@ const UI: Record<string, Record<string, string>> = {
     period: 'Okres',
     candle: 'Świeca',
     of: 'z',
-    attribution: 'Dane: CoinGecko',
     replayMode: '⏪ Tryb Replay',
     interval: 'Interwał',
   },
@@ -86,7 +82,6 @@ const UI: Record<string, Record<string, string>> = {
     period: 'Zeitraum',
     candle: 'Kerze',
     of: 'von',
-    attribution: 'Daten: CoinGecko',
     replayMode: '⏪ Replay-Modus',
     interval: 'Intervall',
   },
@@ -109,13 +104,12 @@ export default function ReplayChart({
   const [isPlaying, setIsPlaying] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [speedMs, setSpeedMs] = useState(200); // 5× за замовчуванням
+  const [speedMs, setSpeedMs] = useState(200);
   const [daysAgo, setDaysAgo] = useState(30);
-  const [interval, setIntervalValue] = useState<'1h' | '4h' | '1d'>('1h');
+  const [chartInterval, setChartInterval] = useState<'1h' | '4h' | '1d'>('1h');
 
   const t = UI[locale] || UI.uk;
 
-  // Завантажуємо свічки з нашого API
   const loadCandles = useCallback(async () => {
     setLoading(true);
     setError('');
@@ -127,7 +121,7 @@ export default function ReplayChart({
 
     try {
       const res = await fetch(
-        `/api/replay/candles?symbol=${symbol}&interval=${interval}&from=${from}&to=${to}`
+        `/api/replay/candles?symbol=${symbol}&interval=${chartInterval}&from=${from}&to=${to}`
       );
       const data = await res.json();
       if (!res.ok || !data.candles?.length) {
@@ -142,33 +136,31 @@ export default function ReplayChart({
     } finally {
       setLoading(false);
     }
-  }, [symbol, daysAgo, interval, t]);
+  }, [symbol, daysAgo, chartInterval, t]);
 
   useEffect(() => { loadCandles(); }, [loadCandles]);
 
-  // Ініціалізуємо Lightweight Charts
+  // Ініціалізація графіка — lightweight-charts v5 API
   useEffect(() => {
     if (!chartContainerRef.current || candles.length === 0) return;
 
-    // Динамічний імпорт щоб уникнути SSR-проблем
-    import('lightweight-charts').then(({ createChart, ColorType }) => {
+    import('lightweight-charts').then((lc) => {
       // Очищаємо попередній графік
       if (chartRef.current) {
-        chartRef.current.remove();
+        try { chartRef.current.remove(); } catch {}
         chartRef.current = null;
         seriesRef.current = null;
       }
 
-      const chart = createChart(chartContainerRef.current!, {
+      const chart = lc.createChart(chartContainerRef.current!, {
         layout: {
-          background: { type: ColorType.Solid, color: '#ffffff' },
+          background: { type: lc.ColorType.Solid, color: '#ffffff' },
           textColor: '#374151',
         },
         grid: {
           vertLines: { color: '#f3f4f6' },
           horzLines: { color: '#f3f4f6' },
         },
-        crosshair: { mode: 1 },
         rightPriceScale: { borderColor: '#e5e7eb' },
         timeScale: {
           borderColor: '#e5e7eb',
@@ -179,7 +171,8 @@ export default function ReplayChart({
         height: 360,
       });
 
-      const candleSeries = chart.addCandlestickSeries({
+      // v5 API: addSeries з CandlestickSeries
+      const candleSeries = chart.addSeries(lc.CandlestickSeries, {
         upColor: '#22c55e',
         downColor: '#ef4444',
         borderVisible: false,
@@ -190,8 +183,7 @@ export default function ReplayChart({
       chartRef.current = chart;
       seriesRef.current = candleSeries;
 
-      // Відображаємо перші кілька свічок як "стартову позицію"
-      const initialCount = Math.min(20, candles.length);
+      const initialCount = Math.min(30, candles.length);
       const initialData = candles.slice(0, initialCount).map(c => ({
         time: Math.floor(c.openTime / 1000) as any,
         open: c.open,
@@ -204,17 +196,16 @@ export default function ReplayChart({
       onPriceUpdate(candles[initialCount - 1]?.close || 0);
       chart.timeScale().fitContent();
 
-      // ResizeObserver для адаптивності
       const resizeObserver = new ResizeObserver(() => {
-        if (chartContainerRef.current) {
-          chart.applyOptions({ width: chartContainerRef.current.clientWidth });
+        if (chartContainerRef.current && chartRef.current) {
+          chartRef.current.applyOptions({ width: chartContainerRef.current.clientWidth });
         }
       });
       if (chartContainerRef.current) resizeObserver.observe(chartContainerRef.current);
 
       return () => {
         resizeObserver.disconnect();
-        chart.remove();
+        try { chart.remove(); } catch {}
       };
     });
   }, [candles]);
@@ -231,13 +222,15 @@ export default function ReplayChart({
           return prev;
         }
         const candle = candles[prev];
-        seriesRef.current?.update({
-          time: Math.floor(candle.openTime / 1000) as any,
-          open: candle.open,
-          high: candle.high,
-          low: candle.low,
-          close: candle.close,
-        });
+        try {
+          seriesRef.current?.update({
+            time: Math.floor(candle.openTime / 1000) as any,
+            open: candle.open,
+            high: candle.high,
+            low: candle.low,
+            close: candle.close,
+          });
+        } catch {}
         onPriceUpdate(candle.close);
         return prev + 1;
       });
@@ -250,12 +243,12 @@ export default function ReplayChart({
     setIsPlaying(false);
     if (intervalRef.current) clearInterval(intervalRef.current);
     if (seriesRef.current && candles.length > 0) {
-      const initialCount = Math.min(20, candles.length);
+      const initialCount = Math.min(30, candles.length);
       const initialData = candles.slice(0, initialCount).map(c => ({
         time: Math.floor(c.openTime / 1000) as any,
         open: c.open, high: c.high, low: c.low, close: c.close,
       }));
-      seriesRef.current.setData(initialData);
+      try { seriesRef.current.setData(initialData); } catch {}
       setCurrentIndex(initialCount);
       onPriceUpdate(candles[initialCount - 1]?.close || 0);
     }
@@ -265,7 +258,6 @@ export default function ReplayChart({
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-      {/* Заголовок режиму */}
       {!recordingMode && (
         <div className="flex items-center justify-between px-4 py-2 bg-gray-50 border-b border-gray-200">
           <span className="text-sm font-bold text-gray-700">{t.replayMode} — {symbol}</span>
@@ -275,7 +267,6 @@ export default function ReplayChart({
         </div>
       )}
 
-      {/* Область графіка */}
       <div className="relative">
         {loading && (
           <div className="absolute inset-0 flex items-center justify-center bg-white/80 z-10">
@@ -293,20 +284,14 @@ export default function ReplayChart({
         <div ref={chartContainerRef} className="w-full" style={{ height: 360 }} />
       </div>
 
-      {/* Прогрес-бар */}
       {!recordingMode && candles.length > 0 && (
         <div className="h-1 bg-gray-100">
-          <div
-            className="h-1 bg-orange-500 transition-all duration-200"
-            style={{ width: `${progress}%` }}
-          />
+          <div className="h-1 bg-orange-500 transition-all duration-200" style={{ width: `${progress}%` }} />
         </div>
       )}
 
-      {/* Controls */}
       {!recordingMode && (
         <div className="px-4 py-3 space-y-3">
-          {/* Рядок 1: Play/Pause/Restart + швидкість */}
           <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={() => setIsPlaying(p => !p)}
@@ -322,75 +307,47 @@ export default function ReplayChart({
             >
               {t.restart}
             </button>
-
             <div className="flex items-center gap-1 ml-auto">
               <span className="text-xs text-gray-500 font-semibold">{t.speed}:</span>
               {SPEED_OPTIONS.map(opt => (
-                <button
-                  key={opt.value}
-                  onClick={() => setSpeedMs(opt.value)}
-                  className={`px-2 py-1 rounded-lg text-xs font-bold transition ${
-                    speedMs === opt.value
-                      ? 'bg-orange-500 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
+                <button key={opt.value} onClick={() => setSpeedMs(opt.value)}
+                  className={`px-2 py-1 rounded-lg text-xs font-bold transition ${speedMs === opt.value ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
                   {opt.label}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Рядок 2: Пресети діапазону + інтервал */}
           <div className="flex items-center gap-2 flex-wrap">
             <span className="text-xs text-gray-500 font-semibold">{t.period}:</span>
             {PRESETS.map(p => (
-              <button
-                key={p.daysAgo}
-                onClick={() => setDaysAgo(p.daysAgo)}
-                className={`px-2 py-1 rounded-lg text-xs font-bold transition ${
-                  daysAgo === p.daysAgo
-                    ? 'bg-gray-900 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
+              <button key={p.daysAgo} onClick={() => setDaysAgo(p.daysAgo)}
+                className={`px-2 py-1 rounded-lg text-xs font-bold transition ${daysAgo === p.daysAgo ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
                 {p.label}
               </button>
             ))}
             <div className="flex items-center gap-1 ml-auto">
               <span className="text-xs text-gray-500 font-semibold">{t.interval}:</span>
               {(['1h', '4h', '1d'] as const).map(iv => (
-                <button
-                  key={iv}
-                  onClick={() => setIntervalValue(iv)}
-                  className={`px-2 py-1 rounded-lg text-xs font-bold transition ${
-                    interval === iv
-                      ? 'bg-gray-900 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
+                <button key={iv} onClick={() => setChartInterval(iv)}
+                  className={`px-2 py-1 rounded-lg text-xs font-bold transition ${chartInterval === iv ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
                   {iv}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* CoinGecko Attribution — вимога безкоштовного плану */}
-          <div className="flex items-center justify-end gap-1">
-            <a
-              href="https://www.coingecko.com?utm_source=cryptonavigator&utm_medium=referral"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-gray-400 hover:text-gray-600 transition"
-            >
-              Price data provided by{' '}
-              <span className="font-semibold text-gray-600">CoinGecko</span>
+          {/* CoinGecko Attribution — вимога Demo плану */}
+          <div className="flex justify-end">
+            <a href="https://www.coingecko.com?utm_source=cryptonavigator&utm_medium=referral"
+              target="_blank" rel="noopener noreferrer"
+              className="text-xs text-gray-400 hover:text-gray-600 transition">
+              Price data provided by <span className="font-semibold text-gray-600">CoinGecko</span>
             </a>
           </div>
         </div>
       )}
 
-      {/* Attribution у recording mode */}
       {recordingMode && (
         <div className="px-4 py-2 text-right">
           <span className="text-xs text-gray-400">Price data provided by CoinGecko</span>
