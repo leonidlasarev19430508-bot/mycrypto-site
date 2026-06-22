@@ -9,7 +9,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
               summary, summary_en, summary_pl, summary_de,
               full_article_uk, full_article_en,
               meta_description_uk, meta_description_en, tags
-       FROM ai_news WHERE id = $1`,
+            meta_description_uk, meta_description_en, tags, tags_en
+             FROM ai_news WHERE id = $1`,
       [id]
     );
     if (result.rows.length === 0) {

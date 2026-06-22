@@ -22,6 +22,7 @@ interface Article {
   meta_description_uk: string;
   meta_description_en: string;
   tags: string[];
+    tags_en: string[] | null;
 }
 
 type Locale = 'uk' | 'en' | 'pl' | 'de';
@@ -285,7 +286,7 @@ export default async function ArticlePage({
         {/* Теги */}
         {article.tags && article.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-6">
-            {article.tags
+              {(locale === 'uk' ? article.tags : (article.tags_en || article.tags))
               .filter(tag => locale === 'uk' || hasLatinCharacters(tag))
               .map((tag, i) => (
                 <span key={i} className="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full">
