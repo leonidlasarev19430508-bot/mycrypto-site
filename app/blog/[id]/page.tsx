@@ -103,6 +103,11 @@ function cleanText(text: string): string {
   return text.replace(/^=+/gm, '').trim();
 }
 
+// Перевіряє чи тег містить латинські символи
+function hasLatinCharacters(text: string): boolean {
+  return /[a-zA-Z]/.test(text);
+}
+
 // Обирає тіло статті відповідно до локалі: повна стаття (uk/en) > переклад-резюме (pl/de) > summary
 function getLocalizedBody(article: Article, locale: Locale): { isFull: boolean; text: string } {
   if (locale === 'uk' && article.full_article_uk && article.full_article_uk.length > 50) {
@@ -280,11 +285,13 @@ export default async function ArticlePage({
         {/* Теги */}
         {article.tags && article.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-6">
-            {article.tags.map((tag, i) => (
-              <span key={i} className="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full">
-                #{tag}
-              </span>
-            ))}
+            {article.tags
+              .filter(tag => locale === 'uk' || hasLatinCharacters(tag))
+              .map((tag, i) => (
+                <span key={i} className="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full">
+                  #{tag}
+                </span>
+              ))}
           </div>
         )}
 
