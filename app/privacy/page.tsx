@@ -1,103 +1,103 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — CryptoNavigator',
-  description: 'Privacy Policy for CryptoNavigator (cryptotop.chat)',
+  title: 'Політика конфіденційності — CryptoNavigator',
+  description: 'Політика конфіденційності CryptoNavigator (cryptotop.chat)',
   alternates: { canonical: 'https://cryptotop.chat/privacy' },
 };
 
 export default function PrivacyPage() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12 text-gray-800">
-      <h1 className="text-3xl font-black mb-2">Privacy Policy</h1>
-      <p className="text-sm text-gray-400 mb-8">Last updated: June 2026</p>
+      <h1 className="text-3xl font-black mb-2">Політика конфіденційності</h1>
+      <p className="text-sm text-gray-400 mb-8">Останнє оновлення: червень 2026</p>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">1. Who We Are</h2>
-        <p>CryptoNavigator ("we", "our", "us") operates the website <a href="https://cryptotop.chat" className="text-orange-500 hover:underline">cryptotop.chat</a> — an educational cryptocurrency platform providing market analysis, a trading simulator, and news aggregation.</p>
+        <h2 className="text-xl font-bold mb-3">1. Хто ми</h2>
+        <p>CryptoNavigator («ми», «нас», «наш») керує сайтом <a href="https://cryptotop.chat" className="text-orange-500 hover:underline">cryptotop.chat</a> — освітньою криптовалютною платформою з аналізом ринку, торговим симулятором та агрегацією новин.</p>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">2. Information We Collect</h2>
-        <p className="mb-2">We collect the following types of information:</p>
+        <h2 className="text-xl font-bold mb-3">2. Яку інформацію ми збираємо</h2>
+        <p className="mb-2">Ми збираємо такі типи інформації:</p>
         <ul className="list-disc pl-6 space-y-1">
-          <li><strong>Usage data:</strong> Pages visited, time on site, browser type, device type — collected via Google Analytics (anonymized).</li>
-          <li><strong>Email address:</strong> Only if you subscribe to our newsletter. We use Resend to send emails.</li>
-          <li><strong>Simulator data:</strong> The trading simulator stores data locally in your browser (localStorage). We do not collect or transmit this data.</li>
-          <li><strong>Cookies:</strong> We use cookies for analytics and basic functionality. See section 5.</li>
+          <li><strong>Дані про використання:</strong> відвідані сторінки, час на сайті, тип браузера та пристрою — через Google Analytics (анонімізовано).</li>
+          <li><strong>Email-адреса:</strong> лише якщо ви підписуєтесь на розсилку. Для надсилання листів використовуємо Resend.</li>
+          <li><strong>Дані симулятора:</strong> торговий симулятор зберігає дані локально у вашому браузері (localStorage). Ми не збираємо та не передаємо ці дані.</li>
+          <li><strong>Файли cookie:</strong> використовуємо для аналітики та базової функціональності. Детальніше — у розділі 5.</li>
         </ul>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">3. How We Use Your Information</h2>
+        <h2 className="text-xl font-bold mb-3">3. Як ми використовуємо інформацію</h2>
         <ul className="list-disc pl-6 space-y-1">
-          <li>To provide and improve our services</li>
-          <li>To send newsletters (only with your consent)</li>
-          <li>To analyze website traffic and user behavior</li>
-          <li>To comply with legal obligations</li>
+          <li>Для надання та вдосконалення наших послуг</li>
+          <li>Для надсилання розсилки (лише за вашою згодою)</li>
+          <li>Для аналізу трафіку та поведінки користувачів</li>
+          <li>Для виконання юридичних зобов'язань</li>
         </ul>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">4. Third-Party Services</h2>
-        <p className="mb-2">We use the following third-party services:</p>
+        <h2 className="text-xl font-bold mb-3">4. Сторонні сервіси</h2>
+        <p className="mb-2">Ми використовуємо такі сторонні сервіси:</p>
         <ul className="list-disc pl-6 space-y-1">
-          <li><strong>Google Analytics</strong> — website analytics</li>
-          <li><strong>CoinGecko / Binance API</strong> — real-time cryptocurrency price data</li>
-          <li><strong>TradingView</strong> — embedded charting widgets</li>
-          <li><strong>Resend</strong> — email delivery</li>
-          <li><strong>Anthropic Claude API</strong> — AI-powered news analysis</li>
+          <li><strong>Google Analytics</strong> — аналітика відвідуваності</li>
+          <li><strong>CoinGecko / Binance API</strong> — дані про ціни криптовалют в реальному часі</li>
+          <li><strong>TradingView</strong> — вбудовані графіки</li>
+          <li><strong>Resend</strong> — доставка email-листів</li>
+          <li><strong>Anthropic Claude API</strong> — AI-аналіз новин</li>
         </ul>
-        <p className="mt-2">Each service has its own privacy policy. We encourage you to review them.</p>
+        <p className="mt-2">Кожен сервіс має власну політику конфіденційності. Рекомендуємо з нею ознайомитися.</p>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">5. Cookies</h2>
-        <p>We use cookies for:</p>
+        <h2 className="text-xl font-bold mb-3">5. Файли cookie</h2>
+        <p>Ми використовуємо cookie для:</p>
         <ul className="list-disc pl-6 space-y-1 mt-2">
-          <li>Google Analytics tracking (anonymized IP)</li>
-          <li>Language preference storage</li>
-          <li>Basic session management</li>
+          <li>Відстеження Google Analytics (анонімізована IP-адреса)</li>
+          <li>Збереження мовних налаштувань</li>
+          <li>Базового керування сесіями</li>
         </ul>
-        <p className="mt-2">You can disable cookies in your browser settings. Some features may not function correctly without cookies.</p>
+        <p className="mt-2">Ви можете вимкнути cookie у налаштуваннях браузера. Деякі функції можуть працювати некоректно без cookie.</p>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">6. Affiliate Links</h2>
-        <p>CryptoNavigator contains affiliate links to cryptocurrency exchanges (Binance, Bybit, OKX, KuCoin). If you register through these links, we may receive a commission at no extra cost to you. We only recommend platforms we believe provide value to our users.</p>
+        <h2 className="text-xl font-bold mb-3">6. Партнерські посилання</h2>
+        <p>CryptoNavigator містить партнерські посилання на криптовалютні біржі (Binance, Bybit, OKX, KuCoin). Якщо ви реєструєтесь за цими посиланнями, ми можемо отримати комісію без додаткових витрат для вас. Ми рекомендуємо лише ті платформи, які вважаємо корисними для користувачів.</p>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">7. Data Retention</h2>
-        <p>We retain analytics data for up to 26 months. Email subscriber data is retained until you unsubscribe. You may request deletion of your data at any time.</p>
+        <h2 className="text-xl font-bold mb-3">7. Зберігання даних</h2>
+        <p>Аналітичні дані зберігаємо до 26 місяців. Дані email-підписників — до скасування підписки. Ви можете будь-коли запросити видалення своїх даних.</p>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">8. Your Rights (GDPR)</h2>
-        <p className="mb-2">If you are located in the European Union, you have the right to:</p>
+        <h2 className="text-xl font-bold mb-3">8. Ваші права (GDPR)</h2>
+        <p className="mb-2">Якщо ви знаходитесь в Європейському Союзі, ви маєте право:</p>
         <ul className="list-disc pl-6 space-y-1">
-          <li>Access your personal data</li>
-          <li>Rectify inaccurate data</li>
-          <li>Request erasure of your data</li>
-          <li>Object to processing</li>
-          <li>Data portability</li>
+          <li>Отримати доступ до своїх персональних даних</li>
+          <li>Виправити неточні дані</li>
+          <li>Вимагати видалення своїх даних</li>
+          <li>Заперечити проти обробки даних</li>
+          <li>Перенести свої дані</li>
         </ul>
-        <p className="mt-2">To exercise these rights, contact us at: <strong>info@cryptotop.chat</strong></p>
+        <p className="mt-2">Для реалізації цих прав зв'яжіться з нами: <strong>info@cryptotop.chat</strong></p>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">9. Children's Privacy</h2>
-        <p>Our services are not directed at children under 18. We do not knowingly collect personal data from minors.</p>
+        <h2 className="text-xl font-bold mb-3">9. Конфіденційність дітей</h2>
+        <p>Наші послуги не призначені для осіб до 18 років. Ми свідомо не збираємо персональні дані неповнолітніх.</p>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">10. Changes to This Policy</h2>
-        <p>We may update this Privacy Policy periodically. Changes will be posted on this page with an updated date.</p>
+        <h2 className="text-xl font-bold mb-3">10. Зміни до цієї політики</h2>
+        <p>Ми можемо час від часу оновлювати цю Політику конфіденційності. Зміни будуть опубліковані на цій сторінці з оновленою датою.</p>
       </section>
 
       <section>
-        <h2 className="text-xl font-bold mb-3">11. Contact</h2>
-        <p>For any privacy-related questions: <strong>info@cryptotop.chat</strong></p>
+        <h2 className="text-xl font-bold mb-3">11. Контакт</h2>
+        <p>З питань конфіденційності: <strong>info@cryptotop.chat</strong></p>
       </section>
     </main>
   );

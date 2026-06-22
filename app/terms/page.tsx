@@ -1,80 +1,80 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Terms of Use — CryptoNavigator',
-  description: 'Terms of Use for CryptoNavigator (cryptotop.chat)',
+  title: 'Умови використання — CryptoNavigator',
+  description: 'Умови використання CryptoNavigator (cryptotop.chat)',
   alternates: { canonical: 'https://cryptotop.chat/terms' },
 };
 
 export default function TermsPage() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12 text-gray-800">
-      <h1 className="text-3xl font-black mb-2">Terms of Use</h1>
-      <p className="text-sm text-gray-400 mb-8">Last updated: June 2026</p>
+      <h1 className="text-3xl font-black mb-2">Умови використання</h1>
+      <p className="text-sm text-gray-400 mb-8">Останнє оновлення: червень 2026</p>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">1. Acceptance of Terms</h2>
-        <p>By accessing and using CryptoNavigator at <a href="https://cryptotop.chat" className="text-orange-500 hover:underline">cryptotop.chat</a>, you agree to be bound by these Terms of Use. If you do not agree, please do not use our website.</p>
+        <h2 className="text-xl font-bold mb-3">1. Прийняття умов</h2>
+        <p>Використовуючи CryptoNavigator за адресою <a href="https://cryptotop.chat" className="text-orange-500 hover:underline">cryptotop.chat</a>, ви погоджуєтесь з цими Умовами використання. Якщо ви не погоджуєтесь — будь ласка, не використовуйте наш сайт.</p>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">2. Educational Purpose Only</h2>
-        <p className="mb-2">CryptoNavigator is an <strong>educational platform</strong>. All content, including news analysis, market data, trading recommendations (buy/sell/hold), and simulator features, is provided for <strong>informational and educational purposes only</strong>.</p>
+        <h2 className="text-xl font-bold mb-3">2. Виключно освітня мета</h2>
+        <p className="mb-2">CryptoNavigator — це <strong>освітня платформа</strong>. Весь контент, включно з аналізом новин, ринковими даними, рекомендаціями (купити/продати/тримати) та функціями симулятора, надається виключно з <strong>інформаційною та освітньою метою</strong>.</p>
         <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 mt-3">
-          <p className="font-bold text-orange-800">⚠️ IMPORTANT DISCLAIMER</p>
-          <p className="text-orange-700 mt-1">Nothing on this website constitutes financial, investment, legal, or tax advice. Do not make financial decisions based solely on information from this site. Always consult a qualified financial advisor before investing.</p>
+          <p className="font-bold text-orange-800">⚠️ ВАЖЛИВИЙ ДИСКЛЕЙМЕР</p>
+          <p className="text-orange-700 mt-1">Ніщо на цьому сайті не є фінансовою, інвестиційною, юридичною чи податковою порадою. Не приймайте фінансові рішення виключно на основі інформації з цього сайту. Завжди консультуйтесь з кваліфікованим фінансовим радником перед інвестуванням.</p>
         </div>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">3. Trading Simulator</h2>
-        <p>The CryptoNavigator trading simulator uses virtual (fake) money only. It is designed for educational purposes to help users understand how cryptocurrency trading works without financial risk. Any profits or losses in the simulator do not represent real financial outcomes.</p>
+        <h2 className="text-xl font-bold mb-3">3. Торговий симулятор</h2>
+        <p>Торговий симулятор CryptoNavigator використовує виключно віртуальні (ненастановні) гроші. Він створений з освітньою метою — допомогти користувачам зрозуміти принципи криптовалютної торгівлі без фінансового ризику. Будь-які прибутки або збитки в симуляторі не відображають реальних фінансових результатів.</p>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">4. Affiliate Relationships</h2>
-        <p>CryptoNavigator participates in affiliate programs with cryptocurrency exchanges including Binance, Bybit, OKX, and KuCoin. We may earn a commission when you register or trade through our affiliate links. This does not affect the price you pay. Our editorial content is not influenced by affiliate relationships.</p>
+        <h2 className="text-xl font-bold mb-3">4. Партнерські відносини</h2>
+        <p>CryptoNavigator бере участь у партнерських програмах криптовалютних бірж, включно з Binance, Bybit, OKX та KuCoin. Ми можемо отримувати комісію, коли ви реєструєтесь або торгуєте за нашими партнерськими посиланнями. Це не впливає на ціну для вас. Наш редакційний контент не залежить від партнерських відносин.</p>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">5. AI-Generated Content</h2>
-        <p>News analyses and summaries on this platform are generated using artificial intelligence (Anthropic Claude). While we strive for accuracy, AI-generated content may contain errors or inaccuracies. Always verify important information from original sources before making decisions.</p>
+        <h2 className="text-xl font-bold mb-3">5. Контент, згенерований ШІ</h2>
+        <p>Аналізи новин і зведення на цій платформі генеруються штучним інтелектом (Anthropic Claude). Хоча ми прагнемо до точності, AI-контент може містити помилки або неточності. Завжди перевіряйте важливу інформацію з першоджерел перед прийняттям рішень.</p>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">6. Intellectual Property</h2>
-        <p>All original content, design, and code on CryptoNavigator is our intellectual property. News summaries are AI-generated analyses based on publicly available information, with links to original sources. If you believe any content infringes your copyright, contact us at info@cryptotop.chat.</p>
+        <h2 className="text-xl font-bold mb-3">6. Інтелектуальна власність</h2>
+        <p>Весь оригінальний контент, дизайн та код CryptoNavigator є нашою інтелектуальною власністю. Новинні зведення — це AI-аналізи на основі загальнодоступної інформації з посиланнями на першоджерела. Якщо ви вважаєте, що будь-який контент порушує ваші авторські права, зв'яжіться з нами: info@cryptotop.chat.</p>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">7. Limitation of Liability</h2>
-        <p>CryptoNavigator shall not be liable for any financial losses, damages, or negative outcomes resulting from use of our platform or reliance on our content. Cryptocurrency trading involves significant risk of loss. You use this platform at your own risk.</p>
+        <h2 className="text-xl font-bold mb-3">7. Обмеження відповідальності</h2>
+        <p>CryptoNavigator не несе відповідальності за будь-які фінансові втрати, збитки або негативні наслідки від використання нашої платформи чи покладання на наш контент. Торгівля криптовалютами пов'язана зі значним ризиком втрат. Ви використовуєте платформу на власний ризик.</p>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">8. Third-Party Links</h2>
-        <p>Our website contains links to third-party websites including cryptocurrency exchanges. We are not responsible for the content, security, or practices of these external sites. Visit them at your own risk.</p>
+        <h2 className="text-xl font-bold mb-3">8. Посилання на сторонні ресурси</h2>
+        <p>Наш сайт містить посилання на сторонні ресурси, включно з криптовалютними біржами. Ми не несемо відповідальності за контент, безпеку чи практики цих зовнішніх сайтів. Відвідуйте їх на власний ризик.</p>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">9. Prohibited Uses</h2>
-        <p className="mb-2">You agree not to:</p>
+        <h2 className="text-xl font-bold mb-3">9. Заборонене використання</h2>
+        <p className="mb-2">Ви погоджуєтесь не:</p>
         <ul className="list-disc pl-6 space-y-1">
-          <li>Use the platform for any unlawful purpose</li>
-          <li>Attempt to reverse-engineer or copy our software</li>
-          <li>Use automated scrapers or bots to extract content</li>
-          <li>Misrepresent our content or use it in a misleading way</li>
+          <li>Використовувати платформу з незаконною метою</li>
+          <li>Намагатися провести реверс-інжиніринг або скопіювати наше програмне забезпечення</li>
+          <li>Використовувати автоматизовані парсери або боти для збору контенту</li>
+          <li>Перекручувати наш контент або використовувати його в оманливий спосіб</li>
         </ul>
       </section>
 
       <section className="mb-8">
-        <h2 className="text-xl font-bold mb-3">10. Changes to Terms</h2>
-        <p>We reserve the right to modify these Terms at any time. Continued use of the platform after changes constitutes acceptance of the new Terms.</p>
+        <h2 className="text-xl font-bold mb-3">10. Зміни умов</h2>
+        <p>Ми залишаємо за собою право в будь-який час змінювати ці Умови. Продовження використання платформи після змін означає прийняття нових Умов.</p>
       </section>
 
       <section>
-        <h2 className="text-xl font-bold mb-3">11. Contact</h2>
-        <p>For questions about these Terms: <strong>info@cryptotop.chat</strong></p>
+        <h2 className="text-xl font-bold mb-3">11. Контакт</h2>
+        <p>З питань щодо цих Умов: <strong>info@cryptotop.chat</strong></p>
       </section>
     </main>
   );
