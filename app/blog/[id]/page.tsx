@@ -98,29 +98,34 @@ async function getArticle(id: string): Promise<Article | null> {
   } catch { return null; }
 }
 
+// Видаляє символ "=" з початку рядків
+function cleanText(text: string): string {
+  return text.replace(/^=+/gm, '').trim();
+}
+
 // Обирає тіло статті відповідно до локалі: повна стаття (uk/en) > переклад-резюме (pl/de) > summary
 function getLocalizedBody(article: Article, locale: Locale): { isFull: boolean; text: string } {
   if (locale === 'uk' && article.full_article_uk && article.full_article_uk.length > 50) {
-    return { isFull: true, text: article.full_article_uk };
+    return { isFull: true, text: cleanText(article.full_article_uk) };
   }
   if (locale === 'en' && article.full_article_en && article.full_article_en.length > 50) {
-    return { isFull: true, text: article.full_article_en };
+    return { isFull: true, text: cleanText(article.full_article_en) };
   }
   if (locale === 'pl' && article.summary_pl) {
-    return { isFull: false, text: article.summary_pl };
+    return { isFull: false, text: cleanText(article.summary_pl) };
   }
   if (locale === 'de' && article.summary_de) {
-    return { isFull: false, text: article.summary_de };
+    return { isFull: false, text: cleanText(article.summary_de) };
   }
   if (locale === 'en' && article.summary_en) {
-    return { isFull: false, text: article.summary_en };
+    return { isFull: false, text: cleanText(article.summary_en) };
   }
-  return { isFull: false, text: article.summary };
+  return { isFull: false, text: cleanText(article.summary) };
 }
 
 function getLocalizedTitle(article: Article, locale: Locale): string {
-  if (locale === 'uk') return article.title_uk || article.title;
-  return article.title;
+  const title = locale === 'uk' ? (article.title_uk || article.title) : article.title;
+  return cleanText(title);
 }
 
 export async function generateMetadata({
@@ -136,9 +141,11 @@ export async function generateMetadata({
   const article = await getArticle(id);
   if (!article) return { title: 'Article not found' };
   const title = getLocalizedTitle(article, locale);
-  const description = locale === 'uk'
-    ? (article.meta_description_uk || article.summary?.slice(0, 160) || '')
-    : (article.meta_description_en || article.summary_en?.slice(0, 160) || '');
+  const description = cleanText(
+    locale === 'uk'
+      ? (article.meta_description_uk || article.summary?.slice(0, 160) || '')
+      : (article.meta_description_en || article.summary_en?.slice(0, 160) || '')
+  );
   return {
     title: `${title} | CryptoNavigator`,
     description,
@@ -259,13 +266,13 @@ export default async function ArticlePage({
             <div className="prose prose-gray max-w-none">
               {body.text.split('\n').filter(p => p.trim()).map((paragraph, i) => (
                 <p key={i} className="text-gray-800 text-base leading-relaxed mb-4">
-                  {paragraph}
+                  {cleanText(paragraph)}
                 </p>
               ))}
             </div>
           ) : (
             <p className="text-gray-800 text-base leading-relaxed font-medium">
-              {body.text}
+              {cleanText(body.text)}
             </p>
           )}
         </div>
