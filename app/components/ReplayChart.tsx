@@ -195,12 +195,16 @@ export default function ReplayChart({
       candleSeries.setData(initialData);
       setCurrentIndex(initialCount);
       onPriceUpdate(candles[initialCount - 1]?.close || 0);
-      // Показуємо останні 60 свічок щоб вони були достатньо широкими
-      chart.timeScale().fitContent();
+      // Показуємо лише перші 30 свічок у видимій зоні — щоб вони були широкими
       if (initialData.length > 0) {
+        const firstTime = initialData[0].time as number;
         const lastTime = initialData[initialData.length - 1].time as number;
-        const firstTime = initialData[Math.max(0, initialData.length - 60)].time as number;
-        chart.timeScale().setVisibleRange({ from: firstTime as any, to: (lastTime + 3600) as any });
+        // Додаємо відступ праворуч (~20% від діапазону) для зручності
+        const padding = Math.round((lastTime - firstTime) * 0.2);
+        chart.timeScale().setVisibleRange({
+          from: firstTime as any,
+          to: (lastTime + padding) as any,
+        });
       }
 
       const resizeObserver = new ResizeObserver(() => {
