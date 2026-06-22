@@ -91,7 +91,6 @@ function ClientHeaderInner() {
     { href: getLocalizedPath(locale, 'coins'), label: labels.coins[locale] },
     { href: getLocalizedPath(locale, 'bonuses'), label: labels.bonuses[locale], highlight: true },
     { href: getLocalizedPath(locale, 'markets'), label: t.nav.markets },
-    { href: getLocalizedPath(locale, 'news'), label: t.nav.news },
     { href: getLocalizedPath(locale, 'assistant'), label: t.nav.assistant },
     { href: getLocalizedPath(locale, 'blog'), label: labels.blog[locale] },
     { href: getLocalizedPath(locale, 'faq'), label: 'FAQ' },

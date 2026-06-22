@@ -48,7 +48,7 @@ export async function GET(request: Request) {
 
     const articles = result.rows.map(row => ({
       id: row.id,
-      title: row.title,
+      title: row.title?.replace(/^=+/, '') || '',
       coin_slug: row.coin_slug,
       coin_name: row.coin_name?.replace('=', '') || '',
       sentiment: row.sentiment,
