@@ -33,67 +33,13 @@ const PRESETS = [
 ];
 
 const UI: Record<string, Record<string, string>> = {
-  uk: {
-    loading: 'Завантаження свічок...',
-    noData: 'Дані відсутні для цього діапазону',
-    play: '▶ Відтворити',
-    pause: '⏸ Пауза',
-    restart: '⏮ Спочатку',
-    speed: 'Швидкість',
-    period: 'Період',
-    candle: 'Свічка',
-    of: 'з',
-    replayMode: '⏪ Режим Replay',
-    interval: 'Інтервал',
-  },
-  en: {
-    loading: 'Loading candles...',
-    noData: 'No data for this range',
-    play: '▶ Play',
-    pause: '⏸ Pause',
-    restart: '⏮ Restart',
-    speed: 'Speed',
-    period: 'Period',
-    candle: 'Candle',
-    of: 'of',
-    replayMode: '⏪ Replay Mode',
-    interval: 'Interval',
-  },
-  pl: {
-    loading: 'Ładowanie świec...',
-    noData: 'Brak danych dla tego zakresu',
-    play: '▶ Odtwórz',
-    pause: '⏸ Pauza',
-    restart: '⏮ Od początku',
-    speed: 'Prędkość',
-    period: 'Okres',
-    candle: 'Świeca',
-    of: 'z',
-    replayMode: '⏪ Tryb Replay',
-    interval: 'Interwał',
-  },
-  de: {
-    loading: 'Kerzen werden geladen...',
-    noData: 'Keine Daten für diesen Bereich',
-    play: '▶ Abspielen',
-    pause: '⏸ Pause',
-    restart: '⏮ Neustart',
-    speed: 'Geschwindigkeit',
-    period: 'Zeitraum',
-    candle: 'Kerze',
-    of: 'von',
-    replayMode: '⏪ Replay-Modus',
-    interval: 'Intervall',
-  },
+  uk: { loading: 'Завантаження свічок...', noData: 'Дані відсутні для цього діапазону', play: '▶ Відтворити', pause: '⏸ Пауза', restart: '⏮ Спочатку', speed: 'Швидкість', period: 'Період', candle: 'Свічка', of: 'з', replayMode: '⏪ Режим Replay', interval: 'Інтервал' },
+  en: { loading: 'Loading candles...', noData: 'No data for this range', play: '▶ Play', pause: '⏸ Pause', restart: '⏮ Restart', speed: 'Speed', period: 'Period', candle: 'Candle', of: 'of', replayMode: '⏪ Replay Mode', interval: 'Interval' },
+  pl: { loading: 'Ładowanie świec...', noData: 'Brak danych dla tego zakresu', play: '▶ Odtwórz', pause: '⏸ Pauza', restart: '⏮ Od początku', speed: 'Prędkość', period: 'Okres', candle: 'Świeca', of: 'z', replayMode: '⏪ Tryb Replay', interval: 'Interwał' },
+  de: { loading: 'Kerzen werden geladen...', noData: 'Keine Daten für diesen Bereich', play: '▶ Abspielen', pause: '⏸ Pause', restart: '⏮ Neustart', speed: 'Geschwindigkeit', period: 'Zeitraum', candle: 'Kerze', of: 'von', replayMode: '⏪ Replay-Modus', interval: 'Intervall' },
 };
 
-export default function ReplayChart({
-  symbol,
-  coinGeckoId,
-  onPriceUpdate,
-  locale = 'uk',
-  recordingMode = false,
-}: ReplayChartProps) {
+export default function ReplayChart({ symbol, coinGeckoId, onPriceUpdate, locale = 'uk', recordingMode = false }: ReplayChartProps) {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<any>(null);
   const seriesRef = useRef<any>(null);
@@ -106,7 +52,7 @@ export default function ReplayChart({
   const [error, setError] = useState('');
   const [speedMs, setSpeedMs] = useState(200);
   const [daysAgo, setDaysAgo] = useState(30);
-  const [chartInterval, setChartInterval] = useState<'1h' | '4h' | '1d'>('1h');
+  const [chartInterval, setChartInterval] = useState<'4h' | '1d'>('4h');
 
   const t = UI[locale] || UI.uk;
 
@@ -120,9 +66,7 @@ export default function ReplayChart({
     const from = to - daysAgo * 24 * 60 * 60 * 1000;
 
     try {
-      const res = await fetch(
-        `/api/replay/candles?symbol=${symbol}&interval=${chartInterval}&from=${from}&to=${to}`
-      );
+      const res = await fetch(`/api/replay/candles?symbol=${symbol}&interval=${chartInterval}&from=${from}&to=${to}`);
       const data = await res.json();
       if (!res.ok || !data.candles?.length) {
         setError(t.noData);
@@ -140,12 +84,10 @@ export default function ReplayChart({
 
   useEffect(() => { loadCandles(); }, [loadCandles]);
 
-  // Ініціалізація графіка — lightweight-charts v5 API
   useEffect(() => {
     if (!chartContainerRef.current || candles.length === 0) return;
 
     import('lightweight-charts').then((lc) => {
-      // Очищаємо попередній графік
       if (chartRef.current) {
         try { chartRef.current.remove(); } catch {}
         chartRef.current = null;
@@ -156,29 +98,18 @@ export default function ReplayChart({
         layout: {
           background: { type: lc.ColorType.Solid, color: '#ffffff' },
           textColor: '#374151',
-          attributionLogo: false, // прибираємо логотип TradingView
+          attributionLogo: false,
         },
-        grid: {
-          vertLines: { color: '#f3f4f6' },
-          horzLines: { color: '#f3f4f6' },
-        },
+        grid: { vertLines: { color: '#f3f4f6' }, horzLines: { color: '#f3f4f6' } },
         rightPriceScale: { borderColor: '#e5e7eb' },
-        timeScale: {
-          borderColor: '#e5e7eb',
-          timeVisible: true,
-          secondsVisible: false,
-        },
+        timeScale: { borderColor: '#e5e7eb', timeVisible: true, secondsVisible: false },
         width: chartContainerRef.current!.clientWidth,
         height: 360,
       });
 
-      // v5 API: addSeries з CandlestickSeries
       const candleSeries = chart.addSeries(lc.CandlestickSeries, {
-        upColor: '#22c55e',
-        downColor: '#ef4444',
-        borderVisible: false,
-        wickUpColor: '#22c55e',
-        wickDownColor: '#ef4444',
+        upColor: '#22c55e', downColor: '#ef4444',
+        borderVisible: false, wickUpColor: '#22c55e', wickDownColor: '#ef4444',
       });
 
       chartRef.current = chart;
@@ -187,24 +118,17 @@ export default function ReplayChart({
       const initialCount = Math.min(30, candles.length);
       const initialData = candles.slice(0, initialCount).map(c => ({
         time: Math.floor(c.openTime / 1000) as any,
-        open: c.open,
-        high: c.high,
-        low: c.low,
-        close: c.close,
+        open: c.open, high: c.high, low: c.low, close: c.close,
       }));
       candleSeries.setData(initialData);
       setCurrentIndex(initialCount);
       onPriceUpdate(candles[initialCount - 1]?.close || 0);
-      // Показуємо лише перші 30 свічок у видимій зоні — щоб вони були широкими
+
       if (initialData.length > 0) {
         const firstTime = initialData[0].time as number;
         const lastTime = initialData[initialData.length - 1].time as number;
-        // Додаємо відступ праворуч (~20% від діапазону) для зручності
         const padding = Math.round((lastTime - firstTime) * 0.2);
-        chart.timeScale().setVisibleRange({
-          from: firstTime as any,
-          to: (lastTime + padding) as any,
-        });
+        chart.timeScale().setVisibleRange({ from: firstTime as any, to: (lastTime + padding) as any });
       }
 
       const resizeObserver = new ResizeObserver(() => {
@@ -214,32 +138,22 @@ export default function ReplayChart({
       });
       if (chartContainerRef.current) resizeObserver.observe(chartContainerRef.current);
 
-      return () => {
-        resizeObserver.disconnect();
-        try { chart.remove(); } catch {}
-      };
+      return () => { resizeObserver.disconnect(); try { chart.remove(); } catch {} };
     });
   }, [candles]);
 
-  // Логіка відтворення
   useEffect(() => {
     if (intervalRef.current) clearInterval(intervalRef.current);
     if (!isPlaying || !seriesRef.current || candles.length === 0) return;
 
     intervalRef.current = setInterval(() => {
       setCurrentIndex(prev => {
-        if (prev >= candles.length) {
-          setIsPlaying(false);
-          return prev;
-        }
+        if (prev >= candles.length) { setIsPlaying(false); return prev; }
         const candle = candles[prev];
         try {
           seriesRef.current?.update({
             time: Math.floor(candle.openTime / 1000) as any,
-            open: candle.open,
-            high: candle.high,
-            low: candle.low,
-            close: candle.close,
+            open: candle.open, high: candle.high, low: candle.low, close: candle.close,
           });
         } catch {}
         onPriceUpdate(candle.close);
@@ -272,9 +186,7 @@ export default function ReplayChart({
       {!recordingMode && (
         <div className="flex items-center justify-between px-4 py-2 bg-gray-50 border-b border-gray-200">
           <span className="text-sm font-bold text-gray-700">{t.replayMode} — {symbol}</span>
-          <span className="text-xs text-gray-400">
-            {t.candle} {currentIndex} {t.of} {candles.length}
-          </span>
+          <span className="text-xs text-gray-400">{t.candle} {currentIndex} {t.of} {candles.length}</span>
         </div>
       )}
 
@@ -288,9 +200,7 @@ export default function ReplayChart({
           </div>
         )}
         {error && !loading && (
-          <div className="h-[360px] flex items-center justify-center text-gray-400">
-            <p>{error}</p>
-          </div>
+          <div className="h-[360px] flex items-center justify-center text-gray-400"><p>{error}</p></div>
         )}
         <div ref={chartContainerRef} className="w-full" style={{ height: 360 }} />
       </div>
@@ -304,18 +214,12 @@ export default function ReplayChart({
       {!recordingMode && (
         <div className="px-4 py-3 space-y-3">
           <div className="flex items-center gap-2 flex-wrap">
-            <button
-              onClick={() => setIsPlaying(p => !p)}
-              disabled={loading || candles.length === 0}
-              className="px-4 py-2 bg-orange-500 hover:bg-orange-600 disabled:opacity-40 text-white font-bold rounded-xl text-sm transition"
-            >
+            <button onClick={() => setIsPlaying(p => !p)} disabled={loading || candles.length === 0}
+              className="px-4 py-2 bg-orange-500 hover:bg-orange-600 disabled:opacity-40 text-white font-bold rounded-xl text-sm transition">
               {isPlaying ? t.pause : t.play}
             </button>
-            <button
-              onClick={handleRestart}
-              disabled={loading || candles.length === 0}
-              className="px-3 py-2 bg-gray-100 hover:bg-gray-200 disabled:opacity-40 text-gray-700 font-bold rounded-xl text-sm transition"
-            >
+            <button onClick={handleRestart} disabled={loading || candles.length === 0}
+              className="px-3 py-2 bg-gray-100 hover:bg-gray-200 disabled:opacity-40 text-gray-700 font-bold rounded-xl text-sm transition">
               {t.restart}
             </button>
             <div className="flex items-center gap-1 ml-auto">
@@ -339,7 +243,7 @@ export default function ReplayChart({
             ))}
             <div className="flex items-center gap-1 ml-auto">
               <span className="text-xs text-gray-500 font-semibold">{t.interval}:</span>
-              {(['1h', '4h', '1d'] as const).map(iv => (
+              {(['4h', '1d'] as const).map(iv => (
                 <button key={iv} onClick={() => setChartInterval(iv)}
                   className={`px-2 py-1 rounded-lg text-xs font-bold transition ${chartInterval === iv ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
                   {iv}
@@ -348,7 +252,6 @@ export default function ReplayChart({
             </div>
           </div>
 
-          {/* CoinGecko Attribution — вимога Demo плану */}
           <div className="flex justify-end">
             <a href="https://www.coingecko.com?utm_source=cryptonavigator&utm_medium=referral"
               target="_blank" rel="noopener noreferrer"
