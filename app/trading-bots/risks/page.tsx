@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: '5 ризиків торгових ботів | CryptoNavigator',
-  description: 'П' + "ять ризиків торгових ботів: curve fitting, комісії, безпека API, макро, хибне відчуття безпеки.",
+  description: "П'ять ризиків торгових ботів: curve fitting, комісії, безпека API, макро, хибне відчуття безпеки.",
   alternates: { canonical: 'https://cryptotop.chat/trading-bots/risks' },
 };
 
