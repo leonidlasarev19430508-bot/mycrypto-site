@@ -98,9 +98,9 @@ export default function FearGreedIndex({ locale = 'uk' }: Props) {
 
   return (
     <div className="max-w-xl mx-auto py-8 px-4">
-      <div className="flex justify-between items-center mb-6">
-        <span className="font-medium text-sm">Fear &amp; Greed Index</span>
-        <span className="text-xs text-gray-400">alternative.me</span>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
+        <span className="font-black text-3xl sm:text-4xl">Fear &amp; Greed Index</span>
+        <span className="text-sm text-gray-500 mt-2 sm:mt-0">alternative.me</span>
       </div>
       <div className="flex flex-col items-center mb-6">
         <svg viewBox="0 0 280 160" width="260">
