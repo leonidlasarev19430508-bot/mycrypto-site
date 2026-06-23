@@ -21,6 +21,7 @@ const LOCALIZABLE_PAGES = new Set([
   'coins',
   'bonuses',
   'markets',
+    'trading-bots',
   'news',
   'assistant',
   'blog',
@@ -81,6 +82,7 @@ function ClientHeaderInner() {
   const labels = {
     about: { uk: 'Про нас', en: 'About', pl: 'O nas', de: 'Über uns' },
     learn: { uk: 'Навчання', en: 'Learn', pl: 'Nauka', de: 'Lernen' },
+    tradingBots: { uk: 'Торгові боти', en: 'Trading bots', pl: 'Boty handlowe', de: 'Trading-Bots' },
     coins: { uk: 'Монети', en: 'Coins', pl: 'Monety', de: 'Münzen' },
     bonuses: { uk: '🎁 Бонуси', en: '🎁 Bonuses', pl: '🎁 Bonusy', de: '🎁 Boni' },
     blog: { uk: '📰 Блог', en: '📰 Blog', pl: '📰 Blog', de: '📰 Blog' },
@@ -88,6 +90,7 @@ function ClientHeaderInner() {
 
   const navLinks = [
     { href: homeHref, label: t.nav.home },
+    { href: getLocalizedPath(locale, 'trading-bots'), label: labels.tradingBots[locale] },
     { href: getLocalizedPath(locale, 'coins'), label: labels.coins[locale] },
     { href: getLocalizedPath(locale, 'bonuses'), label: labels.bonuses[locale], highlight: true },
     { href: getLocalizedPath(locale, 'markets'), label: t.nav.markets },
