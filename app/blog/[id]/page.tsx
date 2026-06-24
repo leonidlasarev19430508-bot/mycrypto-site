@@ -21,6 +21,8 @@ interface Article {
   summary_de: string;
   full_article_uk: string;
   full_article_en: string;
+  full_article_pl?: string;
+  full_article_de?: string;
   meta_description_uk: string;
   meta_description_en: string;
   tags: string[];
@@ -129,19 +131,29 @@ function hasLatinCharacters(text: string): boolean {
   return /[a-zA-Z]/.test(text);
 }
 
-// Обирає тіло статті відповідно до локалі: повна стаття (uk/en) > переклад-резюме (pl/de) > summary
+function isFullText(value: string | undefined | null): value is string {
+  return !!value && value.length > 50;
+}
+
+// Обирає тіло статті відповідно до локалі.
+// Пріоритет: повна стаття цією мовою > повна стаття EN (запасний варіант) > переклад-резюме > summary.
+// full_article_pl / full_article_de поки відсутні в БД — для PL/DE підхоплюється full_article_en.
 function getLocalizedBody(article: Article, locale: Locale): { isFull: boolean; text: string } {
-  if (locale === 'uk' && article.full_article_uk && article.full_article_uk.length > 50) {
+  if (locale === 'uk' && isFullText(article.full_article_uk)) {
     return { isFull: true, text: cleanText(article.full_article_uk) };
   }
-  if (locale === 'en' && article.full_article_en && article.full_article_en.length > 50) {
+  if (locale === 'en' && isFullText(article.full_article_en)) {
     return { isFull: true, text: cleanText(article.full_article_en) };
   }
-  if (locale === 'pl' && article.summary_pl) {
-    return { isFull: false, text: cleanText(article.summary_pl) };
+  if (locale === 'pl') {
+    if (isFullText(article.full_article_pl)) return { isFull: true, text: cleanText(article.full_article_pl) };
+    if (isFullText(article.full_article_en)) return { isFull: true, text: cleanText(article.full_article_en) };
+    if (article.summary_pl) return { isFull: false, text: cleanText(article.summary_pl) };
   }
-  if (locale === 'de' && article.summary_de) {
-    return { isFull: false, text: cleanText(article.summary_de) };
+  if (locale === 'de') {
+    if (isFullText(article.full_article_de)) return { isFull: true, text: cleanText(article.full_article_de) };
+    if (isFullText(article.full_article_en)) return { isFull: true, text: cleanText(article.full_article_en) };
+    if (article.summary_de) return { isFull: false, text: cleanText(article.summary_de) };
   }
   if (locale === 'en' && article.summary_en) {
     return { isFull: false, text: cleanText(article.summary_en) };
