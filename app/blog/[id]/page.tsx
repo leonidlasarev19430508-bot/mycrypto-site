@@ -203,6 +203,8 @@ export default async function ArticlePage({
 
   const article = await getArticle(id);
   if (!article) notFound();
+  // Приховуємо статті без заголовків (узгоджено зі списком /api/blog)
+  if (!(article.title || article.title_uk)) notFound();
 
   const dateLocaleMap: Record<Locale, string> = { uk: 'uk-UA', en: 'en-US', pl: 'pl-PL', de: 'de-DE' };
   const date = new Date(article.published_at).toLocaleDateString(dateLocaleMap[locale], {
