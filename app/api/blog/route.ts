@@ -1,6 +1,18 @@
 import { NextResponse } from 'next/server';
 import pool from '../../lib/db';
 
+// Декодує найпоширеніші HTML-сутності (&apos; &#8217; &amp; тощо)
+function decodeEntities(text: string): string {
+  const named: Record<string, string> = {
+    '&apos;': "'", '&quot;': '"', '&amp;': '&', '&lt;': '<', '&gt;': '>',
+    '&nbsp;': ' ', '&laquo;': '«', '&raquo;': '»', '&mdash;': '—', '&ndash;': '–',
+  };
+  return text
+    .replace(/&(?:apos|quot|amp|lt|gt|nbsp|laquo|raquo|mdash|ndash);/g, m => named[m] || m)
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(parseInt(d, 10)));
+}
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const locale = searchParams.get('locale') || 'uk';
@@ -48,7 +60,7 @@ export async function GET(request: Request) {
 
     const articles = result.rows.map(row => ({
       id: row.id,
-      title: row.title?.replace(/^=+/, '') || '',
+      title: decodeEntities(row.title?.replace(/^=+/, '') || ''),
       coin_slug: row.coin_slug,
       coin_name: row.coin_name?.replace('=', '') || '',
       sentiment: row.sentiment,

@@ -99,9 +99,21 @@ async function getArticle(id: string): Promise<Article | null> {
   } catch { return null; }
 }
 
-// Видаляє символ "=" з початку рядків
+// Декодує найпоширеніші HTML-сутності (&apos; &#8217; &amp; тощо)
+function decodeEntities(text: string): string {
+  const named: Record<string, string> = {
+    '&apos;': "'", '&quot;': '"', '&amp;': '&', '&lt;': '<', '&gt;': '>',
+    '&nbsp;': ' ', '&laquo;': '«', '&raquo;': '»', '&mdash;': '—', '&ndash;': '–',
+  };
+  return text
+    .replace(/&(?:apos|quot|amp|lt|gt|nbsp|laquo|raquo|mdash|ndash);/g, m => named[m] || m)
+    .replace(/&#x([0-9a-f]+);/gi, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+    .replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(parseInt(d, 10)));
+}
+
+// Видаляє символ "=" з початку рядків і декодує HTML-сутності
 function cleanText(text: string): string {
-  return text.replace(/^=+/gm, '').trim();
+  return decodeEntities(text.replace(/^=+/gm, '')).trim();
 }
 
 // Перевіряє чи тег містить латинські символи

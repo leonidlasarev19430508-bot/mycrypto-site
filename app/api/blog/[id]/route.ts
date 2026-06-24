@@ -8,8 +8,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
               source_url, source_name, published_at,
               summary, summary_en, summary_pl, summary_de,
               full_article_uk, full_article_en,
-              meta_description_uk, meta_description_en, tags
-            meta_description_uk, meta_description_en, tags, tags_en
+              meta_description_uk, meta_description_en, tags, tags_en
              FROM ai_news WHERE id = $1`,
       [id]
     );
