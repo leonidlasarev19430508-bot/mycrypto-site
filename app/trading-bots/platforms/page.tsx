@@ -64,6 +64,3 @@ export default function PlatformsPage() {
     </main>
   );
 }
-    </main>
-  );
-}

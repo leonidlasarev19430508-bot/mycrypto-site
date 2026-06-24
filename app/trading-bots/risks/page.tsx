@@ -69,11 +69,3 @@ export default function RisksPage() {
     </main>
   );
 }
-
-      <div className="bg-orange-50 border border-orange-200 rounded-2xl p-6">
-        <p className="font-bold text-orange-800 mb-2">Перевірте стратегію в симуляторі</p>
-        <Link href="/simulator" className="inline-block bg-orange-500 text-white px-4 py-2 rounded">Відкрити симулятор →</Link>
-      </div>
-    </main>
-  );
-}
