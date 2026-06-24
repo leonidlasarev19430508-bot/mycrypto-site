@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
+import { cache } from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import pool from '../../lib/db';
 
 interface Article {
   id: number;
@@ -90,14 +92,20 @@ function parseLocale(value: string | string[] | undefined): Locale {
   return 'uk';
 }
 
-async function getArticle(id: string): Promise<Article | null> {
+const getArticle = cache(async (id: string): Promise<Article | null> => {
   try {
-    const res = await fetch(`https://cryptotop.chat/api/blog/${id}`, { next: { revalidate: 3600 } });
-    if (!res.ok) return null;
-    const data = await res.json();
-    return data.article || null;
+    const result = await pool.query(
+      `SELECT id, title, title_uk, coin_slug, coin_name, sentiment, recommendation,
+              source_url, source_name, published_at,
+              summary, summary_en, summary_pl, summary_de,
+              full_article_uk, full_article_en,
+              meta_description_uk, meta_description_en, tags
+             FROM ai_news WHERE id = $1`,
+      [id]
+    );
+    return (result.rows[0] as Article) || null;
   } catch { return null; }
-}
+});
 
 // Декодує найпоширеніші HTML-сутності (&apos; &#8217; &amp; тощо)
 function decodeEntities(text: string): string {
