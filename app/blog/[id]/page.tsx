@@ -26,7 +26,7 @@ interface Article {
   meta_description_uk: string;
   meta_description_en: string;
   tags: string[];
-    tags_en: string[] | null;
+  tags_en: string[] | null;
 }
 
 type Locale = 'uk' | 'en' | 'pl' | 'de';
@@ -109,7 +109,6 @@ const getArticle = cache(async (id: string): Promise<Article | null> => {
   } catch { return null; }
 });
 
-// Декодує найпоширеніші HTML-сутності (&apos; &#8217; &amp; тощо)
 function decodeEntities(text: string): string {
   const named: Record<string, string> = {
     '&apos;': "'", '&quot;': '"', '&amp;': '&', '&lt;': '<', '&gt;': '>',
@@ -121,12 +120,10 @@ function decodeEntities(text: string): string {
     .replace(/&#(\d+);/g, (_, d) => String.fromCodePoint(parseInt(d, 10)));
 }
 
-// Видаляє символ "=" з початку рядків і декодує HTML-сутності
 function cleanText(text: string): string {
   return decodeEntities(text.replace(/^=+/gm, '')).trim();
 }
 
-// Перевіряє чи тег містить латинські символи
 function hasLatinCharacters(text: string): boolean {
   return /[a-zA-Z]/.test(text);
 }
@@ -135,9 +132,6 @@ function isFullText(value: string | undefined | null): value is string {
   return !!value && value.length > 50;
 }
 
-// Обирає тіло статті відповідно до локалі.
-// Пріоритет: повна стаття цією мовою > повна стаття EN (запасний варіант) > переклад-резюме > summary.
-// full_article_pl / full_article_de поки відсутні в БД — для PL/DE підхоплюється full_article_en.
 function getLocalizedBody(article: Article, locale: Locale): { isFull: boolean; text: string } {
   if (locale === 'uk' && isFullText(article.full_article_uk)) {
     return { isFull: true, text: cleanText(article.full_article_uk) };
@@ -164,6 +158,36 @@ function getLocalizedBody(article: Article, locale: Locale): { isFull: boolean; 
 function getLocalizedTitle(article: Article, locale: Locale): string {
   const title = locale === 'uk' ? (article.title_uk || article.title) : article.title;
   return cleanText(title);
+}
+
+// Рендерить один рядок Markdown у відповідний JSX-елемент
+function renderParagraph(text: string, index: number): React.ReactElement {
+  // H2: ## Заголовок
+  if (text.startsWith('## ')) {
+    return (
+      <h2 key={index} className="text-xl font-bold text-gray-900 mt-8 mb-3 border-l-4 border-orange-400 pl-3">
+        {text.replace(/^## /, '')}
+      </h2>
+    );
+  }
+  // H3: ### Заголовок
+  if (text.startsWith('### ')) {
+    return (
+      <h3 key={index} className="text-lg font-semibold text-gray-800 mt-5 mb-2">
+        {text.replace(/^### /, '')}
+      </h3>
+    );
+  }
+  // Горизонтальна лінія: ---
+  if (text.startsWith('---')) {
+    return <hr key={index} className="my-6 border-gray-200" />;
+  }
+  // Звичайний абзац
+  return (
+    <p key={index} className="text-gray-800 text-base leading-relaxed mb-4">
+      {text}
+    </p>
+  );
 }
 
 export async function generateMetadata({
@@ -223,7 +247,6 @@ export default async function ArticlePage({
 
   const article = await getArticle(id);
   if (!article) notFound();
-  // Приховуємо статті без заголовків (узгоджено зі списком /api/blog)
   if (!(article.title || article.title_uk)) notFound();
 
   const dateLocaleMap: Record<Locale, string> = { uk: 'uk-UA', en: 'en-US', pl: 'pl-PL', de: 'de-DE' };
@@ -300,15 +323,14 @@ export default async function ArticlePage({
           </p>
         </div>
 
-        {/* Тіло статті: повний текст або переклад-резюме залежно від мови */}
+        {/* Тіло статті */}
         <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm mb-6">
           {body.isFull ? (
             <div className="prose prose-gray max-w-none">
-              {body.text.split('\n').filter(p => p.trim()).map((paragraph, i) => (
-                <p key={i} className="text-gray-800 text-base leading-relaxed mb-4">
-                  {cleanText(paragraph)}
-                </p>
-              ))}
+              {body.text
+                .split('\n')
+                .filter(p => p.trim())
+                .map((paragraph, i) => renderParagraph(cleanText(paragraph), i))}
             </div>
           ) : (
             <p className="text-gray-800 text-base leading-relaxed font-medium">
@@ -320,7 +342,7 @@ export default async function ArticlePage({
         {/* Теги */}
         {article.tags && article.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-6">
-              {(locale === 'uk' ? article.tags : (article.tags_en || article.tags))
+            {(locale === 'uk' ? article.tags : (article.tags_en || article.tags))
               .filter(tag => locale === 'uk' || hasLatinCharacters(tag))
               .map((tag, i) => (
                 <span key={i} className="text-xs bg-gray-100 text-gray-700 px-3 py-1 rounded-full">
