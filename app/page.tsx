@@ -16,6 +16,7 @@ const ExchangeQuiz = dynamic(() => import('./components/ExchangeQuiz'), { ssr: f
 const WhaleAlertPopup = dynamic(() => import('./components/WhaleAlertPopup'), { ssr: false });
 const ChatWidget = dynamic(() => import('./components/ChatWidget'), { ssr: false });
 const LatestArticles = dynamic(() => import('./components/LatestArticles'), { ssr: false });
+import { SimulatorComponent } from './simulator/page';
 
 function SubscribeForm() {
   const [email, setEmail] = useState('');
@@ -91,16 +92,16 @@ export default function Home() {
     <>
       <WhaleAlertTicker />
       <main className="p-6 md:p-10 max-w-6xl mx-auto">
-        <div className="text-center mt-6 mb-8">
-          <h1 className="text-3xl md:text-4xl font-black text-gray-900 leading-tight mb-3">
-            Потренуйся торгувати криптою —<br />без вкладання реальних грошей
-          </h1>
-          <p className="text-gray-500 text-lg mb-6">
-            Реальні ціни. Віртуальний капітал. Справжній досвід.
-          </p>
-          <a href="/simulator" className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-black px-8 py-4 rounded-2xl text-lg transition shadow-lg">
-            🎮 Запустити симулятор →
-          </a>
+        <div className="mt-4 mb-8">
+          <div className="text-center mb-6">
+            <h1 className="text-3xl md:text-4xl font-black text-gray-900 leading-tight mb-2">
+              Потренуйся торгувати криптою —<br />без вкладання реальних грошей
+            </h1>
+            <p className="text-gray-500 text-lg">
+              Реальні ціни. Віртуальний капітал. Справжній досвід.
+            </p>
+          </div>
+          <SimulatorComponent locale="uk" />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-10">
           {OFFERS.map(offer => (
