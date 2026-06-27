@@ -410,8 +410,8 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+        <div className="lg:col-span-3">
           {/* Перемикач монет */}
           <div className="flex gap-2 mb-3 flex-wrap">
             {COINS.map(coin => {
