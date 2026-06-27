@@ -521,26 +521,23 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 mt-4">
-        <div className="bg-white border border-gray-100 rounded-xl p-3 shadow-sm">
-          <p className="text-xs font-semibold text-gray-600">{t.freeBalance}</p>
-          <p className="text-lg font-black text-gray-900">${balance.toFixed(0)}</p>
-          <p className="text-xs text-gray-700 font-semibold">USDT</p>
+      <div className="mt-3 grid grid-cols-4 gap-2">
+        <div className="bg-white border border-gray-100 rounded-lg px-3 py-2 shadow-sm">
+          <p className="text-xs text-gray-500">{t.freeBalance}</p>
+          <p className="text-sm font-black text-gray-900">${balance.toFixed(0)}</p>
         </div>
-        <div className="bg-white border border-gray-100 rounded-xl p-3 shadow-sm">
-          <p className="text-xs font-semibold text-gray-600">{t.portfolio}</p>
-          <p className="text-lg font-black text-gray-900">${totalPortfolio.toFixed(0)}</p>
+        <div className="bg-white border border-gray-100 rounded-lg px-3 py-2 shadow-sm">
+          <p className="text-xs text-gray-500">{t.portfolio}</p>
+          <p className="text-sm font-black text-gray-900">${totalPortfolio.toFixed(0)}</p>
           <p className={`text-xs font-bold ${totalReturn >= 0 ? 'text-green-500' : 'text-red-500'}`}>{totalReturn >= 0 ? '+' : ''}{totalReturn.toFixed(2)}%</p>
         </div>
-        <div className="bg-white border border-gray-100 rounded-xl p-3 shadow-sm">
-          <p className="text-xs font-semibold text-gray-600">{t.openPos}</p>
-          <p className="text-lg font-black text-gray-900">{positions.length}</p>
-          <p className="text-xs text-gray-700 font-semibold">{t.trades}</p>
+        <div className="bg-white border border-gray-100 rounded-lg px-3 py-2 shadow-sm">
+          <p className="text-xs text-gray-500">{t.openPos}</p>
+          <p className="text-sm font-black text-gray-900">{positions.length}</p>
         </div>
-        <div className={`rounded-xl p-3 shadow-sm border ${totalPnl >= 0 ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
-          <p className="text-xs font-semibold text-gray-600">{t.floatPnl}</p>
-          <p className={`text-lg font-black ${totalPnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>{totalPnl >= 0 ? '+' : ''}${totalPnl.toFixed(2)}</p>
-          <p className="text-xs text-gray-700 font-semibold">{t.unrealized}</p>
+        <div className={`rounded-lg px-3 py-2 shadow-sm border ${totalPnl >= 0 ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+          <p className="text-xs text-gray-500">{t.floatPnl}</p>
+          <p className={`text-sm font-black ${totalPnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>{totalPnl >= 0 ? '+' : ''}${totalPnl.toFixed(2)}</p>
         </div>
       </div>
 
