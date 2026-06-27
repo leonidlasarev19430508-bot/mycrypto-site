@@ -15,6 +15,7 @@ const WhatIfCalculator = dynamic(() => import('./components/WhatIfCalculator'), 
 const ExchangeQuiz = dynamic(() => import('./components/ExchangeQuiz'), { ssr: false });
 const WhaleAlertPopup = dynamic(() => import('./components/WhaleAlertPopup'), { ssr: false });
 const ChatWidget = dynamic(() => import('./components/ChatWidget'), { ssr: false });
+const LatestArticles = dynamic(() => import('./components/LatestArticles'), { ssr: false });
 
 function SubscribeForm() {
   const [email, setEmail] = useState('');
@@ -90,9 +91,16 @@ export default function Home() {
     <>
       <WhaleAlertTicker />
       <main className="p-6 md:p-10 max-w-6xl mx-auto">
-        <div className="text-center mt-6 mb-10">
-          <h1 className="text-4xl md:text-5xl font-black text-gray-900 leading-tight">{t.hero.title}</h1>
-          <p className="text-gray-500 mt-3 text-lg">{t.hero.subtitle}</p>
+        <div className="text-center mt-6 mb-8">
+          <h1 className="text-3xl md:text-4xl font-black text-gray-900 leading-tight mb-3">
+            Потренуйся торгувати криптою —<br />без вкладання реальних грошей
+          </h1>
+          <p className="text-gray-500 text-lg mb-6">
+            Реальні ціни. Віртуальний капітал. Справжній досвід.
+          </p>
+          <a href="/simulator" className="inline-block bg-orange-500 hover:bg-orange-600 text-white font-black px-8 py-4 rounded-2xl text-lg transition shadow-lg">
+            🎮 Запустити симулятор →
+          </a>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-10">
           {OFFERS.map(offer => (
@@ -129,6 +137,13 @@ export default function Home() {
         <FearGreedIndex />
         <WhatIfCalculator locale="uk" />
         <ExchangeQuiz />
+        <div className="mt-10">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-black text-gray-900">📰 Останні новини</h2>
+            <a href="/blog" className="text-orange-500 hover:text-orange-600 font-bold text-sm">Всі новини →</a>
+          </div>
+          <LatestArticles />
+        </div>
         <SubscribeForm />
       </main>
       <WhaleAlertPopup />
