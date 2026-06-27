@@ -511,13 +511,6 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
               </button>
             </div>
           </div>
-
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 text-sm text-blue-950 space-y-1.5 font-semibold">
-            <p className="font-bold">{t.hint}</p>
-            <p>{t.hintLong}</p>
-            <p>{t.hintShort}</p>
-            <p>{t.hintPnl}</p>
-          </div>
         </div>
       </div>
 
