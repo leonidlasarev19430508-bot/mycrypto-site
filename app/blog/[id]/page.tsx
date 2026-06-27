@@ -1,3 +1,6 @@
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 import { Metadata } from 'next';
 import { cache } from 'react';
 import Link from 'next/link';
