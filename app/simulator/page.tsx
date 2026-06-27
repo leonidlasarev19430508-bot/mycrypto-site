@@ -377,7 +377,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
       <div className="mb-6">
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div>
-            <h1 className="text-2xl md:text-3xl font-black text-gray-900">🎮 CryptoNavigator Simulator</h1>
+            <h1 className="text-xl md:text-2xl font-black text-gray-900">CryptoNavigator Simulator</h1>
             <p className="text-gray-500 text-sm mt-1">{t.subtitle}</p>
           </div>
           <button onClick={reset} className="text-sm text-gray-700 hover:text-red-500 underline transition font-semibold">{t.reset}</button>
@@ -409,29 +409,6 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
           {message.text}
         </div>
       )}
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-        <div className="bg-white border border-gray-100 rounded-xl p-3 shadow-sm">
-          <p className="text-xs font-semibold text-gray-600">{t.freeBalance}</p>
-          <p className="text-lg font-black text-gray-900">${balance.toFixed(0)}</p>
-          <p className="text-xs text-gray-700 font-semibold">USDT</p>
-        </div>
-        <div className="bg-white border border-gray-100 rounded-xl p-3 shadow-sm">
-          <p className="text-xs font-semibold text-gray-600">{t.portfolio}</p>
-          <p className="text-lg font-black text-gray-900">${totalPortfolio.toFixed(0)}</p>
-          <p className={`text-xs font-bold ${totalReturn >= 0 ? 'text-green-500' : 'text-red-500'}`}>{totalReturn >= 0 ? '+' : ''}{totalReturn.toFixed(2)}%</p>
-        </div>
-        <div className="bg-white border border-gray-100 rounded-xl p-3 shadow-sm">
-          <p className="text-xs font-semibold text-gray-600">{t.openPos}</p>
-          <p className="text-lg font-black text-gray-900">{positions.length}</p>
-          <p className="text-xs text-gray-700 font-semibold">{t.trades}</p>
-        </div>
-        <div className={`rounded-xl p-3 shadow-sm border ${totalPnl >= 0 ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
-          <p className="text-xs font-semibold text-gray-600">{t.floatPnl}</p>
-          <p className={`text-lg font-black ${totalPnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>{totalPnl >= 0 ? '+' : ''}${totalPnl.toFixed(2)}</p>
-          <p className="text-xs text-gray-700 font-semibold">{t.unrealized}</p>
-        </div>
-      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2">
@@ -526,10 +503,10 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
             </div>
             <p className="text-xs text-gray-600 font-semibold mb-3">{t.available}: <span className="font-black text-gray-900">${balance.toFixed(0)}</span></p>
             <div className="space-y-2">
-              <button onClick={() => openPosition('buy')} disabled={!currentPrice} className="w-full py-4 bg-green-500 hover:bg-green-600 disabled:opacity-40 text-white font-black rounded-xl transition text-base">
+              <button onClick={() => openPosition('buy')} disabled={!currentPrice} className="w-full py-2.5 bg-green-500 hover:bg-green-600 disabled:opacity-40 text-white font-black rounded-xl transition text-sm">
                 {t.buyBtn}
               </button>
-              <button onClick={() => openPosition('sell')} disabled={!currentPrice} className="w-full py-4 bg-red-500 hover:bg-red-600 disabled:opacity-40 text-white font-black rounded-xl transition text-base">
+              <button onClick={() => openPosition('sell')} disabled={!currentPrice} className="w-full py-2.5 bg-red-500 hover:bg-red-600 disabled:opacity-40 text-white font-black rounded-xl transition text-sm">
                 {t.sellBtn}
               </button>
             </div>
@@ -541,6 +518,29 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
             <p>{t.hintShort}</p>
             <p>{t.hintPnl}</p>
           </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4 mt-4">
+        <div className="bg-white border border-gray-100 rounded-xl p-3 shadow-sm">
+          <p className="text-xs font-semibold text-gray-600">{t.freeBalance}</p>
+          <p className="text-lg font-black text-gray-900">${balance.toFixed(0)}</p>
+          <p className="text-xs text-gray-700 font-semibold">USDT</p>
+        </div>
+        <div className="bg-white border border-gray-100 rounded-xl p-3 shadow-sm">
+          <p className="text-xs font-semibold text-gray-600">{t.portfolio}</p>
+          <p className="text-lg font-black text-gray-900">${totalPortfolio.toFixed(0)}</p>
+          <p className={`text-xs font-bold ${totalReturn >= 0 ? 'text-green-500' : 'text-red-500'}`}>{totalReturn >= 0 ? '+' : ''}{totalReturn.toFixed(2)}%</p>
+        </div>
+        <div className="bg-white border border-gray-100 rounded-xl p-3 shadow-sm">
+          <p className="text-xs font-semibold text-gray-600">{t.openPos}</p>
+          <p className="text-lg font-black text-gray-900">{positions.length}</p>
+          <p className="text-xs text-gray-700 font-semibold">{t.trades}</p>
+        </div>
+        <div className={`rounded-xl p-3 shadow-sm border ${totalPnl >= 0 ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+          <p className="text-xs font-semibold text-gray-600">{t.floatPnl}</p>
+          <p className={`text-lg font-black ${totalPnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>{totalPnl >= 0 ? '+' : ''}${totalPnl.toFixed(2)}</p>
+          <p className="text-xs text-gray-700 font-semibold">{t.unrealized}</p>
         </div>
       </div>
 
