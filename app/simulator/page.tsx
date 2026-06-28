@@ -412,7 +412,6 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
         <div className="lg:col-span-4">
-          {/* Перемикач монет */}
           <div className="flex gap-1.5 mb-3 flex-wrap">
             {COINS.map(coin => {
               const p = prices[coin.symbol];
@@ -429,7 +428,6 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
             {loading && mode === 'live' && <span className="text-xs text-gray-400 self-center">{t.loading}</span>}
           </div>
 
-          {/* Перемикач Live / Replay */}
           <div className="flex gap-2 mb-3">
             <button
               onClick={() => setMode('live')}
@@ -448,7 +446,6 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
             )}
           </div>
 
-          {/* Графік: Live або Replay */}
           {mode === 'live' ? (
             <div className="bg-white border border-gray-200 rounded-xl overflow-hidden" style={{ height: '420px' }}>
               <TradingViewWidget key={selectedCoin.tvSymbol} tvSymbol={selectedCoin.tvSymbol} locale={locale} />
@@ -615,38 +612,6 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
               </div>
             )
           )}
-        </div>
-      </div>
-
-      {/* Exchange CTA Block */}
-      <div className="mt-6 bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-2xl p-5">
-        <p className="text-center font-black text-gray-900 mb-1 text-base">
-          {locale === 'uk' ? '🚀 Готовий торгувати реально?' : locale === 'de' ? '🚀 Bereit für echten Handel?' : locale === 'pl' ? '🚀 Gotowy na prawdziwy handel?' : '🚀 Ready to trade for real?'}
-        </p>
-        <p className="text-center text-sm text-gray-600 font-semibold mb-4">
-          {locale === 'uk' ? 'Відкрий рахунок на надійній біржі з бонусом' : locale === 'de' ? 'Eröffne ein Konto mit Bonus' : locale === 'pl' ? 'Otwórz konto z bonusem' : 'Open an account on a trusted exchange with bonus'}
-        </p>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <a href="https://www.binance.com/register?ref=Q5HR1JVW" target="_blank" rel="sponsored noopener noreferrer"
-            className="flex flex-col items-center gap-1 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-black rounded-xl py-3 px-2 transition text-center">
-            <span className="text-base">🏆 Binance</span>
-            <span className="text-xs font-bold">Бонус $600</span>
-          </a>
-          <a href="https://www.bybit.com/register?ref=CRYPTONAV" target="_blank" rel="sponsored noopener noreferrer"
-            className="flex flex-col items-center gap-1 bg-orange-500 hover:bg-orange-600 text-white font-black rounded-xl py-3 px-2 transition text-center">
-            <span className="text-base">⚡ Bybit</span>
-            <span className="text-xs font-bold">Бонус $30K</span>
-          </a>
-          <a href="https://www.okx.com/join/CRYPTONAV" target="_blank" rel="sponsored noopener noreferrer"
-            className="flex flex-col items-center gap-1 bg-gray-900 hover:bg-gray-700 text-white font-black rounded-xl py-3 px-2 transition text-center">
-            <span className="text-base">🌐 OKX</span>
-            <span className="text-xs font-bold">Mystery Box</span>
-          </a>
-          <a href="https://www.kucoin.com/r/rf/CXEPY4S5" target="_blank" rel="sponsored noopener noreferrer"
-            className="flex flex-col items-center gap-1 bg-green-500 hover:bg-green-600 text-white font-black rounded-xl py-3 px-2 transition text-center">
-            <span className="text-base">🟢 KuCoin</span>
-            <span className="text-xs font-bold">Бонус $500</span>
-          </a>
         </div>
       </div>
     </div>
