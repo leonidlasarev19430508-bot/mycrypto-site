@@ -62,14 +62,15 @@ function FooterInner() {
   const t = links[locale as keyof typeof links] || links.uk;
 
   return (
-    <footer className="bg-gray-900 text-gray-300 mt-16">
-      {/* Disclaimer banner */}
-      <div className="bg-yellow-900/40 border-t border-yellow-700/30 px-4 py-4">
+    <footer style={{ backgroundColor: '#FDF6EC', borderTop: '1px solid #E8D5B7' }} className="mt-16">
+
+      {/* Disclaimer banner — тепло-бежевий */}
+      <div style={{ backgroundColor: '#FEF3DC', borderBottom: '1px solid #E8D5B7' }} className="px-4 py-5">
         <div className="max-w-3xl mx-auto">
-          <p className="text-center text-yellow-200 text-sm font-medium mb-2">
+          <p className="text-center text-sm font-bold mb-2" style={{ color: '#92400E' }}>
             {t.notAdvice}
           </p>
-          <p className="text-center text-yellow-300/70 text-xs leading-relaxed">
+          <p className="text-center text-xs leading-relaxed" style={{ color: '#B45309' }}>
             {t.extended}
           </p>
         </div>
@@ -77,30 +78,31 @@ function FooterInner() {
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+
           {/* Logo */}
           <div>
-            <span className="text-white font-black text-lg">CryptoNavigator</span>
-            <p className="text-sm text-gray-300 mt-1">cryptotop.chat</p>
+            <span className="font-black text-lg" style={{ color: '#1C1C1C' }}>CryptoNavigator</span>
+            <p className="text-sm mt-1" style={{ color: '#6B7280' }}>cryptotop.chat</p>
           </div>
 
-          {/* Legal links — з мовним префіксом */}
-          <nav className="flex flex-wrap gap-4 text-sm justify-center text-gray-300">
-            <Link href={`${t.legalBase}/disclaimer`} className="hover:text-orange-400 transition">
+          {/* Legal links */}
+          <nav className="flex flex-wrap gap-4 text-sm justify-center">
+            <Link href={`${t.legalBase}/disclaimer`} className="transition hover:text-orange-500" style={{ color: '#4B5563' }}>
               {t.disclaimer}
             </Link>
-            <Link href={`${t.legalBase}/privacy`} className="hover:text-orange-400 transition">
+            <Link href={`${t.legalBase}/privacy`} className="transition hover:text-orange-500" style={{ color: '#4B5563' }}>
               {t.privacy}
             </Link>
-            <Link href={`${t.legalBase}/terms`} className="hover:text-orange-400 transition">
+            <Link href={`${t.legalBase}/terms`} className="transition hover:text-orange-500" style={{ color: '#4B5563' }}>
               {t.terms}
             </Link>
-            <Link href={`${t.legalBase}/disclaimer#affiliate`} className="hover:text-orange-400 transition">
+            <Link href={`${t.legalBase}/disclaimer#affiliate`} className="transition hover:text-orange-500" style={{ color: '#4B5563' }}>
               {t.affiliate}
             </Link>
           </nav>
         </div>
 
-        {/* Product Hunt Badge */}
+        {/* Product Hunt Badge — світла тема */}
         <div className="flex justify-center mt-6">
           <a
             href="https://www.producthunt.com/posts/cryptonavigator"
@@ -108,7 +110,7 @@ function FooterInner() {
             rel="noopener noreferrer"
           >
             <img
-              src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=cryptonavigator&theme=dark"
+              src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=cryptonavigator&theme=light"
               alt="CryptoNavigator - Featured on Product Hunt"
               width="250"
               height="54"
@@ -117,7 +119,7 @@ function FooterInner() {
         </div>
 
         {/* Bottom line */}
-        <div className="border-t border-gray-800 mt-6 pt-4 text-center text-sm text-gray-400">
+        <div className="mt-6 pt-4 text-center text-sm" style={{ borderTop: '1px solid #E8D5B7', color: '#9CA3AF' }}>
           <p>{t.rights}</p>
         </div>
       </div>

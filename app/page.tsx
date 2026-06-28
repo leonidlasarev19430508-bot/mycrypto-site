@@ -33,23 +33,23 @@ function SubscribeForm() {
     else setStatus('error');
   };
   return (
-    <div className="mt-10 p-6 bg-gray-100 rounded-xl text-center">
-      <h3 className="text-xl font-semibold mb-2">{t.subscribe.title}</h3>
-      <p className="text-gray-600 mb-4 text-sm">{t.subscribe.subtitle}</p>
-      <ul className="text-left text-sm text-gray-600 mb-4 space-y-1 max-w-xs mx-auto">
+    <div className="mt-10 p-8 rounded-2xl text-center" style={{ backgroundColor: '#FDF6EC', border: '1px solid #F0E0C8' }}>
+      <h3 className="text-xl font-bold mb-2">{t.subscribe.title}</h3>
+      <p className="text-gray-600 mb-4 text-sm font-medium">{t.subscribe.subtitle}</p>
+      <ul className="text-left text-sm text-gray-700 mb-4 space-y-1.5 max-w-xs mx-auto font-medium">
         {t.subscribe.alerts.map((alert, i) => (<li key={i}>{alert}</li>))}
       </ul>
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
         <input type="email" value={email} onChange={e => setEmail(e.target.value)}
           placeholder={t.subscribe.placeholder}
-          className="flex-1 border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+          className="flex-1 border border-orange-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white" required />
         <button type="submit" disabled={status === 'sending'}
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50">
+          className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 disabled:opacity-50 font-bold">
           {status === 'sending' ? t.subscribe.sending : t.subscribe.button}
         </button>
       </form>
-      {status === 'success' && <p className="text-green-600 mt-2">{t.subscribe.success}</p>}
-      {status === 'error' && <p className="text-red-600 mt-2">{t.subscribe.error}</p>}
+      {status === 'success' && <p className="text-green-600 mt-2 font-medium">{t.subscribe.success}</p>}
+      {status === 'error' && <p className="text-red-600 mt-2 font-medium">{t.subscribe.error}</p>}
     </div>
   );
 }
@@ -92,65 +92,96 @@ export default function Home() {
     <>
       <WhaleAlertTicker />
       <main className="p-6 md:p-10 max-w-6xl mx-auto">
-        <div className="mt-4 mb-8">
+
+        {/* ── Hero + Simulator ── */}
+        <div className="mt-4 mb-10">
           <div className="text-center mb-6">
-            <h1 className="text-3xl md:text-4xl font-black text-gray-900 leading-tight mb-2">
+            <h1 className="text-3xl md:text-4xl font-black text-gray-900 leading-tight mb-3">
               Потренуйся торгувати криптою —<br />без вкладання реальних грошей
             </h1>
-            <p className="text-gray-500 text-lg">
+            <p className="text-gray-600 text-lg font-semibold">
               Реальні ціни. Віртуальний капітал. Справжній досвід.
             </p>
           </div>
           <SimulatorComponent locale="uk" />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 mb-10">
-          {OFFERS.map(offer => (
-            <div key={offer.id} className={`p-6 border-2 rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow relative ${offer.badge ? 'border-orange-400' : 'border-gray-100'}`}>
-              {offer.badge && (
-                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
-                  {offer.badge}
-                </span>
-              )}
-              {/* Клікабельна назва біржі */}
-              <button
-                onClick={() => open(offer.id)}
-                className="text-xl font-bold text-gray-900 hover:text-orange-500 transition-colors text-left underline decoration-dotted underline-offset-2 cursor-pointer"
-              >
-                {offer.name}
-              </button>
-              <p className="mt-2 text-gray-500 text-sm">{offer.description}</p>
-              <ul className="mt-3 space-y-1.5">
-                {offer.features.map(f => (
-                  <li key={f} className="text-sm text-gray-500 flex items-center gap-1.5">
-                    <span className="text-green-500 font-bold">✓</span> {f}
-                  </li>
-                ))}
-              </ul>
-              <a href={offer.affiliate} target="_blank" rel="noopener noreferrer"
-                className="mt-5 block bg-orange-500 text-white text-center px-4 py-2.5 rounded-xl hover:bg-orange-600 transition font-semibold text-sm">
-                {t.exchanges.cta} {offer.name}
-              </a>
-            </div>
-          ))}
+
+        {/* ── Топові біржі ── */}
+        <div className="mb-10">
+          <h2 className="text-2xl font-black text-gray-900 mb-4">🏦 Топові біржі для старту</h2>
+
+          {/* Ціни монет між заголовком і картками */}
+          <CryptoPrices />
+
+          {/* Картки бірж */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 mt-5">
+            {OFFERS.map(offer => (
+              <div key={offer.id} className={`p-5 border-2 rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow relative ${offer.badge ? 'border-orange-400' : 'border-gray-100'}`}>
+                {offer.badge && (
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
+                    {offer.badge}
+                  </span>
+                )}
+                <button
+                  onClick={() => open(offer.id)}
+                  className="text-lg font-bold text-gray-900 hover:text-orange-500 transition-colors text-left underline decoration-dotted underline-offset-2 cursor-pointer"
+                >
+                  {offer.name}
+                </button>
+                <p className="mt-1.5 text-gray-500 text-sm">{offer.description}</p>
+                <ul className="mt-2.5 space-y-1">
+                  {offer.features.map(f => (
+                    <li key={f} className="text-sm text-gray-500 flex items-center gap-1.5">
+                      <span className="text-green-500 font-bold">✓</span> {f}
+                    </li>
+                  ))}
+                </ul>
+                <a href={offer.affiliate} target="_blank" rel="sponsored noopener noreferrer"
+                  className="mt-4 block bg-orange-500 text-white text-center px-4 py-2 rounded-xl hover:bg-orange-600 transition font-semibold text-sm">
+                  {t.exchanges.cta} {offer.name}
+                </a>
+              </div>
+            ))}
+          </div>
         </div>
-        <ComparisonTable />
-        <CryptoPrices />
-        <FearGreedIndex />
-        <WhatIfCalculator locale="uk" />
-        <ExchangeQuiz />
-        <div className="mt-10">
+
+        {/* ── Порівняння комісій ── */}
+        <div className="mb-10">
+          <ComparisonTable />
+        </div>
+
+        {/* ── Fear & Greed ── */}
+        <div className="mb-10">
+          <FearGreedIndex />
+        </div>
+
+        {/* ── Калькулятор + Квіз (дві колонки) ── */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+          <div>
+            <WhatIfCalculator locale="uk" />
+          </div>
+          <div>
+            <ExchangeQuiz />
+          </div>
+        </div>
+
+        {/* ── Останні новини ── */}
+        <div className="mb-10">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-2xl font-black text-gray-900">📰 Останні новини</h2>
             <a href="/blog" className="text-orange-500 hover:text-orange-600 font-bold text-sm">Всі новини →</a>
           </div>
           <LatestArticles />
         </div>
+
+        {/* ── Підписка ── */}
         <SubscribeForm />
+
       </main>
+
       <WhaleAlertPopup />
       <ChatWidget locale="uk" />
 
-      {/* Модальне вікно біржі */}
       {activeExchange && (
         <ExchangeModal
           exchangeId={activeExchange}
