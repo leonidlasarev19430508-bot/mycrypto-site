@@ -64,62 +64,57 @@ function FooterInner() {
   return (
     <footer style={{ backgroundColor: '#FDF6EC', borderTop: '1px solid #E8D5B7' }} className="mt-16">
 
-      {/* Disclaimer banner — тепло-бежевий */}
-      <div style={{ backgroundColor: '#FEF3DC', borderBottom: '1px solid #E8D5B7' }} className="px-4 py-5">
+      {/* Disclaimer banner */}
+      <div style={{ backgroundColor: '#FEF3DC', borderBottom: '1px solid #E8D5B7' }} className="px-4 py-6">
         <div className="max-w-3xl mx-auto">
-          <p className="text-center text-sm font-bold mb-2" style={{ color: '#92400E' }}>
+          <p className="text-center text-base font-black mb-3" style={{ color: '#7C2D12' }}>
             {t.notAdvice}
           </p>
-          <p className="text-center text-xs leading-relaxed" style={{ color: '#B45309' }}>
+          <p className="text-center text-sm leading-relaxed" style={{ color: '#92400E' }}>
             {t.extended}
           </p>
         </div>
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
 
           {/* Logo */}
           <div>
-            <span className="font-black text-lg" style={{ color: '#1C1C1C' }}>CryptoNavigator</span>
-            <p className="text-sm mt-1" style={{ color: '#6B7280' }}>cryptotop.chat</p>
+            <span className="font-black text-xl" style={{ color: '#111827' }}>CryptoNavigator</span>
+            <p className="text-base font-semibold mt-1" style={{ color: '#374151' }}>cryptotop.chat</p>
           </div>
 
           {/* Legal links */}
-          <nav className="flex flex-wrap gap-4 text-sm justify-center">
-            <Link href={`${t.legalBase}/disclaimer`} className="transition hover:text-orange-500" style={{ color: '#4B5563' }}>
+          <nav className="flex flex-wrap gap-5 text-sm font-semibold justify-center">
+            <Link href={`${t.legalBase}/disclaimer`} className="transition hover:text-orange-500" style={{ color: '#1F2937' }}>
               {t.disclaimer}
             </Link>
-            <Link href={`${t.legalBase}/privacy`} className="transition hover:text-orange-500" style={{ color: '#4B5563' }}>
+            <Link href={`${t.legalBase}/privacy`} className="transition hover:text-orange-500" style={{ color: '#1F2937' }}>
               {t.privacy}
             </Link>
-            <Link href={`${t.legalBase}/terms`} className="transition hover:text-orange-500" style={{ color: '#4B5563' }}>
+            <Link href={`${t.legalBase}/terms`} className="transition hover:text-orange-500" style={{ color: '#1F2937' }}>
               {t.terms}
             </Link>
-            <Link href={`${t.legalBase}/disclaimer#affiliate`} className="transition hover:text-orange-500" style={{ color: '#4B5563' }}>
+            <Link href={`${t.legalBase}/disclaimer#affiliate`} className="transition hover:text-orange-500" style={{ color: '#1F2937' }}>
               {t.affiliate}
             </Link>
           </nav>
         </div>
 
-        {/* Product Hunt Badge — світла тема */}
+        {/* Product Hunt Badge */}
         <div className="flex justify-center mt-6">
-          <a
-            href="https://www.producthunt.com/posts/cryptonavigator"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href="https://www.producthunt.com/posts/cryptonavigator" target="_blank" rel="noopener noreferrer">
             <img
               src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=cryptonavigator&theme=light"
               alt="CryptoNavigator - Featured on Product Hunt"
-              width="250"
-              height="54"
+              width="250" height="54"
             />
           </a>
         </div>
 
         {/* Bottom line */}
-        <div className="mt-6 pt-4 text-center text-sm" style={{ borderTop: '1px solid #E8D5B7', color: '#9CA3AF' }}>
+        <div className="mt-6 pt-4 text-center text-sm font-semibold" style={{ borderTop: '1px solid #E8D5B7', color: '#374151' }}>
           <p>{t.rights}</p>
         </div>
       </div>

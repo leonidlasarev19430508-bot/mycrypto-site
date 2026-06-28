@@ -156,11 +156,11 @@ export default function Home() {
         </div>
 
         {/* ── Калькулятор + Квіз (дві колонки) ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-          <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 items-start">
+          <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
             <WhatIfCalculator locale="uk" />
           </div>
-          <div>
+          <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
             <ExchangeQuiz />
           </div>
         </div>

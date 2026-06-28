@@ -140,38 +140,39 @@ const EXCHANGES_DATA: Record<string, Record<string, {
 }>> = {
   uk: {
     whitebit: { name: 'WhiteBIT', desc: 'Найкращий вибір для українського ринку. Проста реєстрація, підтримка гривні.', features: ['Підтримка UAH', 'Низькі комісії', 'Простий інтерфейс', 'UA підтримка'], url: 'https://whitebit.com/referral/54626c3b-5240-4d39-9784-8e3eda5736de' },
-    binance: { name: 'Binance', desc: 'Найбільша біржа світу з максимальною кількістю торгових пар.', features: ['350+ монет', 'Futures', 'Binance Earn', 'Мобільний додаток'], url: 'https://www.binance.com/register?ref=GRO_28502_BIO0R' },
-    bybit: { name: 'Bybit', desc: 'Ідеальна платформа для активних трейдерів з просунутими деривативами.', features: ['Деривативи', 'Copy trading', 'Боти', 'Висока ліквідність'], url: 'https://www.bybit.com' },
-    okx: { name: 'OKX', desc: 'Сучасна платформа з потужними Web3 інструментами і DeFi.', features: ['Web3 гаманець', 'DEX', 'NFT', 'Стейкінг'], url: 'https://www.okx.com' },
+    binance: { name: 'Binance', desc: 'Найбільша біржа світу з максимальною кількістю торгових пар.', features: ['350+ монет', 'Futures', 'Binance Earn', 'Мобільний додаток'], url: 'https://www.binance.com/register?ref=Q5HR1JVW' },
+    bybit: { name: 'Bybit', desc: 'Ідеальна платформа для активних трейдерів з просунутими деривативами.', features: ['Деривативи', 'Copy trading', 'Боти', 'Висока ліквідність'], url: 'https://www.bybit.com/register?ref=CRYPTONAV' },
+    okx: { name: 'OKX', desc: 'Сучасна платформа з потужними Web3 інструментами і DeFi.', features: ['Web3 гаманець', 'DEX', 'NFT', 'Стейкінг'], url: 'https://www.okx.com/join/CRYPTONAV' },
   },
   en: {
     whitebit: { name: 'WhiteBIT', desc: 'Great choice for Eastern European market. Simple registration, high reliability.', features: ['Low fees', 'Simple interface', 'Staking', 'Fast verification'], url: 'https://whitebit.com/referral/54626c3b-5240-4d39-9784-8e3eda5736de' },
-    binance: { name: 'Binance', desc: "World's largest exchange with maximum trading pairs and low fees.", features: ['350+ coins', 'Futures', 'Binance Earn', 'Mobile app'], url: 'https://www.binance.com/register?ref=GRO_28502_BIO0R' },
-    bybit: { name: 'Bybit', desc: 'Perfect platform for active traders with advanced derivatives and bonuses.', features: ['Derivatives', 'Copy trading', 'Bots', 'High liquidity'], url: 'https://www.bybit.com' },
-    okx: { name: 'OKX', desc: 'Modern platform with powerful Web3 tools, built-in DEX and DeFi.', features: ['Web3 wallet', 'DEX', 'NFT marketplace', 'Staking'], url: 'https://www.okx.com' },
+    binance: { name: 'Binance', desc: "World's largest exchange with maximum trading pairs and low fees.", features: ['350+ coins', 'Futures', 'Binance Earn', 'Mobile app'], url: 'https://www.binance.com/register?ref=Q5HR1JVW' },
+    bybit: { name: 'Bybit', desc: 'Perfect platform for active traders with advanced derivatives and bonuses.', features: ['Derivatives', 'Copy trading', 'Bots', 'High liquidity'], url: 'https://www.bybit.com/register?ref=CRYPTONAV' },
+    okx: { name: 'OKX', desc: 'Modern platform with powerful Web3 tools, built-in DEX and DeFi.', features: ['Web3 wallet', 'DEX', 'NFT marketplace', 'Staking'], url: 'https://www.okx.com/join/CRYPTONAV' },
   },
   pl: {
     whitebit: { name: 'WhiteBIT', desc: 'Świetny wybór dla rynku wschodnioeuropejskiego. Prosta rejestracja, wysoka niezawodność.', features: ['Niskie prowizje', 'Prosty interfejs', 'Staking', 'Szybka weryfikacja'], url: 'https://whitebit.com/referral/54626c3b-5240-4d39-9784-8e3eda5736de' },
-    binance: { name: 'Binance', desc: 'Największa giełda na świecie z maksymalną liczbą par handlowych.', features: ['350+ monet', 'Futures', 'Binance Earn', 'Aplikacja mobilna'], url: 'https://www.binance.com/register?ref=GRO_28502_BIO0R' },
-    bybit: { name: 'Bybit', desc: 'Idealna platforma dla aktywnych traderów z zaawansowanymi derywatami.', features: ['Derywaty', 'Copy trading', 'Boty', 'Wysoka płynność'], url: 'https://www.bybit.com' },
-    okx: { name: 'OKX', desc: 'Nowoczesna platforma z narzędziami Web3, wbudowanym DEX i DeFi.', features: ['Portfel Web3', 'DEX', 'NFT', 'Staking'], url: 'https://www.okx.com' },
+    binance: { name: 'Binance', desc: 'Największa giełda na świecie z maksymalną liczbą par handlowych.', features: ['350+ monet', 'Futures', 'Binance Earn', 'Aplikacja mobilna'], url: 'https://www.binance.com/register?ref=Q5HR1JVW' },
+    bybit: { name: 'Bybit', desc: 'Idealna platforma dla aktywnych traderów z zaawansowanymi derywatami.', features: ['Derywaty', 'Copy trading', 'Boty', 'Wysoka płynność'], url: 'https://www.bybit.com/register?ref=CRYPTONAV' },
+    okx: { name: 'OKX', desc: 'Nowoczesna platforma z narzędziami Web3, wbudowanym DEX i DeFi.', features: ['Portfel Web3', 'DEX', 'NFT', 'Staking'], url: 'https://www.okx.com/join/CRYPTONAV' },
   },
   de: {
     whitebit: { name: 'WhiteBIT', desc: 'Gute Wahl für den osteuropäischen Markt. Einfache Registrierung, hohe Zuverlässigkeit.', features: ['Niedrige Gebühren', 'Einfache Oberfläche', 'Staking', 'Schnelle Verifizierung'], url: 'https://whitebit.com/referral/54626c3b-5240-4d39-9784-8e3eda5736de' },
-    binance: { name: 'Binance', desc: 'Weltgrößte Börse mit maximaler Anzahl an Handelspaaren und niedrigen Gebühren.', features: ['350+ Coins', 'Futures', 'Binance Earn', 'Mobile App'], url: 'https://www.binance.com/register?ref=GRO_28502_BIO0R' },
-    bybit: { name: 'Bybit', desc: 'Perfekte Plattform für aktive Trader mit fortgeschrittenen Derivaten.', features: ['Derivate', 'Copy Trading', 'Bots', 'Hohe Liquidität'], url: 'https://www.bybit.com' },
-    okx: { name: 'OKX', desc: 'Moderne Plattform mit Web3-Tools, integriertem DEX und DeFi.', features: ['Web3-Wallet', 'DEX', 'NFT', 'Staking'], url: 'https://www.okx.com' },
+    binance: { name: 'Binance', desc: 'Weltgrößte Börse mit maximaler Anzahl an Handelspaaren und niedrigen Gebühren.', features: ['350+ Coins', 'Futures', 'Binance Earn', 'Mobile App'], url: 'https://www.binance.com/register?ref=Q5HR1JVW' },
+    bybit: { name: 'Bybit', desc: 'Perfekte Plattform für aktive Trader mit fortgeschrittenen Derivaten.', features: ['Derivate', 'Copy Trading', 'Bots', 'Hohe Liquidität'], url: 'https://www.bybit.com/register?ref=CRYPTONAV' },
+    okx: { name: 'OKX', desc: 'Moderne Plattform mit Web3-Tools, integriertem DEX und DeFi.', features: ['Web3-Wallet', 'DEX', 'NFT', 'Staking'], url: 'https://www.okx.com/join/CRYPTONAV' },
   },
 };
 
 const UI: Record<string, {
   yourExchange: string; matchLabel: string; registerBtn: string;
   alsoSuitable: string; retake: string; next: string; getResult: string; question: string; of: string;
+  title: string;
 }> = {
-  uk: { yourExchange: 'Твоя біржа', matchLabel: 'Відповідність профілю', registerBtn: 'Зареєструватись на', alsoSuitable: 'Також підходять:', retake: 'Пройти квіз знову', next: 'Далі →', getResult: 'Отримати рекомендацію →', question: 'Питання', of: 'з' },
-  en: { yourExchange: 'Your exchange', matchLabel: 'Profile match', registerBtn: 'Register on', alsoSuitable: 'Also suitable:', retake: 'Retake the quiz', next: 'Next →', getResult: 'Get recommendation →', question: 'Question', of: 'of' },
-  pl: { yourExchange: 'Twoja giełda', matchLabel: 'Dopasowanie profilu', registerBtn: 'Zarejestruj się na', alsoSuitable: 'Również odpowiednie:', retake: 'Przejdź quiz ponownie', next: 'Dalej →', getResult: 'Uzyskaj rekomendację →', question: 'Pytanie', of: 'z' },
-  de: { yourExchange: 'Deine Börse', matchLabel: 'Profilübereinstimmung', registerBtn: 'Registrieren bei', alsoSuitable: 'Auch geeignet:', retake: 'Quiz wiederholen', next: 'Weiter →', getResult: 'Empfehlung erhalten →', question: 'Frage', of: 'von' },
+  uk: { title: 'Яка твоя біржа?', yourExchange: 'Твоя біржа', matchLabel: 'Відповідність профілю', registerBtn: 'Зареєструватись на', alsoSuitable: 'Також підходять:', retake: 'Пройти квіз знову', next: 'Далі →', getResult: 'Отримати рекомендацію →', question: 'Питання', of: 'з' },
+  en: { title: 'Which exchange suits you?', yourExchange: 'Your exchange', matchLabel: 'Profile match', registerBtn: 'Register on', alsoSuitable: 'Also suitable:', retake: 'Retake the quiz', next: 'Next →', getResult: 'Get recommendation →', question: 'Question', of: 'of' },
+  pl: { title: 'Która giełda dla Ciebie?', yourExchange: 'Twoja giełda', matchLabel: 'Dopasowanie profilu', registerBtn: 'Zarejestruj się na', alsoSuitable: 'Również odpowiednie:', retake: 'Przejdź quiz ponownie', next: 'Dalej →', getResult: 'Uzyskaj rekomendację →', question: 'Pytanie', of: 'z' },
+  de: { title: 'Welche Börse passt zu dir?', yourExchange: 'Deine Börse', matchLabel: 'Profilübereinstimmung', registerBtn: 'Registrieren bei', alsoSuitable: 'Auch geeignet:', retake: 'Quiz wiederholen', next: 'Weiter →', getResult: 'Empfehlung erhalten →', question: 'Frage', of: 'von' },
 };
 
 function recommend(answers: Record<string, string>) {
@@ -226,35 +227,37 @@ export default function ExchangeQuiz({ locale = 'uk' }: { locale?: string }) {
     const alts = ranked.slice(1, 3).map(([id]) => exchanges[id]);
 
     return (
-      <div className="max-w-xl mx-auto py-8 px-4">
-        <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 mb-4">
-          <span className="inline-block bg-orange-500 text-white text-xs font-medium px-3 py-1 rounded-full mb-3">{ui.yourExchange}</span>
-          <h2 className="text-2xl font-medium text-gray-900 dark:text-white mb-2">{ex.name}</h2>
-          <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-4">{ex.desc}</p>
+      <div className="py-4 px-2">
+        <div className="bg-white border border-gray-200 rounded-2xl p-6 mb-4">
+          <span className="inline-block bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-3">{ui.yourExchange}</span>
+          <h3 className="text-2xl font-black text-gray-900 mb-2">{ex.name}</h3>
+          <p className="text-gray-600 text-sm leading-relaxed mb-4">{ex.desc}</p>
           <div className="flex flex-wrap gap-2 mb-4">
-            {ex.features.map(f => <span key={f} className="bg-gray-100 dark:bg-gray-800 text-gray-500 text-xs px-3 py-1 rounded-full">{f}</span>)}
+            {ex.features.map(f => (
+              <span key={f} className="bg-gray-100 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full">{f}</span>
+            ))}
           </div>
-          <p className="text-sm text-gray-400 mb-1">{ui.matchLabel}: {matchPct}%</p>
-          <div className="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full mb-5">
-            <div className="h-1.5 bg-green-500 rounded-full" style={{ width: `${matchPct}%` }} />
+          <p className="text-sm font-semibold text-gray-700 mb-1">{ui.matchLabel}: <span className="text-green-600 font-black">{matchPct}%</span></p>
+          <div className="h-2 bg-gray-100 rounded-full mb-5">
+            <div className="h-2 bg-green-500 rounded-full" style={{ width: `${matchPct}%` }} />
           </div>
-          <a href={ex.url} target="_blank" rel="noopener noreferrer"
-            className="block w-full text-center bg-orange-500 hover:bg-orange-600 text-white font-medium py-3 rounded-xl transition-colors">
+          <a href={ex.url} target="_blank" rel="sponsored noopener noreferrer"
+            className="block w-full text-center bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition-colors">
             {ui.registerBtn} {ex.name} →
           </a>
         </div>
-        <p className="text-sm text-gray-400 mb-3">{ui.alsoSuitable}</p>
+        <p className="text-sm font-semibold text-gray-700 mb-3">{ui.alsoSuitable}</p>
         <div className="grid grid-cols-2 gap-3 mb-4">
           {alts.map(a => (
-            <a key={a.name} href={a.url} target="_blank" rel="noopener noreferrer"
-              className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:border-orange-400 transition-colors">
-              <p className="font-medium text-sm text-gray-900 dark:text-white mb-1">{a.name}</p>
-              <p className="text-xs text-gray-400">{a.desc.substring(0, 60)}...</p>
+            <a key={a.name} href={a.url} target="_blank" rel="sponsored noopener noreferrer"
+              className="bg-white border border-gray-200 rounded-xl p-4 hover:border-orange-400 transition-colors">
+              <p className="font-black text-sm text-gray-900 mb-1">{a.name}</p>
+              <p className="text-xs text-gray-600">{a.desc.substring(0, 60)}...</p>
             </a>
           ))}
         </div>
         <button onClick={restart}
-          className="w-full border border-gray-200 dark:border-gray-700 text-gray-400 rounded-xl py-3 text-sm hover:border-gray-300 transition-colors">
+          className="w-full border-2 border-gray-300 text-gray-700 font-semibold rounded-xl py-3 text-sm hover:border-orange-400 hover:text-orange-600 transition-colors">
           {ui.retake}
         </button>
       </div>
@@ -262,32 +265,41 @@ export default function ExchangeQuiz({ locale = 'uk' }: { locale?: string }) {
   }
 
   return (
-    <div className="max-w-xl mx-auto py-8 px-4">
-      <div className="h-1 bg-gray-100 dark:bg-gray-800 rounded-full mb-8">
-        <div className="h-1 bg-orange-500 rounded-full transition-all duration-400" style={{ width: `${progress}%` }} />
+    <div className="py-4 px-2">
+      {/* Заголовок квізу */}
+      <div className="text-center mb-4">
+        <h2 className="text-2xl font-black text-gray-900">{ui.title}</h2>
       </div>
-      <p className="text-xs text-gray-400 uppercase tracking-widest mb-2">
+
+      {/* Progress bar */}
+      <div className="h-1.5 bg-gray-200 rounded-full mb-6">
+        <div className="h-1.5 bg-orange-500 rounded-full transition-all duration-400" style={{ width: `${progress}%` }} />
+      </div>
+
+      <p className="text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
         {ui.question} {current + 1} {ui.of} {questions.length}
       </p>
-      <h2 className="text-xl font-medium text-gray-900 dark:text-white mb-6">{q.text}</h2>
+      <h3 className="text-lg font-black text-gray-900 mb-5">{q.text}</h3>
+
       <div className="flex flex-col gap-3 mb-6">
         {q.options.map(o => (
           <button key={o.val} onClick={() => setSelected(o.val)}
-            className={`flex items-center gap-3 p-4 rounded-xl border text-left transition-all ${
+            className={`flex items-center gap-3 p-4 rounded-xl border-2 text-left transition-all ${
               selected === o.val
-                ? 'border-orange-500 border-2 bg-orange-50 dark:bg-orange-950'
-                : 'border-gray-200 dark:border-gray-700 hover:border-orange-300 bg-white dark:bg-gray-900'
+                ? 'border-orange-500 bg-orange-50'
+                : 'border-gray-200 hover:border-orange-300 bg-white'
             }`}>
             <span className="text-2xl w-8 text-center">{o.icon}</span>
             <div>
-              <p className="font-medium text-sm text-gray-900 dark:text-white">{o.title}</p>
-              <p className="text-xs text-gray-400 mt-0.5">{o.sub}</p>
+              <p className="font-bold text-sm text-gray-900">{o.title}</p>
+              <p className="text-xs text-gray-500 mt-0.5">{o.sub}</p>
             </div>
           </button>
         ))}
       </div>
+
       <button onClick={handleNext} disabled={!selected}
-        className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-medium py-3 rounded-xl transition-colors">
+        className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold py-3 rounded-xl transition-colors">
         {current + 1 === questions.length ? ui.getResult : ui.next}
       </button>
     </div>
