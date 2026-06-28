@@ -13,15 +13,12 @@ const LOCALE_LABELS: Record<Locale, string> = {
 
 const LOCALES: Locale[] = ['uk', 'pl', 'de', 'en'];
 
-// Сторінки, для яких реально існують локалізовані версії під /en, /de, /pl.
-// Усе, чого тут немає (монети, окремі статті блогу, юридичні сторінки тощо),
-// при перемиканні мови веде на головну сторінку обраної локалі, а не на биту адресу.
 const LOCALIZABLE_PAGES = new Set([
   '',
   'coins',
   'bonuses',
   'markets',
-    'trading-bots',
+  'trading-bots',
   'news',
   'assistant',
   'blog',
@@ -42,18 +39,13 @@ function getCurrentPage(pathname: string, locale: Locale): string {
   return page.replace(/^\//, '') || '';
 }
 
-// Безпечний шлях для перемикача мов: якщо поточна сторінка не має
-// локалізованої версії — ведемо на головну цієї локалі замість 404.
 function getSafeSwitchPath(locale: Locale, currentPage: string): string {
   const segments = currentPage.split('/').filter(Boolean);
   const baseSegment = segments[0] || '';
-
-  // Окрема стаття блогу (blog/<id>): зберігаємо статтю, перемикаємо лише мову
   if (baseSegment === 'blog' && segments.length >= 2) {
     const articleId = segments[1];
     return locale === 'uk' ? `/blog/${articleId}` : `/blog/${articleId}?lang=${locale}`;
   }
-
   if (LOCALIZABLE_PAGES.has(baseSegment)) {
     return getLocalizedPath(locale, currentPage);
   }
@@ -100,13 +92,14 @@ function ClientHeaderInner() {
     { href: getLocalizedPath(locale, 'about'), label: labels.about[locale] },
     { href: getLocalizedPath(locale, 'learn'), label: labels.learn[locale] },
     { href: getLocalizedPath(locale, 'simulator'), label: { uk: '🎮 Симулятор', en: '🎮 Simulator', pl: '🎮 Symulator', de: '🎮 Simulator' }[locale] },
-   ];
+  ];
 
   return (
-    <header className="bg-black text-white">
+    <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+
         {/* Logo */}
-        <Link href={homeHref} className="font-bold text-xl hover:text-gray-300 flex-shrink-0">
+        <Link href={homeHref} className="font-black text-xl text-gray-900 hover:text-orange-500 transition-colors flex-shrink-0">
           CryptoNavigator
         </Link>
 
@@ -114,18 +107,23 @@ function ClientHeaderInner() {
         <nav className="hidden md:flex items-center gap-4 flex-wrap">
           {navLinks.map(link => (
             <Link key={link.href} href={link.href}
-              className={`text-sm hover:text-gray-300 whitespace-nowrap ${
-                link.highlight ? 'text-orange-400 font-semibold' : ''
+              className={`text-sm font-medium whitespace-nowrap transition-colors ${
+                link.highlight
+                  ? 'text-orange-500 font-bold hover:text-orange-600'
+                  : 'text-gray-700 hover:text-orange-500'
               }`}>
               {link.label}
             </Link>
           ))}
+
           {/* Language switcher */}
-          <div className="flex gap-1 ml-2 border-l border-gray-600 pl-3">
+          <div className="flex gap-1 ml-2 border-l border-gray-200 pl-3">
             {LOCALES.map(l => (
               <Link key={l} href={getSafeSwitchPath(l, currentPage)}
                 className={`text-xs px-2 py-1 rounded transition-colors ${
-                  locale === l ? 'text-white font-bold bg-gray-700' : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                  locale === l
+                    ? 'text-white font-bold bg-orange-500'
+                    : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
                 }`}>
                 {LOCALE_LABELS[l]}
               </Link>
@@ -135,20 +133,20 @@ function ClientHeaderInner() {
 
         {/* Mobile: lang + hamburger */}
         <div className="flex items-center gap-2 md:hidden">
-          {/* Language switcher mobile */}
           <div className="flex gap-1">
             {LOCALES.map(l => (
               <Link key={l} href={getSafeSwitchPath(l, currentPage)}
                 className={`text-xs px-1.5 py-1 rounded transition-colors ${
-                  locale === l ? 'text-white font-bold bg-gray-700' : 'text-gray-400 hover:text-white'
+                  locale === l
+                    ? 'text-white font-bold bg-orange-500'
+                    : 'text-gray-500 hover:text-gray-900'
                 }`}>
                 {l.toUpperCase()}
               </Link>
             ))}
           </div>
-          {/* Hamburger */}
           <button onClick={() => setMenuOpen(v => !v)}
-            className="p-2 rounded hover:bg-gray-800 transition"
+            className="p-2 rounded hover:bg-gray-100 transition text-gray-700"
             aria-label="Menu">
             {menuOpen ? (
               <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
@@ -163,15 +161,15 @@ function ClientHeaderInner() {
         </div>
       </div>
 
-      {/* Mobile menu — FIXED: md:hidden замість lg:hidden */}
+      {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-gray-900 border-t border-gray-800 px-4 py-3">
+        <div className="md:hidden bg-white border-t border-gray-200 px-4 py-3">
           <nav className="grid grid-cols-2 gap-2">
             {navLinks.map(link => (
               <Link key={link.href} href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className={`text-sm py-2 px-3 rounded-lg hover:bg-gray-800 transition ${
-                  link.highlight ? 'text-orange-400 font-semibold' : 'text-gray-300'
+                className={`text-sm py-2 px-3 rounded-lg hover:bg-gray-100 transition font-medium ${
+                  link.highlight ? 'text-orange-500 font-bold' : 'text-gray-700'
                 }`}>
                 {link.label}
               </Link>
@@ -183,8 +181,6 @@ function ClientHeaderInner() {
   );
 }
 
-// Suspense-обгортка: useSearchParams() у Next.js 16 вимагає Suspense-межі,
-// інакше білд падає на сторінках, що попередньо рендеряться статично.
 export default function ClientHeader() {
   return (
     <Suspense fallback={null}>

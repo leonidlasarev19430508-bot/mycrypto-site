@@ -67,10 +67,10 @@ function FooterInner() {
       {/* Disclaimer banner */}
       <div style={{ backgroundColor: '#FEF3DC', borderBottom: '1px solid #E8D5B7' }} className="px-4 py-6">
         <div className="max-w-3xl mx-auto">
-          <p className="text-center text-base font-black mb-3" style={{ color: '#7C2D12' }}>
+          <p className="text-center text-base font-black mb-3" style={{ color: '#1C1C1C' }}>
             {t.notAdvice}
           </p>
-          <p className="text-center text-sm leading-relaxed" style={{ color: '#92400E' }}>
+          <p className="text-center text-sm leading-relaxed" style={{ color: '#1f2937' }}>
             {t.extended}
           </p>
         </div>
