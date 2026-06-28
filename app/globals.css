@@ -2,7 +2,7 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #111111;
 }
 
 @theme inline {
@@ -12,18 +12,68 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* Прибираємо автоматичний dark mode — сайт завжди світлий */
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
+/* ── Глобальне посилення читабельності ── */
+
+/* Всі параграфи і описи — темно-сірий мінімум */
+p {
+  color: #1f2937;
+}
+
+/* Підписи, мітки, допоміжний текст */
+.text-gray-400 {
+  color: #4b5563 !important;
+}
+
+.text-gray-500 {
+  color: #374151 !important;
+}
+
+/* Кнопки з класами quick-date і подібні */
+button.text-gray-500 {
+  color: #374151 !important;
+}
+
+/* Посилання в картках */
+a.text-gray-400,
+p.text-gray-400,
+span.text-gray-400 {
+  color: #4b5563 !important;
+}
+
+/* Підписи форм */
+label {
+  color: #1f2937;
+}
+
+/* Placeholder — трохи світліший але читабельний */
+input::placeholder {
+  color: #6b7280;
+}
+
+/* Малий текст — мінімум читабельний */
+.text-xs {
+  color: #374151;
+}
+
+.text-sm {
+  color: #1f2937;
+}
+
+/* Виключення — білий текст на кольорових кнопках не чіпаємо */
+.bg-orange-500 *,
+.bg-orange-600 *,
+.bg-green-500 *,
+.bg-green-600 *,
+.bg-red-500 *,
+.bg-red-600 *,
+.bg-gray-900 * {
+  color: inherit;
+}
