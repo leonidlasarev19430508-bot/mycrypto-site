@@ -178,6 +178,8 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
         ) : (
           <div style={{ position: 'relative', width: `${btnSize}px`, height: `${btnSize}px`, borderRadius: '50%', overflow: 'hidden' }}>
             <Image src={avatar.src} alt="AI Navigator" width={btnSize} height={btnSize}
+              sizes="(max-width: 768px) 56px, 80px"
+              priority={true}
               style={{ ...avatarImgStyle, width: `${btnSize}px`, height: `${btnSize}px` }} />
             <span style={{
               position: 'absolute', bottom: '4px', right: '4px',
@@ -235,6 +237,8 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
             boxShadow: '0 8px 32px rgba(0,0,0,0.15)',
           }}>
             <Image src={avatar.src} alt="AI Navigator" width={avatarSize} height={avatarSize}
+              sizes="170px"
+              priority={true}
               style={{ ...avatarImgStyle, width: `${avatarSize}px`, height: `${avatarSize}px` }} />
           </div>
         </div>
@@ -319,6 +323,7 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
                     transition: 'all 0.2s', cursor: 'pointer', padding: 0, background: 'none',
                   }}>
                   <Image src={av.src} alt={av.label} width={28} height={28}
+                    sizes="28px"
                     style={{ ...avatarImgStyle, width: '28px', height: '28px' }} />
                 </button>
               ))}
@@ -373,6 +378,7 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
                   {msg.role === 'assistant' && (
                     <div style={{ width: '24px', height: '24px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
                       <Image src={avatar.src} alt="" width={24} height={24}
+                        sizes="24px"
                         style={{ ...avatarImgStyle, width: '24px', height: '24px' }} />
                     </div>
                   )}
@@ -392,6 +398,7 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <div style={{ width: '24px', height: '24px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0 }}>
                     <Image src={avatar.src} alt="" width={24} height={24}
+                      sizes="24px"
                       style={{ ...avatarImgStyle, width: '24px', height: '24px' }} />
                   </div>
                   <div style={{ background: 'rgba(241,245,249,0.95)', padding: '9px 13px', borderRadius: '16px 16px 16px 4px', display: 'flex', gap: '4px' }}>

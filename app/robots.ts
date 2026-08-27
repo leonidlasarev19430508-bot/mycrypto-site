@@ -1,12 +1,13 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://cryptotop.chat';
   return {
     rules: {
       userAgent: '*',
       allow: '/',
       disallow: ['/api/', '/_next/'],
     },
-    sitemap: 'https://cryptotop.chat/sitemap.xml',
+    sitemap: `${siteUrl}/sitemap.xml`,
   }
 }

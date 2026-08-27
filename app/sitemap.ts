@@ -1,18 +1,18 @@
 import { MetadataRoute } from 'next'
+import { getBlogArticles } from './lib/blog'
 
-async function getBlogArticles(): Promise<{ id: number; hasFullArticle: boolean }[]> {
+async function getBlogArticlesForSitemap(): Promise<{ id: number; hasFullArticle: boolean }[]> {
   try {
-    const res = await fetch('https://cryptotop.chat/api/blog?limit=200&offset=0', { next: { revalidate: 3600 } });
-    const data = await res.json();
-    return (data.articles || []).map((a: { id: number; full_article_uk?: string }) => ({
+    const { articles } = await getBlogArticles('uk', undefined, undefined, 200, 0);
+    return articles.map((a) => ({
       id: a.id,
-      hasFullArticle: !!(a.full_article_uk && a.full_article_uk.length > 50),
+      hasFullArticle: !!(a.summary && a.summary.length > 50),
     }));
   } catch { return []; }
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = 'https://cryptotop.chat';
+  const base = process.env.NEXT_PUBLIC_SITE_URL || 'https://cryptotop.chat';
 
   const mainPages = [
     '',
@@ -73,7 +73,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }
 
   // Статті блогу — пріоритет залежить від наявності повної статті
-  const articles = await getBlogArticles();
+  const articles = await getBlogArticlesForSitemap();
   for (const article of articles) {
     urls.push({
       url: `${base}/blog/${article.id}`,

@@ -157,10 +157,28 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const ex = EXCHANGES[slug];
   if (!ex) return { title: 'Börse nicht gefunden' };
+  
+  const title = `${ex.name} — Börsen-Bewertung 2026 | CryptoNavigator`;
+  const description = ex.description.slice(0, 160);
+  const url = `https://cryptotop.chat/de/exchange/${slug}`;
+  
   return {
-    title: `${ex.name} — Börsen-Bewertung 2026 | CryptoNavigator`,
-    description: ex.description.slice(0, 160),
-    alternates: { canonical: `https://cryptotop.chat/de/exchange/${slug}` },
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: 'CryptoNavigator',
+      images: [{ url: 'https://cryptotop.chat/og-image.png', width: 1200, height: 630, alt: `${ex.name} Review` }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['https://cryptotop.chat/og-image.png'],
+    },
   };
 }
 

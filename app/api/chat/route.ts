@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 import pool from '@/app/lib/db';
+import { getIp, isRateLimited } from '@/app/lib/rate-limit';
 
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
@@ -69,6 +70,18 @@ const LANG_CONFIG: Record<string, {
 };
 
 export async function POST(request: Request) {
+  // Rate limiting check
+  const ip = getIp(request);
+  if (isRateLimited('/api/chat', ip)) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please wait a minute before trying again.' },
+      { 
+        status: 429,
+        headers: { 'Retry-After': '60' }
+      }
+    );
+  }
+
   const lang = LANG_CONFIG['uk'];
   let locale = 'uk';
 

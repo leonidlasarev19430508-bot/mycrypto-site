@@ -33,6 +33,18 @@ export const metadata = {
     type: 'website',
     images: [{ url: 'https://cryptotop.chat/og-image.png', width: 1200, height: 630, alt: 'CryptoNavigator' }],
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "CryptoNav",
+  },
+  other: {
+    'mobile-web-app-capable': 'yes',
+  },
+};
+
+export const viewport = {
+  themeColor: "#f59e0b",
 };
 
 const jsonLd = {
@@ -168,6 +180,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="uk">
       <head>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/og-image.png" />
         <script
           dangerouslySetInnerHTML={{
             __html: `

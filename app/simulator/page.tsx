@@ -65,6 +65,8 @@ const T = {
     liveMode: '📡 Живий режим',
     replayMode: '⏪ Replay',
     replayHint: 'Торгуйте на реальній історії цін',
+    exportCsv: '📥 Експорт у CSV',
+    noHistory: 'Немає угод для експорту',
   },
   en: {
     subtitle: 'Crypto Trainer — trade on real prices without risk',
@@ -118,6 +120,8 @@ const T = {
     liveMode: '📡 Live',
     replayMode: '⏪ Replay',
     replayHint: 'Trade on real historical prices',
+    exportCsv: '📥 Export to CSV',
+    noHistory: 'No trades to export',
   },
   pl: {
     subtitle: 'Krypto-Trener — handluj na prawdziwych cenach bez ryzyka',
@@ -169,6 +173,8 @@ const T = {
     loss: 'Strata',
     na: 'N/D',
     liveMode: '📡 Na żywo',
+    exportCsv: '📥 Eksport do CSV',
+    noHistory: 'Brak transakcji do eksportu',
     replayMode: '⏪ Replay',
     replayHint: 'Handluj na rzeczywistych cenach historycznych',
   },
@@ -220,6 +226,8 @@ const T = {
     sold: 'Verkauft',
     profit: 'Gewinn',
     loss: 'Verlust',
+    exportCsv: '📥 Als CSV exportieren',
+    noHistory: 'Keine Trades zum Exportieren',
     na: 'N/V',
     liveMode: '📡 Live',
     replayMode: '⏪ Replay',
@@ -370,6 +378,34 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
     if (!confirm(t.resetConfirm)) return;
     setBalance(INITIAL_BALANCE); setPositions([]); setHistory([]);
     save(INITIAL_BALANCE, [], []); showMsg(t.resetDone, 'info');
+  };
+  const exportToCSV = () => {
+    if (history.length === 0) {
+      showMsg(t.noHistory, 'error');
+      return;
+    }
+    const headers = ['Date', 'Coin', 'Type (Long/Short)', 'Size (USD)', 'Entry Price', 'Exit Price', 'PnL (USD)', 'PnL (%)'];
+    const rows = history.map(h => [
+      h.closedAt,
+      h.symbol,
+      h.type === 'buy' ? 'Long' : 'Short',
+      h.usdAmount.toFixed(2),
+      h.entryPrice.toLocaleString(),
+      h.exitPrice.toLocaleString(),
+      h.pnl.toFixed(2),
+      ((h.pnl / h.usdAmount) * 100).toFixed(2)
+    ]);
+    const escape = (field: string) => `"${field.replace(/"/g, '""')}"`;
+    const csvContent = [
+      headers.map(escape).join(','),
+      ...rows.map(row => row.map(escape).join(','))
+    ].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'cryptonavigator_history.csv';
+    link.click();
+    URL.revokeObjectURL(link.href);
   };
 
   return (
@@ -584,33 +620,44 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
             )
           )}
           {tab === 'history' && (
-            history.length === 0 ? (
-              <div className="text-center py-10">
-                <p className="text-4xl mb-2">📋</p>
-                <p className="text-gray-500 font-semibold">{t.noHistTitle}</p>
-                <p className="text-gray-400 text-sm mt-1">{t.noHistHint}</p>
+            <div>
+              <div className="mb-4 flex justify-end">
+                <button
+                  onClick={exportToCSV}
+                  disabled={history.length === 0}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold px-3 py-2 rounded-lg transition flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {t.exportCsv}
+                </button>
               </div>
-            ) : (
-              <div className="space-y-2">
-                {history.map(h => (
-                  <div key={h.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className={`text-xs font-black px-2 py-0.5 rounded-full ${h.type === 'buy' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                          {h.type === 'buy' ? '📈 LONG' : '📉 SHORT'} {h.symbol}
-                        </span>
-                        <span className="text-xs text-gray-500">{h.closedAt}</span>
+              {history.length === 0 ? (
+                <div className="text-center py-10">
+                  <p className="text-4xl mb-2">📋</p>
+                  <p className="text-gray-500 font-semibold">{t.noHistTitle}</p>
+                  <p className="text-gray-400 text-sm mt-1">{t.noHistHint}</p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {history.map(h => (
+                    <div key={h.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className={`text-xs font-black px-2 py-0.5 rounded-full ${h.type === 'buy' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                            {h.type === 'buy' ? '📈 LONG' : '📉 SHORT'} {h.symbol}
+                          </span>
+                          <span className="text-xs text-gray-500">{h.closedAt}</span>
+                        </div>
+                        <p className="text-xs text-gray-600 font-medium">${h.usdAmount.toFixed(0)} · {h.entryPrice.toLocaleString()} → {h.exitPrice.toLocaleString()}</p>
                       </div>
-                      <p className="text-xs text-gray-600 font-medium">${h.usdAmount.toFixed(0)} · {h.entryPrice.toLocaleString()} → {h.exitPrice.toLocaleString()}</p>
+                      <div className="text-right">
+                        <p className={`font-black text-sm ${h.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>{h.pnl >= 0 ? '+' : ''}${h.pnl.toFixed(2)}</p>
+                        <p className={`text-xs font-semibold ${h.pnl >= 0 ? 'text-green-500' : 'text-red-500'}`}>{((h.pnl / h.usdAmount) * 100).toFixed(1)}%</p>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className={`font-black text-sm ${h.pnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>{h.pnl >= 0 ? '+' : ''}${h.pnl.toFixed(2)}</p>
-                      <p className={`text-xs font-semibold ${h.pnl >= 0 ? 'text-green-500' : 'text-red-500'}`}>{((h.pnl / h.usdAmount) * 100).toFixed(1)}%</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )
+                  ))}
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>

@@ -1,7 +1,20 @@
 import { NextResponse } from 'next/server';
 import pool from '../../lib/db';
+import { getIp, isRateLimited } from '../../lib/rate-limit';
 
 export async function POST(request: Request) {
+  // Rate limiting check
+  const ip = getIp(request);
+  if (isRateLimited('/api/subscribe', ip)) {
+    return NextResponse.json(
+      { error: 'Too many subscription attempts. Please wait 10 minutes before trying again.' },
+      { 
+        status: 429,
+        headers: { 'Retry-After': '600' }
+      }
+    );
+  }
+
   try {
     const { email } = await request.json();
 

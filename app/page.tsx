@@ -1,58 +1,17 @@
-'use client';
 import dynamic from 'next/dynamic';
-import ComparisonTable from "./components/ComparisonTable";
-import { useState } from "react";
-import t from "./i18n/uk.json";
-import { ExchangeModal, useExchangeModal } from "./components/ExchangeModal";
+import Link from 'next/link';
+import t from './i18n/uk.json';
 
-const WhaleAlertTicker = dynamic(() => import('./components/WhaleAlertTicker'), {
-  ssr: false,
-  loading: () => <div className="w-full bg-gray-900 border-y border-gray-800" style={{ height: '37px' }} />,
-});
-const CryptoPrices = dynamic(() => import('./components/CryptoPrices'), { ssr: false });
-const FearGreedIndex = dynamic(() => import('./components/FearGreedIndex'), { ssr: false });
-const WhatIfCalculator = dynamic(() => import('./components/WhatIfCalculator'), { ssr: false });
-const ExchangeQuiz = dynamic(() => import('./components/ExchangeQuiz'), { ssr: false });
-const WhaleAlertPopup = dynamic(() => import('./components/WhaleAlertPopup'), { ssr: false });
-const ChatWidget = dynamic(() => import('./components/ChatWidget'), { ssr: false });
-const LatestArticles = dynamic(() => import('./components/LatestArticles'), { ssr: false });
-import { SimulatorComponent } from './simulator/page';
-
-function SubscribeForm() {
-  const [email, setEmail] = useState('');
-  const [status, setStatus] = useState('');
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('sending');
-    const res = await fetch('/api/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-    });
-    if (res.ok) { setStatus('success'); setEmail(''); }
-    else setStatus('error');
-  };
-  return (
-    <div className="mt-10 p-8 rounded-2xl text-center" style={{ backgroundColor: '#FDF6EC', border: '1px solid #F0E0C8' }}>
-      <h3 className="text-xl font-bold mb-2">{t.subscribe.title}</h3>
-      <p className="text-gray-600 mb-4 text-sm font-medium">{t.subscribe.subtitle}</p>
-      <ul className="text-left text-sm text-gray-700 mb-4 space-y-1.5 max-w-xs mx-auto font-medium">
-        {t.subscribe.alerts.map((alert, i) => (<li key={i}>{alert}</li>))}
-      </ul>
-      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
-        <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-          placeholder={t.subscribe.placeholder}
-          className="flex-1 border border-orange-200 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 bg-white" required />
-        <button type="submit" disabled={status === 'sending'}
-          className="bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 disabled:opacity-50 font-bold">
-          {status === 'sending' ? t.subscribe.sending : t.subscribe.button}
-        </button>
-      </form>
-      {status === 'success' && <p className="text-green-600 mt-2 font-medium">{t.subscribe.success}</p>}
-      {status === 'error' && <p className="text-red-600 mt-2 font-medium">{t.subscribe.error}</p>}
-    </div>
-  );
-}
+const CryptoPrices = dynamic(() => import('./components/CryptoPrices'));
+const FearGreedIndex = dynamic(() => import('./components/FearGreedIndex'));
+const WhatIfCalculator = dynamic(() => import('./components/WhatIfCalculator'));
+const ExchangeQuiz = dynamic(() => import('./components/ExchangeQuiz'));
+const LatestArticles = dynamic(() => import('./components/LatestArticles'));
+const ComparisonTable = dynamic(() => import('./components/ComparisonTable'));
+const ChatWidget = dynamic(() => import('./components/ChatWidget'));
+const WhaleAlertTicker = dynamic(() => import('./components/WhaleAlertTicker'));
+const WhaleAlertPopup = dynamic(() => import('./components/WhaleAlertPopup'));
+const SubscribeForm = dynamic(() => import('./components/SubscribeForm'));
 
 const OFFERS = [
   {
@@ -67,128 +26,156 @@ const OFFERS = [
     description: 'Українська біржа з простим інтерфейсом та підтримкою гривні',
     features: ['Українська підтримка', 'Гривня UAH', 'Швидка верифікація'],
     badge: '🇺🇦 Для українців',
-    affiliate: process.env.NEXT_PUBLIC_AFFILIATE_MEXC || 'https://promote.mexc.com/r/q2p1TSAUnh',
+    affiliate: process.env.NEXT_PUBLIC_AFFILIATE_MEXC || 'https://www.mexc.com/register?ref=CRYPTONAV',
   },
   {
     name: 'Bybit', id: 'bybit',
-    description: t.offers[1].description,
-    features: t.offers[1].features,
-    badge: t.offers[1].badge,
+    description: 'Ідеально для активної торгівлі',
+    features: ['Просунуті інструменти', 'Висока ліквідність', '24/7 підтримка'],
+    badge: null,
     affiliate: process.env.NEXT_PUBLIC_AFFILIATE_BYBIT || 'https://www.bybit.com/register?ref=CRYPTONAV',
   },
   {
-    name: 'KuCoin', id: 'kucoin',
-    description: t.offers[2].description,
-    features: t.offers[2].features,
-    badge: t.offers[2].badge,
-    affiliate: process.env.NEXT_PUBLIC_AFFILIATE_KUCOIN || 'https://www.kucoin.com/r/rf/CXEPY4S5',
+    name: 'OKX', id: 'okx',
+    description: 'Сучасна платформа з широкими можливостями',
+    features: ['Web3 інтеграція', 'Стейкінг', 'Низькі комісії'],
+    badge: null,
+    affiliate: process.env.NEXT_PUBLIC_AFFILIATE_OKX || 'https://www.okx.com/join/CRYPTONAV',
   },
 ];
 
-export default function Home() {
-  const { activeExchange, open, close } = useExchangeModal();
-
+export default function HomePage() {
   return (
     <>
       <WhaleAlertTicker />
-      <main className="p-6 md:p-10 max-w-6xl mx-auto">
-
-        {/* ── Hero + Simulator ── */}
-        <div className="mt-4 mb-10">
-          <div className="text-center mb-6">
-            <h1 className="text-3xl md:text-4xl font-black text-gray-900 leading-tight mb-3">
-              Потренуйся торгувати криптою —<br />без вкладання реальних грошей
-            </h1>
-            <p className="text-gray-600 text-lg font-semibold">
-              Реальні ціни. Віртуальний капітал. Справжній досвід.
-            </p>
+      <main className="max-w-6xl mx-auto px-4 py-8">
+        <section className="text-center mb-12">
+          <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">Кращі крипто-біржі 2026 та AI-аналіз ринку</h1>
+          <p className="text-xl text-gray-600 mb-6 max-w-3xl mx-auto">CryptoNavigator допомагає порівнювати біржі, аналізувати ринок через AI та тренуватися без ризику. Ідеально для новачків та досвідчених трейдерів.</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/simulator" className="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl shadow-lg text-lg">Спробувати симулятор</Link>
+            <Link href="/markets" className="px-8 py-3 bg-gray-800 hover:bg-gray-900 text-white font-bold rounded-xl shadow-lg text-lg">Аналіз настрою</Link>
           </div>
-          <SimulatorComponent locale="uk" />
-        </div>
+        </section>
 
-        {/* ── Топові біржі ── */}
-        <div className="mb-10">
-          <h2 className="text-2xl font-black text-gray-900 mb-4">🏦 Топові біржі для старту</h2>
-
-          {/* Ціни монет між заголовком і картками */}
-          <CryptoPrices />
-
-          {/* Картки бірж */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 mt-5">
-            {OFFERS.map(offer => (
-              <div key={offer.id} className={`p-5 border-2 rounded-2xl bg-white shadow-sm hover:shadow-md transition-shadow relative ${offer.badge ? 'border-orange-400' : 'border-gray-100'}`}>
-                {offer.badge && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
-                    {offer.badge}
-                  </span>
-                )}
-                <button
-                  onClick={() => open(offer.id)}
-                  className="text-lg font-bold text-gray-900 hover:text-orange-500 transition-colors text-left underline decoration-dotted underline-offset-2 cursor-pointer"
-                >
-                  {offer.name}
-                </button>
-                <p className="mt-1.5 text-gray-500 text-sm">{offer.description}</p>
-                <ul className="mt-2.5 space-y-1">
-                  {offer.features.map(f => (
-                    <li key={f} className="text-sm text-gray-500 flex items-center gap-1.5">
-                      <span className="text-green-500 font-bold">✓</span> {f}
-                    </li>
-                  ))}
-                </ul>
-                <a href={offer.affiliate} target="_blank" rel="sponsored noopener noreferrer"
-                  className="mt-4 block bg-orange-500 text-white text-center px-4 py-2 rounded-xl hover:bg-orange-600 transition font-semibold text-sm">
-                  {t.exchanges.cta} {offer.name}
-                </a>
+        <section className="mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">Чому CryptoNavigator?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {['🤖 AI-аналіз новин', '📊 Порівняння комісій', '🎮 Безризиковий симулятор', '🔔 Миготливі сповіщення'].map((item, i) => (
+              <div key={i} className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+                <div className="text-3xl mb-3">{item.split(' ')[0]}</div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{item}</h3>
+                <p className="text-gray-600">{i === 0 ? 'Аналіз сотень новин щодня' : i === 1 ? 'Детальне порівняння бірж' : i === 2 ? 'Тренування на реальних цінах' : 'Сповіщення про ринкові зміни'}</p>
               </div>
             ))}
           </div>
-        </div>
+        </section>
 
-        {/* ── Порівняння комісій ── */}
-        <div className="mb-10">
-          <ComparisonTable />
-        </div>
-
-        {/* ── Fear & Greed ── */}
-        <div className="mb-10">
-          <FearGreedIndex />
-        </div>
-
-        {/* ── Калькулятор + Квіз (дві колонки) ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10 items-start">
-          <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
-            <WhatIfCalculator locale="uk" />
+        <section className="mb-12 bg-gradient-to-br from-orange-50 to-yellow-50 border border-orange-200 rounded-2xl p-8">
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">🚀 Безризиковий крипто-симулятор</h2>
+          <p className="text-gray-600 mb-6">Торгуйте на реальних цінах без ризику втратити гроші. Ідеально для новачків.</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+              <ul className="space-y-3 mb-6">
+                {['Реальні ціни з CoinGecko', 'Live та Replay режими', 'Віртуальний баланс $10,000', 'Історія угод'].map((f, i) => (
+                  <li key={i} className="flex items-center gap-3"><span className="text-green-500 text-xl">✓</span> {f}</li>
+                ))}
+              </ul>
+              <Link href="/simulator" className="inline-flex items-center px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl shadow-lg">Запустити симулятор →</Link>
+            </div>
+            <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-md">
+              <div className="aspect-video bg-gradient-to-r from-gray-100 to-gray-200 rounded-lg flex items-center justify-center">
+                <div className="text-center">
+                  <div className="text-5xl mb-2">📈</div>
+                  <p className="text-gray-700 font-medium">Графік цін у реальному часі</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
-            <ExchangeQuiz />
-          </div>
-        </div>
+        </section>
 
-        {/* ── Останні новини ── */}
-        <div className="mb-10">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-black text-gray-900">📰 Останні новини</h2>
-            <a href="/blog" className="text-orange-500 hover:text-orange-600 font-bold text-sm">Всі новини →</a>
+        <section className="mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">🏦 Популярні біржі</h2>
+          <CryptoPrices />
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 mt-8">
+            {OFFERS.map(offer => (
+              <div key={offer.id} className="p-5 border-2 rounded-2xl bg-white shadow-sm">
+                {offer.badge && <span className="block text-center bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-2">{offer.badge}</span>}
+                <Link href={`/exchange/${offer.id}`} className="text-lg font-bold text-gray-900 hover:text-orange-500 block">{offer.name}</Link>
+                <p className="text-gray-500 text-sm mt-1">{offer.description}</p>
+                <ul className="mt-2.5 space-y-1">
+                  {offer.features.map(f => <li key={f} className="text-sm text-gray-500"><span className="text-green-500">✓</span> {f}</li>)}
+                </ul>
+                <a href={offer.affiliate} target="_blank" rel="sponsored noopener noreferrer" className="mt-4 block bg-orange-500 text-white text-center px-4 py-2 rounded-xl hover:bg-orange-600 text-sm font-semibold">
+                  {t.exchanges.cta} {offer.name}
+                </a>
+                <Link href={`/exchange/${offer.id}`} className="mt-2 text-xs text-gray-400 hover:text-orange-500 block text-center">Детальний огляд →</Link>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link href="/coins" className="text-orange-500 hover:text-orange-600 font-bold">Дивитися всі криптовалюти →</Link>
+          </div>
+        </section>
+
+        <section className="mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">😱 Fear & Greed Index</h2>
+          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+            <FearGreedIndex />
+          </div>
+        </section>
+
+        <section className="mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">💸 Порівняння комісій</h2>
+          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
+            <ComparisonTable />
+          </div>
+          <div className="text-center mt-6">
+            <Link href="/trading-bots" className="text-orange-500 hover:text-orange-600 font-bold">Дізнатись про торгові боти →</Link>
+          </div>
+        </section>
+
+        <section className="mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">🧮 Інструменти</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white border border-gray-100 rounded-2xl shadow-sm"><WhatIfCalculator locale="uk" /></div>
+            <div className="bg-white border border-gray-100 rounded-2xl shadow-sm"><ExchangeQuiz /></div>
+          </div>
+        </section>
+
+        <section className="mb-12">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-3xl font-bold text-gray-900">📰 Останні новини</h2>
+            <Link href="/blog" className="text-orange-500 hover:text-orange-600 font-bold">Всі новини →</Link>
           </div>
           <LatestArticles />
-        </div>
+        </section>
 
-        {/* ── Підписка ── */}
-        <SubscribeForm />
+        <section className="mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">🔗 Корисні розділи</h2>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            {[
+              {icon: '🎮', label: 'Симулятор', href: '/simulator'},
+              {icon: '📊', label: 'Криптовалюти', href: '/coins'},
+              {icon: '🧠', label: 'Настрій', href: '/markets'},
+              {icon: '📰', label: 'Блог', href: '/blog'},
+              {icon: '🤖', label: 'AI Асистент', href: '/assistant'}
+            ].map(item => (
+              <Link key={item.href} href={item.href} className="p-4 bg-white border border-gray-200 rounded-xl text-center hover:shadow-md transition">
+                <div className="text-2xl mb-2">{item.icon}</div>
+                <p className="font-bold text-gray-900">{item.label}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
 
+        <section className="mb-12">
+          <SubscribeForm />
+        </section>
       </main>
-
       <WhaleAlertPopup />
       <ChatWidget locale="uk" />
-
-      {activeExchange && (
-        <ExchangeModal
-          exchangeId={activeExchange}
-          locale="uk"
-          onClose={close}
-        />
-      )}
     </>
   );
 }
+
