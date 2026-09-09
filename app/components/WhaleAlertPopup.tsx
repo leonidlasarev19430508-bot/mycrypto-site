@@ -1,9 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { getAffiliateLink } from '../lib/affiliates';
 
 const EXCHANGES = {
-  binance: { name: 'Binance', url: 'https://www.binance.com/register?ref=GRO_28502_BIO0R' },
+  binance: { name: 'Binance', url: getAffiliateLink('binance') },
 };
 
 const LABELS = {

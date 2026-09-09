@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { getAffiliateLink } from '../../../lib/affiliates';
 
 export const metadata: Metadata = {
   title: 'Gdzie uruchomić bota: przegląd platform 2025 | CryptoNavigator',
@@ -33,10 +34,10 @@ export default function PlatformsPagePl() {
           </tr>
         </thead>
         <tbody>
-          <tr className="align-top border-t"><td className="py-2">Binance</td><td className="py-2">DCA i Grid</td><td className="py-2">Za darmo — <a href="https://www.binance.com/en/register?ref=Q5HR1JVW" rel="sponsored noopener noreferrer" className="text-orange-600">ref</a></td></tr>
-          <tr className="align-top border-t"><td className="py-2">Bybit</td><td className="py-2">DCA, Grid, Martingale</td><td className="py-2">Wygodny interfejs — <a href="https://www.bybit.com/register?ref=CRYPTONAV" rel="sponsored noopener noreferrer" className="text-orange-600">ref</a></td></tr>
-          <tr className="align-top border-t"><td className="py-2">OKX</td><td className="py-2">Grid, DCA, Arbitrage</td><td className="py-2"><a href="https://www.okx.com/join/CRYPTONAV" rel="sponsored noopener noreferrer" className="text-orange-600">ref</a></td></tr>
-          <tr className="align-top border-t"><td className="py-2">KuCoin</td><td className="py-2">DCA i Grid</td><td className="py-2"><a href="https://www.kucoin.com/rf/CXEPY4S5" rel="sponsored noopener noreferrer" className="text-orange-600">ref</a></td></tr>
+          <tr className="align-top border-t"><td className="py-2">Binance</td><td className="py-2">DCA i Grid</td><td className="py-2">Za darmo — <a href={getAffiliateLink('binance')} rel="sponsored noopener noreferrer" className="text-orange-600">ref</a></td></tr>
+          <tr className="align-top border-t"><td className="py-2">Bybit</td><td className="py-2">DCA, Grid, Martingale</td><td className="py-2">Wygodny interfejs — <a href={getAffiliateLink('bybit')} rel="sponsored noopener noreferrer" className="text-orange-600">ref</a></td></tr>
+          <tr className="align-top border-t"><td className="py-2">OKX</td><td className="py-2">Grid, DCA, Arbitrage</td><td className="py-2"><a href={getAffiliateLink('okx')} rel="sponsored noopener noreferrer" className="text-orange-600">ref</a></td></tr>
+          <tr className="align-top border-t"><td className="py-2">KuCoin</td><td className="py-2">DCA i Grid</td><td className="py-2"><a href={getAffiliateLink('kucoin')} rel="sponsored noopener noreferrer" className="text-orange-600">ref</a></td></tr>
           <tr className="align-top border-t"><td className="py-2">3Commas</td><td className="py-2">Usługa zewnętrzna</td><td className="py-2">20+ giełd, subskrypcja</td></tr>
           <tr className="align-top border-t"><td className="py-2">Pionex</td><td className="py-2">Wbudowane boty</td><td className="py-2">16 botów za darmo</td></tr>
         </tbody>

@@ -1,6 +1,7 @@
 import ClientHeader from './components/ClientHeader';
 import LocaleWelcomeBubble from './components/LocaleWelcomeBubble';
 import Footer from './components/Footer';
+import { getAffiliateLink } from './lib/affiliates';
 import "./globals.css";
 
 export const metadata = {
@@ -106,7 +107,7 @@ const exchangesJsonLd = {
         '@type': 'FinancialService',
         name: 'Binance',
         description: 'Найбільша криптовалютна біржа у світі з низькими комісіями 0.1%',
-        url: 'https://www.binance.com/register?ref=Q5HR1JVW',
+        url: getAffiliateLink('binance'),
         aggregateRating: {
           '@type': 'AggregateRating',
           ratingValue: '4.8',
@@ -130,7 +131,7 @@ const exchangesJsonLd = {
         '@type': 'FinancialService',
         name: 'Bybit',
         description: 'Провідна біржа для активних трейдерів з плечем до 100x',
-        url: 'https://www.bybit.com/register?ref=CRYPTONAV',
+        url: getAffiliateLink('bybit'),
         aggregateRating: {
           '@type': 'AggregateRating',
           ratingValue: '4.6',
@@ -154,7 +155,7 @@ const exchangesJsonLd = {
         '@type': 'FinancialService',
         name: 'OKX',
         description: 'Сучасна біржа з Web3 інтеграцією та стейкінгом до 20%',
-        url: 'https://www.okx.com/join/CRYPTONAV',
+        url: getAffiliateLink('okx'),
         aggregateRating: {
           '@type': 'AggregateRating',
           ratingValue: '4.5',

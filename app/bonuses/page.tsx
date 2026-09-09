@@ -1,5 +1,6 @@
 'use client';
 import { ExchangeModal, useExchangeModal } from '../components/ExchangeModal';
+import { getAffiliateLink } from '../lib/affiliates';
 
 const EXCHANGES = [
   {
@@ -9,7 +10,7 @@ const EXCHANGES = [
     conditions: ['Верифікація KYC', 'Перший депозит від $50', 'Торговий об\'єм від $100'],
     fee: '0.1%', feeDiscount: '-25% з BNB', rating: 4.8,
     badge: '🏆 Найкращий вибір', badgeColor: 'bg-yellow-500',
-    affiliate: 'https://www.binance.com/register?ref=Q5HR1JVW',
+    affiliate: getAffiliateLink('binance'),
     pros: ['Найбільша ліквідність', 'Найнижчі комісії', '350+ монет', 'Українська підтримка'],
     color: 'border-yellow-400',
   },
@@ -20,7 +21,7 @@ const EXCHANGES = [
     conditions: ['Реєстрація за посиланням', 'Депозит від $100', 'Ф\'ючерсна торгівля'],
     fee: '0.1%', feeDiscount: '0.02% для мейкерів', rating: 4.6,
     badge: '⚡ Для трейдерів', badgeColor: 'bg-blue-600',
-    affiliate: 'https://www.bybit.com/register?ref=CRYPTONAV',
+    affiliate: getAffiliateLink('bybit'),
     pros: ['Великі бонуси', 'Плече до 100x', 'Copy trading', 'Висока ліквідність'],
     color: 'border-blue-300',
   },
@@ -31,7 +32,7 @@ const EXCHANGES = [
     conditions: ['Реєстрація за посиланням', 'Верифікація KYC', 'Перший депозит'],
     fee: '0.08%', feeDiscount: 'Найнижча на ринку', rating: 4.5,
     badge: '🌐 Web3 платформа', badgeColor: 'bg-gray-700',
-    affiliate: 'https://www.okx.com/join/CRYPTONAV',
+    affiliate: getAffiliateLink('okx'),
     pros: ['Найнижчі комісії', 'Web3 гаманець', 'Стейкінг до 20%', 'NFT маркетплейс'],
     color: 'border-gray-400',
   },
@@ -42,7 +43,7 @@ const EXCHANGES = [
     conditions: ['Реєстрація за посиланням', 'Верифікація KYC', 'Перший депозит від $50'],
     fee: '0.1%', feeDiscount: 'Знижки для VIP', rating: 4.4,
     badge: '🌱 700+ монет', badgeColor: 'bg-green-600',
-    affiliate: 'https://www.kucoin.com/r/rf/CXEPY4S5',
+    affiliate: getAffiliateLink('kucoin'),
     pros: ['700+ монет', 'Стейкінг', 'Web3 інтеграція', 'Низькі комісії'],
     color: 'border-green-400',
   },

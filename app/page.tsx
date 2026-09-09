@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import t from './i18n/uk.json';
+import { getAffiliateLink } from './lib/affiliates';
 
 const CryptoPrices = dynamic(() => import('./components/CryptoPrices'));
 const FearGreedIndex = dynamic(() => import('./components/FearGreedIndex'));
@@ -19,28 +20,28 @@ const OFFERS = [
     description: t.offers[0].description,
     features: t.offers[0].features,
     badge: t.offers[0].badge,
-    affiliate: process.env.NEXT_PUBLIC_AFFILIATE_BINANCE || 'https://www.binance.com/register?ref=Q5HR1JVW',
+    affiliate: getAffiliateLink('binance'),
   },
   {
     name: 'MEXC', id: 'mexc',
     description: 'Українська біржа з простим інтерфейсом та підтримкою гривні',
     features: ['Українська підтримка', 'Гривня UAH', 'Швидка верифікація'],
     badge: '🇺🇦 Для українців',
-    affiliate: process.env.NEXT_PUBLIC_AFFILIATE_MEXC || 'https://www.mexc.com/register?ref=CRYPTONAV',
+    affiliate: getAffiliateLink('mexc'),
   },
   {
     name: 'Bybit', id: 'bybit',
     description: 'Ідеально для активної торгівлі',
     features: ['Просунуті інструменти', 'Висока ліквідність', '24/7 підтримка'],
     badge: null,
-    affiliate: process.env.NEXT_PUBLIC_AFFILIATE_BYBIT || 'https://www.bybit.com/register?ref=CRYPTONAV',
+    affiliate: getAffiliateLink('bybit'),
   },
   {
     name: 'OKX', id: 'okx',
     description: 'Сучасна платформа з широкими можливостями',
     features: ['Web3 інтеграція', 'Стейкінг', 'Низькі комісії'],
     badge: null,
-    affiliate: process.env.NEXT_PUBLIC_AFFILIATE_OKX || 'https://www.okx.com/join/CRYPTONAV',
+    affiliate: getAffiliateLink('okx'),
   },
 ];
 

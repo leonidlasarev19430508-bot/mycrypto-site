@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { getAffiliateLink } from '../lib/affiliates';
 
 const QUESTIONS: Record<string, {
   id: string; text: string;
@@ -139,28 +140,28 @@ const EXCHANGES_DATA: Record<string, Record<string, {
   name: string; desc: string; features: string[]; url: string;
 }>> = {
   uk: {
-    whitebit: { name: 'WhiteBIT', desc: 'Найкращий вибір для українського ринку. Проста реєстрація, підтримка гривні.', features: ['Підтримка UAH', 'Низькі комісії', 'Простий інтерфейс', 'UA підтримка'], url: 'https://whitebit.com/referral/54626c3b-5240-4d39-9784-8e3eda5736de' },
-    binance: { name: 'Binance', desc: 'Найбільша біржа світу з максимальною кількістю торгових пар.', features: ['350+ монет', 'Futures', 'Binance Earn', 'Мобільний додаток'], url: 'https://www.binance.com/register?ref=Q5HR1JVW' },
-    bybit: { name: 'Bybit', desc: 'Ідеальна платформа для активних трейдерів з просунутими деривативами.', features: ['Деривативи', 'Copy trading', 'Боти', 'Висока ліквідність'], url: 'https://www.bybit.com/register?ref=CRYPTONAV' },
-    okx: { name: 'OKX', desc: 'Сучасна платформа з потужними Web3 інструментами і DeFi.', features: ['Web3 гаманець', 'DEX', 'NFT', 'Стейкінг'], url: 'https://www.okx.com/join/CRYPTONAV' },
+    whitebit: { name: 'WhiteBIT', desc: 'Найкращий вибір для українського ринку. Проста реєстрація, підтримка гривні.', features: ['Підтримка UAH', 'Низькі комісії', 'Простий інтерфейс', 'UA підтримка'], url: getAffiliateLink('whitebit') },
+    binance: { name: 'Binance', desc: 'Найбільша біржа світу з максимальною кількістю торгових пар.', features: ['350+ монет', 'Futures', 'Binance Earn', 'Мобільний додаток'], url: getAffiliateLink('binance') },
+    bybit: { name: 'Bybit', desc: 'Ідеальна платформа для активних трейдерів з просунутими деривативами.', features: ['Деривативи', 'Copy trading', 'Боти', 'Висока ліквідність'], url: getAffiliateLink('bybit') },
+    okx: { name: 'OKX', desc: 'Сучасна платформа з потужними Web3 інструментами і DeFi.', features: ['Web3 гаманець', 'DEX', 'NFT', 'Стейкінг'], url: getAffiliateLink('okx') },
   },
   en: {
-    whitebit: { name: 'WhiteBIT', desc: 'Great choice for Eastern European market. Simple registration, high reliability.', features: ['Low fees', 'Simple interface', 'Staking', 'Fast verification'], url: 'https://whitebit.com/referral/54626c3b-5240-4d39-9784-8e3eda5736de' },
-    binance: { name: 'Binance', desc: "World's largest exchange with maximum trading pairs and low fees.", features: ['350+ coins', 'Futures', 'Binance Earn', 'Mobile app'], url: 'https://www.binance.com/register?ref=Q5HR1JVW' },
-    bybit: { name: 'Bybit', desc: 'Perfect platform for active traders with advanced derivatives and bonuses.', features: ['Derivatives', 'Copy trading', 'Bots', 'High liquidity'], url: 'https://www.bybit.com/register?ref=CRYPTONAV' },
-    okx: { name: 'OKX', desc: 'Modern platform with powerful Web3 tools, built-in DEX and DeFi.', features: ['Web3 wallet', 'DEX', 'NFT marketplace', 'Staking'], url: 'https://www.okx.com/join/CRYPTONAV' },
+    whitebit: { name: 'WhiteBIT', desc: 'Great choice for Eastern European market. Simple registration, high reliability.', features: ['Low fees', 'Simple interface', 'Staking', 'Fast verification'], url: getAffiliateLink('whitebit') },
+    binance: { name: 'Binance', desc: "World's largest exchange with maximum trading pairs and low fees.", features: ['350+ coins', 'Futures', 'Binance Earn', 'Mobile app'], url: getAffiliateLink('binance') },
+    bybit: { name: 'Bybit', desc: 'Perfect platform for active traders with advanced derivatives and bonuses.', features: ['Derivatives', 'Copy trading', 'Bots', 'High liquidity'], url: getAffiliateLink('bybit') },
+    okx: { name: 'OKX', desc: 'Modern platform with powerful Web3 tools, built-in DEX and DeFi.', features: ['Web3 wallet', 'DEX', 'NFT marketplace', 'Staking'], url: getAffiliateLink('okx') },
   },
   pl: {
-    whitebit: { name: 'WhiteBIT', desc: 'Świetny wybór dla rynku wschodnioeuropejskiego. Prosta rejestracja, wysoka niezawodność.', features: ['Niskie prowizje', 'Prosty interfejs', 'Staking', 'Szybka weryfikacja'], url: 'https://whitebit.com/referral/54626c3b-5240-4d39-9784-8e3eda5736de' },
-    binance: { name: 'Binance', desc: 'Największa giełda na świecie z maksymalną liczbą par handlowych.', features: ['350+ monet', 'Futures', 'Binance Earn', 'Aplikacja mobilna'], url: 'https://www.binance.com/register?ref=Q5HR1JVW' },
-    bybit: { name: 'Bybit', desc: 'Idealna platforma dla aktywnych traderów z zaawansowanymi derywatami.', features: ['Derywaty', 'Copy trading', 'Boty', 'Wysoka płynność'], url: 'https://www.bybit.com/register?ref=CRYPTONAV' },
-    okx: { name: 'OKX', desc: 'Nowoczesna platforma z narzędziami Web3, wbudowanym DEX i DeFi.', features: ['Portfel Web3', 'DEX', 'NFT', 'Staking'], url: 'https://www.okx.com/join/CRYPTONAV' },
+    whitebit: { name: 'WhiteBIT', desc: 'Świetny wybór dla rynku wschodnioeuropejskiego. Prosta rejestracja, wysoka niezawodność.', features: ['Niskie prowizje', 'Prosty interfejs', 'Staking', 'Szybka weryfikacja'], url: getAffiliateLink('whitebit') },
+    binance: { name: 'Binance', desc: 'Największa giełda na świecie z maksymalną liczbą par handlowych.', features: ['350+ monet', 'Futures', 'Binance Earn', 'Aplikacja mobilna'], url: getAffiliateLink('binance') },
+    bybit: { name: 'Bybit', desc: 'Idealna platforma dla aktywnych traderów z zaawansowanymi derywatami.', features: ['Derywaty', 'Copy trading', 'Boty', 'Wysoka płynność'], url: getAffiliateLink('bybit') },
+    okx: { name: 'OKX', desc: 'Nowoczesna platforma z narzędziami Web3, wbudowanym DEX i DeFi.', features: ['Portfel Web3', 'DEX', 'NFT', 'Staking'], url: getAffiliateLink('okx') },
   },
   de: {
-    whitebit: { name: 'WhiteBIT', desc: 'Gute Wahl für den osteuropäischen Markt. Einfache Registrierung, hohe Zuverlässigkeit.', features: ['Niedrige Gebühren', 'Einfache Oberfläche', 'Staking', 'Schnelle Verifizierung'], url: 'https://whitebit.com/referral/54626c3b-5240-4d39-9784-8e3eda5736de' },
-    binance: { name: 'Binance', desc: 'Weltgrößte Börse mit maximaler Anzahl an Handelspaaren und niedrigen Gebühren.', features: ['350+ Coins', 'Futures', 'Binance Earn', 'Mobile App'], url: 'https://www.binance.com/register?ref=Q5HR1JVW' },
-    bybit: { name: 'Bybit', desc: 'Perfekte Plattform für aktive Trader mit fortgeschrittenen Derivaten.', features: ['Derivate', 'Copy Trading', 'Bots', 'Hohe Liquidität'], url: 'https://www.bybit.com/register?ref=CRYPTONAV' },
-    okx: { name: 'OKX', desc: 'Moderne Plattform mit Web3-Tools, integriertem DEX und DeFi.', features: ['Web3-Wallet', 'DEX', 'NFT', 'Staking'], url: 'https://www.okx.com/join/CRYPTONAV' },
+    whitebit: { name: 'WhiteBIT', desc: 'Gute Wahl für den osteuropäischen Markt. Einfache Registrierung, hohe Zuverlässigkeit.', features: ['Niedrige Gebühren', 'Einfache Oberfläche', 'Staking', 'Schnelle Verifizierung'], url: getAffiliateLink('whitebit') },
+    binance: { name: 'Binance', desc: 'Weltgrößte Börse mit maximaler Anzahl an Handelspaaren und niedrigen Gebühren.', features: ['350+ Coins', 'Futures', 'Binance Earn', 'Mobile App'], url: getAffiliateLink('binance') },
+    bybit: { name: 'Bybit', desc: 'Perfekte Plattform für aktive Trader mit fortgeschrittenen Derivaten.', features: ['Derivate', 'Copy Trading', 'Bots', 'Hohe Liquidität'], url: getAffiliateLink('bybit') },
+    okx: { name: 'OKX', desc: 'Moderne Plattform mit Web3-Tools, integriertem DEX und DeFi.', features: ['Web3-Wallet', 'DEX', 'NFT', 'Staking'], url: getAffiliateLink('okx') },
   },
 };
 

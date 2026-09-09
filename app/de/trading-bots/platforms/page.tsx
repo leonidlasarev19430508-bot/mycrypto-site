@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { getAffiliateLink } from '../../../lib/affiliates';
 
 export const metadata: Metadata = {
   title: 'Plattformen für Trading-Bots 2025 | CryptoNavigator',
@@ -21,12 +22,12 @@ export default function PlatformsPageDe() {
           </tr>
         </thead>
         <tbody>
-          <tr className="align-top border-t"><td className="py-2">Binance</td><td className="py-2">Built-in</td><td className="py-2">Niedrige Gebühren — <a href="https://www.binance.com/en/register?ref=Q5HR1JVW" rel="sponsored noopener noreferrer" className="text-orange-600">ref</a></td></tr>
-          <tr className="align-top border-t"><td className="py-2">Bybit</td><td className="py-2">Built-in + API</td><td className="py-2">Gute Liquidität — <a href="https://www.bybit.com/register?ref=CRYPTONAV" rel="sponsored noopener noreferrer" className="text-orange-600">ref</a></td></tr>
+          <tr className="align-top border-t"><td className="py-2">Binance</td><td className="py-2">Built-in</td><td className="py-2">Niedrige Gebühren — <a href={getAffiliateLink('binance')} rel="sponsored noopener noreferrer" className="text-orange-600">ref</a></td></tr>
+          <tr className="align-top border-t"><td className="py-2">Bybit</td><td className="py-2">Built-in + API</td><td className="py-2">Gute Liquidität — <a href={getAffiliateLink('bybit')} rel="sponsored noopener noreferrer" className="text-orange-600">ref</a></td></tr>
           <tr className="align-top border-t"><td className="py-2">3Commas</td><td className="py-2">Externer Service</td><td className="py-2">Viele Strategien, Abo-Modell</td></tr>
           <tr className="align-top border-t"><td className="py-2">Pionex</td><td className="py-2">Built-in</td><td className="py-2">Einfache Einrichtung</td></tr>
-          <tr className="align-top border-t"><td className="py-2">OKX</td><td className="py-2">Built-in</td><td className="py-2"><a href="https://www.okx.com/join/CRYPTONAV" rel="sponsored noopener noreferrer" className="text-orange-600">ref</a></td></tr>
-          <tr className="align-top border-t"><td className="py-2">KuCoin</td><td className="py-2">Built-in</td><td className="py-2"><a href="https://www.kucoin.com/rf/CXEPY4S5" rel="sponsored noopener noreferrer" className="text-orange-600">ref</a></td></tr>
+          <tr className="align-top border-t"><td className="py-2">OKX</td><td className="py-2">Built-in</td><td className="py-2"><a href={getAffiliateLink('okx')} rel="sponsored noopener noreferrer" className="text-orange-600">ref</a></td></tr>
+          <tr className="align-top border-t"><td className="py-2">KuCoin</td><td className="py-2">Built-in</td><td className="py-2"><a href={getAffiliateLink('kucoin')} rel="sponsored noopener noreferrer" className="text-orange-600">ref</a></td></tr>
         </tbody>
       </table>
       <div className="bg-orange-50 border border-orange-200 rounded-2xl p-6">

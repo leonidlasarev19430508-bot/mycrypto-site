@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import { getAffiliateLink } from '@/app/lib/affiliates';
 
 const EXCHANGES: Record<string, {
   name: string;
@@ -36,7 +37,7 @@ const EXCHANGES: Record<string, {
     volume: '$15B+/день',
     users: '170M+',
     fee: '0.1%',
-    affiliate: 'https://www.binance.com/register?ref=Q5HR1JVW',
+    affiliate: getAffiliateLink('binance'),
     description: 'Binance — найбільша криптовалютна біржа у світі за обсягом торгів. Заснована у 2017 році Чанпен Чжао, вона за рекордно короткий час стала домінуючою платформою у крипто-індустрії.',
     history: [
       { year: '2017', event: 'Заснування Binance. За 6 місяців стала найбільшою біржею за обсягом торгів.' },
@@ -73,7 +74,7 @@ const EXCHANGES: Record<string, {
     volume: '$2B+/день',
     users: '10M+',
     fee: '0%',
-    affiliate: 'https://promote.mexc.com/r/q2p1TSAUnh',
+    affiliate: getAffiliateLink('mexc'),
     description: 'MEXC — популярна криптовалютна біржа з підтримкою гривні UAH та україномовним інтерфейсом. Відома найбільшим вибором альткоїнів та нульовою комісією на спотову торгівлю.',
     history: [
       { year: '2018', event: 'Заснування MEXC Global. Фокус на лістингу нових токенів.' },
@@ -109,7 +110,7 @@ const EXCHANGES: Record<string, {
     volume: '$8B+/день',
     users: '30M+',
     fee: '0.1%',
-    affiliate: 'https://www.bybit.com/register?ref=CRYPTONAV',
+    affiliate: getAffiliateLink('bybit'),
     description: 'Bybit — провідна криптовалютна біржа для активних трейдерів. Заснована у 2018 році, спеціалізується на деривативах та торгівлі з плечем до 100x.',
     history: [
       { year: '2018', event: 'Заснування Bybit. Фокус на деривативах та торгівлі з плечем.' },
@@ -146,7 +147,7 @@ const EXCHANGES: Record<string, {
     volume: '$1B+/день',
     users: '27M+',
     fee: '0.1%',
-    affiliate: 'https://www.kucoin.com/r/rf/CXEPY4S5',
+    affiliate: getAffiliateLink('kucoin'),
     description: 'KuCoin — народна біржа з найширшим вибором монет серед топових платформ. Заснована у 2017 році, відома раннім лістингом перспективних проєктів та широкими можливостями для пасивного заробітку.',
     history: [
       { year: '2017', event: 'Заснування KuCoin. Позиціонування як народна біржа.' },
@@ -183,7 +184,7 @@ const EXCHANGES: Record<string, {
     volume: '$5B+/день',
     users: '50M+',
     fee: '0.08%',
-    affiliate: 'https://www.okx.com/join/CRYPTONAV',
+    affiliate: getAffiliateLink('okx'),
     description: 'OKX — одна з найбільших криптовалютних бірж світу. Виділяється найнижчими комісіями на ринку, власним Web3 гаманцем та розвиненою екосистемою DeFi продуктів.',
     history: [
       { year: '2017', event: 'Заснування OKEx (пізніше перейменована на OKX).' },

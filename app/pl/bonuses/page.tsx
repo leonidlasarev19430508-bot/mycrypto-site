@@ -1,5 +1,6 @@
 'use client';
 import { ExchangeModal, useExchangeModal } from '../../components/ExchangeModal';
+import { getAffiliateLink } from '../../lib/affiliates';
 
 const EXCHANGES = [
   {
@@ -9,7 +10,7 @@ const EXCHANGES = [
     conditions: ['Weryfikacja KYC', 'Pierwszy depozyt od $50', 'Wolumen handlowy od $100'],
     fee: '0.1%', feeDiscount: '-25% z BNB', rating: 4.8,
     badge: '🏆 Najlepszy wybór', badgeColor: 'bg-yellow-500',
-    affiliate: 'https://www.binance.com/register?ref=Q5HR1JVW',
+    affiliate: getAffiliateLink('binance'),
     pros: ['Najwyższa płynność', 'Najniższe prowizje', '350+ monet', 'Polska obsługa'],
     color: 'border-yellow-400',
   },
@@ -20,7 +21,7 @@ const EXCHANGES = [
     conditions: ['Rejestracja przez link', 'Depozyt od $100', 'Handel futures'],
     fee: '0.1%', feeDiscount: '0.02% dla makerów', rating: 4.6,
     badge: '⚡ Dla traderów', badgeColor: 'bg-blue-600',
-    affiliate: 'https://www.bybit.com/register?ref=CRYPTONAV',
+    affiliate: getAffiliateLink('bybit'),
     pros: ['Duże bonusy', 'Dźwignia do 100x', 'Copy trading', 'Wysoka płynność'],
     color: 'border-blue-300',
   },
@@ -31,7 +32,7 @@ const EXCHANGES = [
     conditions: ['Rejestracja przez link', 'Weryfikacja KYC', 'Pierwszy depozyt'],
     fee: '0.08%', feeDiscount: 'Najniższe na rynku', rating: 4.5,
     badge: '🌐 Platforma Web3', badgeColor: 'bg-gray-700',
-    affiliate: 'https://www.okx.com/join/CRYPTONAV',
+    affiliate: getAffiliateLink('okx'),
     pros: ['Najniższe prowizje', 'Portfel Web3', 'Staking do 20%', 'NFT marketplace'],
     color: 'border-gray-400',
   },
@@ -42,7 +43,7 @@ const EXCHANGES = [
     conditions: ['Rejestracja przez link', 'Weryfikacja KYC', 'Pierwszy depozyt od $50'],
     fee: '0.1%', feeDiscount: 'Zniżki VIP', rating: 4.4,
     badge: '🌱 700+ monet', badgeColor: 'bg-green-600',
-    affiliate: 'https://www.kucoin.com/r/rf/CXEPY4S5',
+    affiliate: getAffiliateLink('kucoin'),
     pros: ['700+ monet', 'Nagrody za staking', 'Integracja Web3', 'Niskie prowizje'],
     color: 'border-green-400',
   },

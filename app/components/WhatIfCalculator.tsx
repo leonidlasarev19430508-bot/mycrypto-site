@@ -1,13 +1,14 @@
 'use client';
 import { useState } from 'react';
 import { useTranslation, type Locale } from '../lib/i18n';
+import { getAffiliateLink } from '../lib/affiliates';
 
 const AFFILIATE = {
-  bitcoin:  process.env.NEXT_PUBLIC_AFFILIATE_BINANCE  || 'https://www.binance.com/register?ref=GRO_28502_BIO0R',
-  ethereum: process.env.NEXT_PUBLIC_AFFILIATE_BINANCE  || 'https://www.binance.com/register?ref=GRO_28502_BIO0R',
-  solana:   process.env.NEXT_PUBLIC_AFFILIATE_BYBIT    || 'https://www.bybit.com/register?ref=CRYPTONAV',
-  bnb:      process.env.NEXT_PUBLIC_AFFILIATE_BINANCE  || 'https://www.binance.com/register?ref=GRO_28502_BIO0R',
-  xrp:      process.env.NEXT_PUBLIC_AFFILIATE_BYBIT    || 'https://www.bybit.com/register?ref=CRYPTONAV',
+  bitcoin:  getAffiliateLink('binance'),
+  ethereum: getAffiliateLink('binance'),
+  solana:   getAffiliateLink('bybit'),
+  bnb:      getAffiliateLink('binance'),
+  xrp:      getAffiliateLink('bybit'),
 };
 
 const COINS = [

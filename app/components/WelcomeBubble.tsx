@@ -238,7 +238,6 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
           }}>
             <Image src={avatar.src} alt="AI Navigator" width={avatarSize} height={avatarSize}
               sizes="170px"
-              priority={true}
               style={{ ...avatarImgStyle, width: `${avatarSize}px`, height: `${avatarSize}px` }} />
           </div>
         </div>

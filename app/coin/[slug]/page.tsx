@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import pool from '../../lib/db';
+import { getAffiliateLink } from '../../lib/affiliates';
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -73,7 +74,7 @@ function timeAgo(dateStr: string) {
   return Math.floor(diff / 86400) + ' дн тому';
 }
 
-const AFFILIATE = 'https://www.binance.com/register?ref=GRO_28502_BIO0R';
+const AFFILIATE = getAffiliateLink('binance');
 
 export default async function CoinPage(props: PageProps) {
   const params = await props.params;

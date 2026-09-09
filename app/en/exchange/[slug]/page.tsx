@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import { getAffiliateLink } from '../../../lib/affiliates';
 
 const EXCHANGES: Record<string, {
   name: string;
@@ -27,7 +28,7 @@ const EXCHANGES: Record<string, {
     name: 'Binance', logo: '🟡', color: '#F0B90B', accentColor: '#F0B90B',
     founded: '2017', founder: 'Changpeng Zhao (CZ)', headquarters: 'Cayman Islands',
     employees: '8,000+', coins: '350+', volume: '$15B+/day', users: '170M+', fee: '0.1%',
-    affiliate: 'https://www.binance.com/register?ref=Q5HR1JVW',
+    affiliate: getAffiliateLink('binance'),
     description: 'Binance is the world\'s largest crypto exchange by trading volume. Founded in 2017 by Changpeng Zhao, it became the dominant platform in the crypto industry in record time.',
     history: [
       { year: '2017', event: 'Binance founded. Within 6 months became the largest exchange by trading volume.' },
@@ -55,7 +56,7 @@ const EXCHANGES: Record<string, {
     name: 'MEXC', logo: '🔷', color: '#2196F3', accentColor: '#00BCD4',
     founded: '2018', founder: 'Team of experienced traders', headquarters: 'Seychelles',
     employees: '1,000+', coins: '1500+', volume: '$2B+/day', users: '10M+', fee: '0%',
-    affiliate: 'https://promote.mexc.com/r/q2p1TSAUnh',
+    affiliate: getAffiliateLink('mexc'),
     description: 'MEXC is a popular crypto exchange with UAH support and Ukrainian interface. Known for the largest selection of altcoins and zero commission on spot trading.',
     history: [
       { year: '2018', event: 'MEXC Global founded. Focus on listing new tokens.' },
@@ -82,7 +83,7 @@ const EXCHANGES: Record<string, {
     name: 'Bybit', logo: '🔵', color: '#2F80ED', accentColor: '#56CCF2',
     founded: '2018', founder: 'Ben Zhou', headquarters: 'Dubai, UAE',
     employees: '2,500+', coins: '300+', volume: '$8B+/day', users: '30M+', fee: '0.1%',
-    affiliate: 'https://www.bybit.com/register?ref=CRYPTONAV',
+    affiliate: getAffiliateLink('bybit'),
     description: 'Bybit is a leading crypto exchange for active traders. Founded in 2018, it specializes in derivatives and trading with up to 100x leverage.',
     history: [
       { year: '2018', event: 'Bybit founded. Focus on derivatives and leveraged trading.' },
@@ -110,7 +111,7 @@ const EXCHANGES: Record<string, {
     name: 'KuCoin', logo: '🟢', color: '#23AF91', accentColor: '#00C896',
     founded: '2017', founder: 'Michael Gan and Johnny Lyu', headquarters: 'Seychelles',
     employees: '1,500+', coins: '700+', volume: '$1B+/day', users: '27M+', fee: '0.1%',
-    affiliate: 'https://www.kucoin.com/r/rf/CXEPY4S5',
+    affiliate: getAffiliateLink('kucoin'),
     description: 'KuCoin is the People\'s Exchange with the widest selection of coins among top platforms. Founded in 2017, known for early listing of promising projects and passive income opportunities.',
     history: [
       { year: '2017', event: 'KuCoin founded. Positioned as the People\'s Exchange.' },
@@ -138,7 +139,7 @@ const EXCHANGES: Record<string, {
     name: 'OKX', logo: '⚫', color: '#000000', accentColor: '#3772FF',
     founded: '2017', founder: 'Star Xu', headquarters: 'Seychelles',
     employees: '3,000+', coins: '300+', volume: '$5B+/day', users: '50M+', fee: '0.08%',
-    affiliate: 'https://www.okx.com/join/CRYPTONAV',
+    affiliate: getAffiliateLink('okx'),
     description: 'OKX is one of the largest crypto exchanges in the world. Distinguished by the lowest fees on the market, its own Web3 wallet and a developed DeFi ecosystem.',
     history: [
       { year: '2017', event: 'OKEx founded (later renamed to OKX).' },

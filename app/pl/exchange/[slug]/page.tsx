@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import { getAffiliateLink } from '../../../lib/affiliates';
 
 const EXCHANGES: Record<string, {
   name: string; logo: string; color: string; accentColor: string;
@@ -14,7 +15,7 @@ const EXCHANGES: Record<string, {
     name: 'Binance', logo: '🟡', color: '#F0B90B', accentColor: '#F0B90B',
     founded: '2017', founder: 'Changpeng Zhao (CZ)', headquarters: 'Kajmany',
     employees: '8,000+', coins: '350+', volume: '$15B+/dzien', users: '170M+', fee: '0.1%',
-    affiliate: 'https://www.binance.com/register?ref=Q5HR1JVW',
+    affiliate: getAffiliateLink('binance'),
     description: 'Binance to największa giełda kryptowalut na świecie pod względem wolumenu obrotu. Założona w 2017 roku przez Changpeng Zhao, w rekordowym czasie stała się dominującą platformą w branży krypto.',
     history: [
       { year: '2017', event: 'Założenie Binance. W ciągu 6 miesięcy stała się największą giełdą pod względem wolumenu.' },
@@ -42,7 +43,7 @@ const EXCHANGES: Record<string, {
     name: 'MEXC', logo: '🔷', color: '#2196F3', accentColor: '#00BCD4',
     founded: '2018', founder: 'Zespół doświadczonych traderów', headquarters: 'Seszele',
     employees: '1,000+', coins: '1500+', volume: '$2B+/dzien', users: '10M+', fee: '0%',
-    affiliate: 'https://promote.mexc.com/r/q2p1TSAUnh',
+    affiliate: getAffiliateLink('mexc'),
     description: 'MEXC to popularna giełda kryptowalut z obsługą UAH i ukraińskim interfejsem. Znana z największego wyboru altcoinów i zerowej prowizji na handel spotowy.',
     history: [
       { year: '2018', event: 'Założenie MEXC Global. Fokus na listowaniu nowych tokenów.' },
@@ -69,7 +70,7 @@ const EXCHANGES: Record<string, {
     name: 'Bybit', logo: '🔵', color: '#2F80ED', accentColor: '#56CCF2',
     founded: '2018', founder: 'Ben Zhou', headquarters: 'Dubaj, ZEA',
     employees: '2,500+', coins: '300+', volume: '$8B+/dzien', users: '30M+', fee: '0.1%',
-    affiliate: 'https://www.bybit.com/register?ref=CRYPTONAV',
+    affiliate: getAffiliateLink('bybit'),
     description: 'Bybit to wiodąca giełda kryptowalut dla aktywnych traderów. Założona w 2018 roku, specjalizuje się w derywatach i handlu z dźwignią do 100x.',
     history: [
       { year: '2018', event: 'Założenie Bybit. Fokus na derywatach i handlu z dźwignią.' },
@@ -97,7 +98,7 @@ const EXCHANGES: Record<string, {
     name: 'KuCoin', logo: '🟢', color: '#23AF91', accentColor: '#00C896',
     founded: '2017', founder: 'Michael Gan i Johnny Lyu', headquarters: 'Seszele',
     employees: '1,500+', coins: '700+', volume: '$1B+/dzien', users: '27M+', fee: '0.1%',
-    affiliate: 'https://www.kucoin.com/r/rf/CXEPY4S5',
+    affiliate: getAffiliateLink('kucoin'),
     description: 'KuCoin to Giełda Ludzi z najszerszym wyborem monet wśród topowych platform. Założona w 2017 roku, znana z wczesnego listowania obiecujących projektów.',
     history: [
       { year: '2017', event: 'Założenie KuCoin. Pozycjonowanie jako Giełda Ludzi.' },
@@ -125,7 +126,7 @@ const EXCHANGES: Record<string, {
     name: 'OKX', logo: '⚫', color: '#000000', accentColor: '#3772FF',
     founded: '2017', founder: 'Star Xu', headquarters: 'Seszele',
     employees: '3,000+', coins: '300+', volume: '$5B+/dzien', users: '50M+', fee: '0.08%',
-    affiliate: 'https://www.okx.com/join/CRYPTONAV',
+    affiliate: getAffiliateLink('okx'),
     description: 'OKX to jedna z największych giełd kryptowalut na świecie. Wyróżnia się najniższymi prowizjami na rynku, własnym portfelem Web3 i rozwiniętym ekosystemem DeFi.',
     history: [
       { year: '2017', event: 'Założenie OKEx (później przemianowane na OKX).' },

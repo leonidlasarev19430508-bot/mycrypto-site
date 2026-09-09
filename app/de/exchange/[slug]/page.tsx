@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import { getAffiliateLink } from '../../../lib/affiliates';
 
 const EXCHANGES: Record<string, {
   name: string; logo: string; color: string; accentColor: string;
@@ -14,7 +15,7 @@ const EXCHANGES: Record<string, {
     name: 'Binance', logo: '🟡', color: '#F0B90B', accentColor: '#F0B90B',
     founded: '2017', founder: 'Changpeng Zhao (CZ)', headquarters: 'Kaimaninseln',
     employees: '8,000+', coins: '350+', volume: '$15B+/Tag', users: '170M+', fee: '0.1%',
-    affiliate: 'https://www.binance.com/register?ref=Q5HR1JVW',
+    affiliate: getAffiliateLink('binance'),
     description: 'Binance ist die weltweit größte Kryptobörse nach Handelsvolumen. Gegründet 2017 von Changpeng Zhao, wurde sie in Rekordzeit zur dominierenden Plattform der Kryptobranche.',
     history: [
       { year: '2017', event: 'Gründung von Binance. Innerhalb von 6 Monaten wurde sie zur größten Börse nach Volumen.' },
@@ -42,7 +43,7 @@ const EXCHANGES: Record<string, {
     name: 'MEXC', logo: '🔷', color: '#2196F3', accentColor: '#00BCD4',
     founded: '2018', founder: 'Team erfahrener Trader', headquarters: 'Seychellen',
     employees: '1,000+', coins: '1500+', volume: '$2B+/Tag', users: '10M+', fee: '0%',
-    affiliate: 'https://promote.mexc.com/r/q2p1TSAUnh',
+    affiliate: getAffiliateLink('mexc'),
     description: 'MEXC ist eine beliebte Kryptobörse mit UAH-Unterstützung und ukrainischer Oberfläche. Bekannt für die größte Auswahl an Altcoins und null Provision beim Spot-Handel.',
     history: [
       { year: '2018', event: 'Gründung von MEXC Global. Fokus auf das Listing neuer Token.' },
@@ -69,7 +70,7 @@ const EXCHANGES: Record<string, {
     name: 'Bybit', logo: '🔵', color: '#2F80ED', accentColor: '#56CCF2',
     founded: '2018', founder: 'Ben Zhou', headquarters: 'Dubai, VAE',
     employees: '2,500+', coins: '300+', volume: '$8B+/Tag', users: '30M+', fee: '0.1%',
-    affiliate: 'https://www.bybit.com/register?ref=CRYPTONAV',
+    affiliate: getAffiliateLink('bybit'),
     description: 'Bybit ist eine führende Kryptobörse für aktive Trader. Gegründet 2018, spezialisiert auf Derivate und Handel mit bis zu 100x Hebel.',
     history: [
       { year: '2018', event: 'Gründung von Bybit. Fokus auf Derivate und Hebelhandel.' },
@@ -97,7 +98,7 @@ const EXCHANGES: Record<string, {
     name: 'KuCoin', logo: '🟢', color: '#23AF91', accentColor: '#00C896',
     founded: '2017', founder: 'Michael Gan und Johnny Lyu', headquarters: 'Seychellen',
     employees: '1,500+', coins: '700+', volume: '$1B+/Tag', users: '27M+', fee: '0.1%',
-    affiliate: 'https://www.kucoin.com/r/rf/CXEPY4S5',
+    affiliate: getAffiliateLink('kucoin'),
     description: 'KuCoin ist die Volksbörse mit der größten Coin-Auswahl unter den Top-Plattformen. Gegründet 2017, bekannt für frühzeitiges Listing vielversprechender Projekte.',
     history: [
       { year: '2017', event: 'Gründung von KuCoin. Positionierung als Volksbörse.' },
@@ -125,7 +126,7 @@ const EXCHANGES: Record<string, {
     name: 'OKX', logo: '⚫', color: '#000000', accentColor: '#3772FF',
     founded: '2017', founder: 'Star Xu', headquarters: 'Seychellen',
     employees: '3,000+', coins: '300+', volume: '$5B+/Tag', users: '50M+', fee: '0.08%',
-    affiliate: 'https://www.okx.com/join/CRYPTONAV',
+    affiliate: getAffiliateLink('okx'),
     description: 'OKX ist eine der größten Kryptobörsen der Welt. Zeichnet sich durch die niedrigsten Gebühren auf dem Markt, eine eigene Web3-Wallet und ein entwickeltes DeFi-Ökosystem aus.',
     history: [
       { year: '2017', event: 'Gründung von OKEx (später in OKX umbenannt).' },

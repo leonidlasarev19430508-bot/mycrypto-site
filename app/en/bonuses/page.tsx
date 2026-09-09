@@ -1,5 +1,6 @@
 'use client';
 import { ExchangeModal, useExchangeModal } from '../../components/ExchangeModal';
+import { getAffiliateLink } from '../../lib/affiliates';
 
 const EXCHANGES = [
   {
@@ -9,7 +10,7 @@ const EXCHANGES = [
     conditions: ['KYC Verification', 'First deposit from $50', 'Trading volume from $100'],
     fee: '0.1%', feeDiscount: '-25% with BNB', rating: 4.8,
     badge: '🏆 Best Choice', badgeColor: 'bg-yellow-500',
-    affiliate: 'https://www.binance.com/register?ref=Q5HR1JVW',
+    affiliate: getAffiliateLink('binance'),
     pros: ['Highest liquidity', 'Lowest fees', '350+ coins', 'English support'],
     color: 'border-yellow-400',
   },
@@ -20,7 +21,7 @@ const EXCHANGES = [
     conditions: ['Register via link', 'Deposit from $100', 'Futures trading'],
     fee: '0.1%', feeDiscount: '0.02% for makers', rating: 4.6,
     badge: '⚡ For Traders', badgeColor: 'bg-blue-600',
-    affiliate: 'https://www.bybit.com/register?ref=CRYPTONAV',
+    affiliate: getAffiliateLink('bybit'),
     pros: ['Large bonuses', 'Up to 100x leverage', 'Copy trading', 'High liquidity'],
     color: 'border-blue-300',
   },
@@ -31,7 +32,7 @@ const EXCHANGES = [
     conditions: ['Register via link', 'KYC Verification', 'First deposit'],
     fee: '0.08%', feeDiscount: 'Lowest on the market', rating: 4.5,
     badge: '🌐 Web3 Platform', badgeColor: 'bg-gray-700',
-    affiliate: 'https://www.okx.com/join/CRYPTONAV',
+    affiliate: getAffiliateLink('okx'),
     pros: ['Lowest fees', 'Web3 wallet', 'Staking up to 20%', 'NFT marketplace'],
     color: 'border-gray-400',
   },
@@ -42,7 +43,7 @@ const EXCHANGES = [
     conditions: ['Register via link', 'KYC Verification', 'First deposit from $50'],
     fee: '0.1%', feeDiscount: 'VIP discounts available', rating: 4.4,
     badge: '🌱 700+ coins', badgeColor: 'bg-green-600',
-    affiliate: 'https://www.kucoin.com/r/rf/CXEPY4S5',
+    affiliate: getAffiliateLink('kucoin'),
     pros: ['700+ coins', 'Staking rewards', 'Web3 integration', 'Low fees'],
     color: 'border-green-400',
   },

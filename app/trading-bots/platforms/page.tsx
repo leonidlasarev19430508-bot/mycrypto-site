@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { getAffiliateLink } from '../../lib/affiliates';
 
 export const metadata: Metadata = {
   title: 'Де запустити торгового бота: огляд платформ 2025 | CryptoNavigator',
@@ -33,10 +34,10 @@ export default function PlatformsPage() {
           </tr>
         </thead>
         <tbody>
-          <tr className="align-top border-t"><td className="py-2">Binance</td><td className="py-2">DCA та Grid</td><td className="py-2">Безкоштовно — <a href="https://www.binance.com/en/register?ref=Q5HR1JVW" rel="sponsored noopener noreferrer" className="text-orange-600">реф</a></td></tr>
-          <tr className="align-top border-t"><td className="py-2">Bybit</td><td className="py-2">DCA, Grid, Martingale</td><td className="py-2">Зручний інтерфейс — <a href="https://www.bybit.com/register?ref=CRYPTONAV" rel="sponsored noopener noreferrer" className="text-orange-600">реф</a></td></tr>
-          <tr className="align-top border-t"><td className="py-2">OKX</td><td className="py-2">Grid, DCA, Arbitrage</td><td className="py-2"><a href="https://www.okx.com/join/CRYPTONAV" rel="sponsored noopener noreferrer" className="text-orange-600">реф</a></td></tr>
-          <tr className="align-top border-t"><td className="py-2">KuCoin</td><td className="py-2">DCA і Grid</td><td className="py-2"><a href="https://www.kucoin.com/rf/CXEPY4S5" rel="sponsored noopener noreferrer" className="text-orange-600">реф</a></td></tr>
+          <tr className="align-top border-t"><td className="py-2">Binance</td><td className="py-2">DCA та Grid</td><td className="py-2">Безкоштовно — <a href={getAffiliateLink('binance')} rel="sponsored noopener noreferrer" className="text-orange-600">реф</a></td></tr>
+          <tr className="align-top border-t"><td className="py-2">Bybit</td><td className="py-2">DCA, Grid, Martingale</td><td className="py-2">Зручний інтерфейс — <a href={getAffiliateLink('bybit')} rel="sponsored noopener noreferrer" className="text-orange-600">реф</a></td></tr>
+          <tr className="align-top border-t"><td className="py-2">OKX</td><td className="py-2">Grid, DCA, Arbitrage</td><td className="py-2"><a href={getAffiliateLink('okx')} rel="sponsored noopener noreferrer" className="text-orange-600">реф</a></td></tr>
+          <tr className="align-top border-t"><td className="py-2">KuCoin</td><td className="py-2">DCA і Grid</td><td className="py-2"><a href={getAffiliateLink('kucoin')} rel="sponsored noopener noreferrer" className="text-orange-600">реф</a></td></tr>
           <tr className="align-top border-t"><td className="py-2">3Commas</td><td className="py-2">Сторонній сервіс</td><td className="py-2">20+ бірж, підписка</td></tr>
           <tr className="align-top border-t"><td className="py-2">Pionex</td><td className="py-2">Вбудовані боти</td><td className="py-2">16 безкоштовних ботів</td></tr>
         </tbody>

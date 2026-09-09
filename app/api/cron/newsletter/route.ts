@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 import { Resend } from 'resend';
 import pool from '@/app/lib/db';
+import { getAffiliateLink } from '@/app/lib/affiliates';
 
 export async function GET(request: Request) {
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -55,8 +56,8 @@ export async function GET(request: Request) {
   </div>
   <div style="background:#eff6ff;padding:24px;text-align:center;border-left:4px solid #3b82f6;">
     <p style="color:#1e40af;font-weight:bold;margin:0 0 16px;">Готовий діяти?</p>
-    <a href="https://www.binance.com/register?ref=GRO_28502_BIO0R" style="background:#f97316;color:white;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block;margin:4px;">Binance →</a>
-    <a href="https://whitebit.com/referral/54626c3b-5240-4d39-9784-8e3eda5736de" style="background:#2563eb;color:white;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block;margin:4px;">WhiteBIT →</a>
+    <a href="${getAffiliateLink('binance')}" style="background:#f97316;color:white;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block;margin:4px;">Binance →</a>
+    <a href="${getAffiliateLink('whitebit')}" style="background:#2563eb;color:white;padding:12px 32px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block;margin:4px;">WhiteBIT →</a>
   </div>
   <div style="background:#f9fafb;border-radius:0 0 16px 16px;padding:20px 24px;text-align:center;">
     <p style="color:#9ca3af;font-size:12px;margin:0;">© 2026 CryptoNavigator • <a href="https://cryptotop.chat" style="color:#6b7280;">cryptotop.chat</a></p>

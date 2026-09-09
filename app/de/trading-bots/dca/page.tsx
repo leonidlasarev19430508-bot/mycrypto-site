@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { getAffiliateLink } from '../../../lib/affiliates';
 
 export const metadata: Metadata = {
   title: 'DCA-Strategie — Stressfrei kaufen | CryptoNavigator',
@@ -92,7 +93,7 @@ export default function DcaPageDe() {
       </div>
 
       <p className="mb-4">Binance und Bybit haben kostenlose eingebaute DCA-Bots. Einfach den Betrag, Vermögenswert und die Kaufhäufigkeit angeben.</p>
-      <p className="mb-4">Plattformen: <a href="https://www.binance.com/en/register?ref=Q5HR1JVW" rel="sponsored noopener noreferrer" className="text-orange-600">Binance</a>, <a href="https://www.bybit.com/register?ref=CRYPTONAV" rel="sponsored noopener noreferrer" className="text-orange-600">Bybit</a>.</p>
+      <p className="mb-4">Plattformen: <a href={getAffiliateLink('binance')} rel="sponsored noopener noreferrer" className="text-orange-600">Binance</a>, <a href={getAffiliateLink('bybit')} rel="sponsored noopener noreferrer" className="text-orange-600">Bybit</a>.</p>
 
       <div className="bg-orange-50 border border-orange-200 rounded-2xl p-6">
         <p className="font-bold text-orange-800 mb-2">Trainiere DCA im Simulator</p>

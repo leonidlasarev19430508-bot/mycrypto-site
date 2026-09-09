@@ -1,6 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import { getAffiliateLink } from '../lib/affiliates';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -117,8 +118,8 @@ const BUBBLE_STYLE = {
 function ExchangeCTA({ type, locale }: { type: 'binance' | 'whitebit' | 'both'; locale: string }) {
   const t = UI_TEXT[locale as keyof typeof UI_TEXT] || UI_TEXT.uk;
   const EXCHANGES = {
-    binance: { name: 'Binance', desc: t.exchangeDesc.binance, color: 'from-yellow-400 to-orange-500', url: 'https://www.binance.com/register?ref=GRO_28502_BIO0R', emoji: '🟡' },
-    whitebit: { name: 'WhiteBIT', desc: t.exchangeDesc.whitebit, color: 'from-blue-500 to-blue-700', url: 'https://whitebit.com/referral/54626c3b-5240-4d39-9784-8e3eda5736de', emoji: '🔵' },
+    binance: { name: 'Binance', desc: t.exchangeDesc.binance, color: 'from-yellow-400 to-orange-500', url: getAffiliateLink('binance'), emoji: '🟡' },
+    whitebit: { name: 'WhiteBIT', desc: t.exchangeDesc.whitebit, color: 'from-blue-500 to-blue-700', url: getAffiliateLink('whitebit'), emoji: '🔵' },
   };
   const items = type === 'both' ? [EXCHANGES.binance, EXCHANGES.whitebit] : [EXCHANGES[type]];
   return (

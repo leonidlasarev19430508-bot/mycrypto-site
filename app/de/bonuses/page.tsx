@@ -1,5 +1,6 @@
 'use client';
 import { ExchangeModal, useExchangeModal } from '../../components/ExchangeModal';
+import { getAffiliateLink } from '../../lib/affiliates';
 
 const EXCHANGES = [
   {
@@ -9,7 +10,7 @@ const EXCHANGES = [
     conditions: ['KYC-Verifizierung', 'Erste Einzahlung ab $50', 'Handelsvolumen ab $100'],
     fee: '0.1%', feeDiscount: '-25% mit BNB', rating: 4.8,
     badge: '🏆 Beste Wahl', badgeColor: 'bg-yellow-500',
-    affiliate: 'https://www.binance.com/register?ref=Q5HR1JVW',
+    affiliate: getAffiliateLink('binance'),
     pros: ['Höchste Liquidität', 'Niedrigste Gebühren', '350+ Coins', 'Deutsche Oberfläche'],
     color: 'border-yellow-400',
   },
@@ -20,7 +21,7 @@ const EXCHANGES = [
     conditions: ['Registrierung über Link', 'Einzahlung ab $100', 'Futures-Handel'],
     fee: '0.1%', feeDiscount: '0.02% für Maker', rating: 4.6,
     badge: '⚡ Für Trader', badgeColor: 'bg-blue-600',
-    affiliate: 'https://www.bybit.com/register?ref=CRYPTONAV',
+    affiliate: getAffiliateLink('bybit'),
     pros: ['Große Boni', 'Hebel bis 100x', 'Copy Trading', 'Hohe Liquidität'],
     color: 'border-blue-300',
   },
@@ -31,7 +32,7 @@ const EXCHANGES = [
     conditions: ['Registrierung über Link', 'KYC-Verifizierung', 'Erste Einzahlung'],
     fee: '0.08%', feeDiscount: 'Niedrigste auf dem Markt', rating: 4.5,
     badge: '🌐 Web3 Plattform', badgeColor: 'bg-gray-700',
-    affiliate: 'https://www.okx.com/join/CRYPTONAV',
+    affiliate: getAffiliateLink('okx'),
     pros: ['Niedrigste Gebühren', 'Web3 Wallet', 'Staking bis 20%', 'NFT Marktplatz'],
     color: 'border-gray-400',
   },
@@ -42,7 +43,7 @@ const EXCHANGES = [
     conditions: ['Registrierung über Link', 'KYC-Verifizierung', 'Erste Einzahlung ab $50'],
     fee: '0.1%', feeDiscount: 'VIP-Rabatte verfügbar', rating: 4.4,
     badge: '🌱 700+ Coins', badgeColor: 'bg-green-600',
-    affiliate: 'https://www.kucoin.com/r/rf/CXEPY4S5',
+    affiliate: getAffiliateLink('kucoin'),
     pros: ['700+ Coins', 'Staking-Belohnungen', 'Web3 Integration', 'Niedrige Gebühren'],
     color: 'border-green-400',
   },
