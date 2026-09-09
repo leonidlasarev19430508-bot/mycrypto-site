@@ -88,29 +88,109 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Popular Exchanges */}
         <section className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">🏦 Популярні біржі</h2>
-          <CryptoPrices />
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 mt-8">
-            {OFFERS.map(offer => (
-              <div key={offer.id} className="p-5 border-2 rounded-2xl bg-white shadow-sm">
-                {offer.badge && <span className="block text-center bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full mb-2">{offer.badge}</span>}
-                <Link href={`/exchange/${offer.id}`} className="text-lg font-bold text-gray-900 hover:text-orange-500 block">{offer.name}</Link>
-                <p className="text-gray-500 text-sm mt-1">{offer.description}</p>
-                <ul className="mt-2.5 space-y-1">
-                  {offer.features.map(f => <li key={f} className="text-sm text-gray-500"><span className="text-green-500">✓</span> {f}</li>)}
-                </ul>
-                <a href={offer.affiliate} target="_blank" rel="sponsored noopener noreferrer" className="mt-4 block bg-orange-500 text-white text-center px-4 py-2 rounded-xl hover:bg-orange-600 text-sm font-semibold">
-                  {t.exchanges.cta} {offer.name}
-                </a>
-                <Link href={`/exchange/${offer.id}`} className="mt-2 text-xs text-gray-400 hover:text-orange-500 block text-center">Детальний огляд →</Link>
+          <h2 className="text-2xl font-black text-center text-gray-900 mb-6">
+            Популярні біржі
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Binance */}
+            <div className="bg-white border-2 border-orange-500 rounded-2xl p-5 shadow-md">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-3xl">🟡</span>
+                <h3 className="font-black text-lg">Binance</h3>
               </div>
-            ))}
+              <p className="text-sm text-gray-600 mb-3">Найбільша біржа світу з низькими комісіями 0.1%</p>
+              <ul className="text-xs text-gray-500 space-y-1 mb-4">
+                <li>✓ Низькі комісії</li>
+                <li>✓ Швидка реєстрація</li>
+                <li>✓ Надійна платформа</li>
+              </ul>
+              <a href={getAffiliateLink('binance')} target="_blank" rel="noopener noreferrer"
+                className="block w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-center py-2 rounded-xl transition">
+                Почати торгівлю
+              </a>
+            </div>
+            
+            {/* MEXC */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-5 hover:border-orange-300 transition">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-3xl">🔷</span>
+                <h3 className="font-black text-lg">MEXC</h3>
+              </div>
+              <p className="text-sm text-gray-600 mb-3">Підтримка гривні UAH та 1500+ монет</p>
+              <ul className="text-xs text-gray-500 space-y-1 mb-4">
+                <li>✓ 0% комісія на спот</li>
+                <li>✓ Підтримка UAH</li>
+                <li>✓ 1500+ монет</li>
+              </ul>
+              <a href={getAffiliateLink('mexc')} target="_blank" rel="noopener noreferrer"
+                className="block w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-center py-2 rounded-xl transition">
+                Почати торгівлю
+              </a>
+            </div>
+            
+            {/* Bybit */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-5 hover:border-orange-300 transition">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-3xl">🔵</span>
+                <h3 className="font-black text-lg">Bybit</h3>
+              </div>
+              <p className="text-sm text-gray-600 mb-3">Ідеально для активної торгівлі з плечем до 100x</p>
+              <ul className="text-xs text-gray-500 space-y-1 mb-4">
+                <li>✓ Плече до 100x</li>
+                <li>✓ Copy trading</li>
+                <li>✓ 24/7 підтримка</li>
+              </ul>
+              <a href={getAffiliateLink('bybit')} target="_blank" rel="noopener noreferrer"
+                className="block w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-center py-2 rounded-xl transition">
+                Почати торгівлю
+              </a>
+            </div>
+            
+            {/* OKX */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-5 hover:border-orange-300 transition">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-3xl">⚫</span>
+                <h3 className="font-black text-lg">OKX</h3>
+              </div>
+              <p className="text-sm text-gray-600 mb-3">Найнижчі комісії 0.08% та Web3 гаманець</p>
+              <ul className="text-xs text-gray-500 space-y-1 mb-4">
+                <li>✓ Комісії 0.08%</li>
+                <li>✓ Web3 гаманець</li>
+                <li>✓ Стейкінг до 20%</li>
+              </ul>
+              <a href={getAffiliateLink('okx')} target="_blank" rel="noopener noreferrer"
+                className="block w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-center py-2 rounded-xl transition">
+                Почати торгівлю
+              </a>
+            </div>
           </div>
           <div className="text-center mt-8">
             <Link href="/coins" className="text-orange-500 hover:text-orange-600 font-bold">Дивитися всі криптовалюти →</Link>
           </div>
         </section>
+
+        {/* Live Prices */}
+        <div className="bg-gray-50 rounded-2xl p-6 mb-8">
+          <div className="grid grid-cols-3 gap-4 text-center">
+            <div>
+              <p className="text-sm text-gray-500 mb-1">Bitcoin</p>
+              <p className="text-xl font-black text-gray-900">$79,648</p>
+              <p className="text-xs text-green-600 font-bold">▲ 1.42%</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-500 mb-1">Ethereum</p>
+              <p className="text-xl font-black text-gray-900">$2,518.88</p>
+              <p className="text-xs text-green-600 font-bold">▲ 1.51%</p>
+            </div>
+            <div>
+              <p className="text-sm text-gray-500 mb-1">Solana</p>
+              <p className="text-xl font-black text-gray-900">$104.83</p>
+              <p className="text-xs text-green-600 font-bold">▲ 1.74%</p>
+            </div>
+          </div>
+        </div>
 
         <section className="mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">😱 Fear & Greed Index</h2>
