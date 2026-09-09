@@ -76,23 +76,15 @@ export default function HomePage() {
         <section className="mb-12 bg-gradient-to-br from-orange-50 to-yellow-50 border border-orange-200 rounded-2xl p-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">🚀 Безризиковий крипто-симулятор</h2>
           <p className="text-gray-600 mb-6">Торгуйте на реальних цінах без ризику втратити гроші. Ідеально для новачків.</p>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div>
-              <ul className="space-y-3 mb-6">
-                {['Реальні ціни з CoinGecko', 'Live та Replay режими', 'Віртуальний баланс $10,000', 'Історія угод'].map((f, i) => (
-                  <li key={i} className="flex items-center gap-3"><span className="text-green-500 text-xl">✓</span> {f}</li>
-                ))}
-              </ul>
-              <Link href="/simulator" className="inline-flex items-center px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl shadow-lg">Запустити симулятор →</Link>
-            </div>
-            <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-md">
-              <div className="aspect-video bg-gradient-to-r from-gray-100 to-gray-200 rounded-lg flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-5xl mb-2">📈</div>
-                  <p className="text-gray-700 font-medium">Графік цін у реальному часі</p>
-                </div>
-              </div>
-            </div>
+          <div>
+            <ul className="space-y-3 mb-6">
+              {['Реальні ціни з CoinGecko', 'Live та Replay режими', 'Віртуальний баланс $10,000', 'Історія угод'].map((f, i) => (
+                <li key={i} className="flex items-center gap-3"><span className="text-green-500 text-xl">✓</span> {f}</li>
+              ))}
+            </ul>
+            <Link href="/simulator" className="inline-flex items-center px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl shadow-lg">
+              Запустити симулятор →
+            </Link>
           </div>
         </section>
 
