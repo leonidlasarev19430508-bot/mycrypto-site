@@ -101,7 +101,7 @@ export default function HomePage() {
                 <h3 className="font-black text-lg">Binance</h3>
               </div>
               <p className="text-sm text-gray-600 mb-3">Найбільша біржа світу з низькими комісіями 0.1%</p>
-              <ul className="text-xs text-gray-500 space-y-1 mb-4">
+              <ul className="text-xs text-gray-600 space-y-1 mb-4">
                 <li>✓ Низькі комісії</li>
                 <li>✓ Швидка реєстрація</li>
                 <li>✓ Надійна платформа</li>
@@ -119,7 +119,7 @@ export default function HomePage() {
                 <h3 className="font-black text-lg">MEXC</h3>
               </div>
               <p className="text-sm text-gray-600 mb-3">Підтримка гривні UAH та 1500+ монет</p>
-              <ul className="text-xs text-gray-500 space-y-1 mb-4">
+              <ul className="text-xs text-gray-600 space-y-1 mb-4">
                 <li>✓ 0% комісія на спот</li>
                 <li>✓ Підтримка UAH</li>
                 <li>✓ 1500+ монет</li>
@@ -137,7 +137,7 @@ export default function HomePage() {
                 <h3 className="font-black text-lg">Bybit</h3>
               </div>
               <p className="text-sm text-gray-600 mb-3">Ідеально для активної торгівлі з плечем до 100x</p>
-              <ul className="text-xs text-gray-500 space-y-1 mb-4">
+              <ul className="text-xs text-gray-600 space-y-1 mb-4">
                 <li>✓ Плече до 100x</li>
                 <li>✓ Copy trading</li>
                 <li>✓ 24/7 підтримка</li>
@@ -155,7 +155,7 @@ export default function HomePage() {
                 <h3 className="font-black text-lg">OKX</h3>
               </div>
               <p className="text-sm text-gray-600 mb-3">Найнижчі комісії 0.08% та Web3 гаманець</p>
-              <ul className="text-xs text-gray-500 space-y-1 mb-4">
+              <ul className="text-xs text-gray-600 space-y-1 mb-4">
                 <li>✓ Комісії 0.08%</li>
                 <li>✓ Web3 гаманець</li>
                 <li>✓ Стейкінг до 20%</li>
@@ -175,17 +175,17 @@ export default function HomePage() {
         <div className="bg-gray-50 rounded-2xl p-6 mb-8">
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
-              <p className="text-sm text-gray-500 mb-1">Bitcoin</p>
+              <p className="text-sm text-gray-600 mb-1">Bitcoin</p>
               <p className="text-xl font-black text-gray-900">$79,648</p>
               <p className="text-xs text-green-600 font-bold">▲ 1.42%</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500 mb-1">Ethereum</p>
+              <p className="text-sm text-gray-600 mb-1">Ethereum</p>
               <p className="text-xl font-black text-gray-900">$2,518.88</p>
               <p className="text-xs text-green-600 font-bold">▲ 1.51%</p>
             </div>
             <div>
-              <p className="text-sm text-gray-500 mb-1">Solana</p>
+              <p className="text-sm text-gray-600 mb-1">Solana</p>
               <p className="text-xl font-black text-gray-900">$104.83</p>
               <p className="text-xs text-green-600 font-bold">▲ 1.74%</p>
             </div>
@@ -252,4 +252,5 @@ export default function HomePage() {
     </>
   );
 }
+
 

@@ -144,9 +144,10 @@ export default function AssistantPage() {
         </div>
       </div>
 
-      <div className="mt-4 text-center text-sm text-gray-500">
+      <div className="mt-4 text-center text-sm text-gray-600">
         <p>{t.tip}</p>
       </div>
     </div>
   );
 }
+

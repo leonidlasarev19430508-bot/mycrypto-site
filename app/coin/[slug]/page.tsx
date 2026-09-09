@@ -153,8 +153,8 @@ export default async function CoinPage(props: PageProps) {
         <div>
           <div className="flex items-center gap-3">
             <h1 className="text-3xl font-black text-gray-900">{coin.name}</h1>
-            <span className="text-sm font-bold text-gray-400 uppercase bg-gray-100 px-2 py-0.5 rounded">{coin.symbol}</span>
-            {rank && <span className="text-xs text-gray-500 bg-gray-100 px-2 py-0.5 rounded">#{rank}</span>}
+            <span className="text-sm font-bold text-gray-500 uppercase bg-gray-100 px-2 py-0.5 rounded">{coin.symbol}</span>
+            {rank && <span className="text-xs text-gray-600 bg-gray-100 px-2 py-0.5 rounded">#{rank}</span>}
           </div>
           <div className="flex items-center gap-3 mt-1">
             <span className="text-3xl font-black text-gray-900">{fmtPrice(price)}</span>
@@ -178,7 +178,7 @@ export default async function CoinPage(props: PageProps) {
           { label: 'Макс. емісія', value: maxSupply ? `${(maxSupply / 1_000_000).toFixed(2)}M` : '∞' },
         ].map(({ label, value }) => (
           <div key={label} className="bg-gray-50 rounded-xl p-4">
-            <p className="text-xs text-gray-400 mb-1">{label}</p>
+            <p className="text-xs text-gray-500 mb-1">{label}</p>
             <p className="font-bold text-gray-900">{value}</p>
           </div>
         ))}

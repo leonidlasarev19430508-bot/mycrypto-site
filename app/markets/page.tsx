@@ -79,7 +79,7 @@ export default function MarketsPage() {
         <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-3">
           {t.markets.title}
         </h1>
-        <p className="text-gray-500 text-lg">
+        <p className="text-gray-600 text-lg">
           {t.markets.subtitle}
         </p>
       </div>
@@ -90,17 +90,17 @@ export default function MarketsPage() {
           <div onClick={() => setFilter('bullish')}
             className="bg-green-50 border border-green-100 rounded-2xl p-4 text-center cursor-pointer hover:shadow-md transition">
             <p className="text-3xl font-black text-green-600">{bullish}</p>
-            <p className="text-sm text-gray-500 mt-1">{t.markets.stats.bullish}</p>
+            <p className="text-sm text-gray-600 mt-1">{t.markets.stats.bullish}</p>
           </div>
           <div onClick={() => setFilter('neutral')}
             className="bg-gray-50 border border-gray-100 rounded-2xl p-4 text-center cursor-pointer hover:shadow-md transition">
             <p className="text-3xl font-black text-gray-600">{neutral}</p>
-            <p className="text-sm text-gray-500 mt-1">{t.markets.stats.neutral}</p>
+            <p className="text-sm text-gray-600 mt-1">{t.markets.stats.neutral}</p>
           </div>
           <div onClick={() => setFilter('bearish')}
             className="bg-red-50 border border-red-100 rounded-2xl p-4 text-center cursor-pointer hover:shadow-md transition">
             <p className="text-3xl font-black text-red-600">{bearish}</p>
-            <p className="text-sm text-gray-500 mt-1">{t.markets.stats.bearish}</p>
+            <p className="text-sm text-gray-600 mt-1">{t.markets.stats.bearish}</p>
           </div>
         </div>
       )}
@@ -135,7 +135,7 @@ export default function MarketsPage() {
       {loading && (
         <div className="text-center py-20">
           <div className="inline-block w-10 h-10 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mb-4" />
-          <p className="text-gray-500">{t.markets.loading}</p>
+          <p className="text-gray-600">{t.markets.loading}</p>
         </div>
       )}
 
@@ -156,7 +156,7 @@ export default function MarketsPage() {
                 <div className="flex items-start justify-between mb-3">
                   <div>
                     <h2 className="font-black text-gray-900 text-lg">{coin.coin_name}</h2>
-                    <p className="text-xs text-gray-400 uppercase">{coin.coin_slug}</p>
+                    <p className="text-xs text-gray-600 uppercase">{coin.coin_slug}</p>
                   </div>
                   <span className={`text-xs font-bold px-2 py-1 rounded-lg ${rec.bg} ${rec.color}`}>
                     {rec.label}
@@ -166,7 +166,7 @@ export default function MarketsPage() {
                 {/* Sentiment */}
                 <div className={`${sentiment.bg} rounded-xl p-3 mb-3`}>
                   <p className={`text-sm font-bold ${sentiment.color}`}>{sentiment.label}</p>
-                  <p className="text-xs text-gray-400 mt-0.5">
+                  <p className="text-xs text-gray-600 mt-0.5">
                     Score: {coin.sentiment_score > 0 ? '+' : ''}{coin.sentiment_score}
                   </p>
                 </div>
@@ -178,7 +178,7 @@ export default function MarketsPage() {
                     <div className="bg-gray-200" style={{ width: `${neutralPercent}%` }} />
                     <div className="bg-red-400" style={{ width: `${negativePercent}%` }} />
                   </div>
-                  <div className="flex justify-between text-xs text-gray-400 mt-1">
+                  <div className="flex justify-between text-xs text-gray-600 mt-1">
                     <span>📈 {positivePercent}%</span>
                     <span>⚖️ {neutralPercent}%</span>
                     <span>📉 {negativePercent}%</span>
@@ -186,7 +186,7 @@ export default function MarketsPage() {
                 </div>
 
                 {/* Footer */}
-                <div className="flex justify-between items-center text-xs text-gray-400">
+                <div className="flex justify-between items-center text-xs text-gray-600">
                   <span>📰 {coin.total_news} {t.markets.card_footer}</span>
                   <span>{timeAgo(coin.latest_news_at)}</span>
                 </div>
@@ -197,15 +197,18 @@ export default function MarketsPage() {
       )}
 
       {!loading && filtered.length === 0 && (
-        <div className="text-center py-20 text-gray-400">
+        <div className="text-center py-20 text-gray-600">
           <p className="text-3xl mb-2">🔍</p>
           <p>{t.markets.no_results}</p>
         </div>
       )}
 
-      <p className="text-center text-xs text-gray-400 mt-8">
+      <p className="text-center text-xs text-gray-600 mt-8">
         {t.markets.footer}
       </p>
     </main>
   );
 }
+
+
+

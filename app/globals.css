@@ -3,6 +3,13 @@
 :root {
   --background: #ffffff;
   --foreground: #111111;
+  /* Typography colors */
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --text-muted: #4b5563;
+  --text-on-dark: #ffffff;
+  --border-subtle: #e5e7eb;
+  --brand-primary: #f59e0b;
 }
 
 @theme inline {
@@ -27,27 +34,6 @@ p {
   color: #1f2937;
 }
 
-/* Підписи, мітки, допоміжний текст */
-.text-gray-400 {
-  color: #4b5563 !important;
-}
-
-.text-gray-500 {
-  color: #374151 !important;
-}
-
-/* Кнопки з класами quick-date і подібні */
-button.text-gray-500 {
-  color: #374151 !important;
-}
-
-/* Посилання в картках */
-a.text-gray-400,
-p.text-gray-400,
-span.text-gray-400 {
-  color: #4b5563 !important;
-}
-
 /* Підписи форм */
 label {
   color: #1f2937;
@@ -56,15 +42,6 @@ label {
 /* Placeholder — трохи світліший але читабельний */
 input::placeholder {
   color: #6b7280;
-}
-
-/* Малий текст — мінімум читабельний */
-.text-xs {
-  color: #374151;
-}
-
-.text-sm {
-  color: #1f2937;
 }
 
 /* Виключення — білий текст на кольорових кнопках не чіпаємо */

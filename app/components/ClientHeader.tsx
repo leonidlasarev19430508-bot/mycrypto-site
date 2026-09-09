@@ -105,25 +105,31 @@ function ClientHeaderInner() {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-4 flex-wrap">
-          {navLinks.map(link => (
-            <Link key={link.href} href={link.href}
-              className={`text-sm font-medium whitespace-nowrap transition-colors ${
-                link.highlight
-                  ? 'text-orange-500 font-bold hover:text-orange-600'
-                  : 'text-gray-700 hover:text-orange-500'
-              }`}>
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map(link => {
+            const isActive = pathname === link.href;
+            const isHighlight = link.highlight;
+            return (
+              <Link key={link.href} href={link.href}
+                className={`text-sm font-medium whitespace-nowrap transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 rounded ${
+                  isActive
+                    ? 'text-orange-600 font-semibold'
+                    : isHighlight
+                    ? 'text-orange-500 font-bold hover:text-orange-600'
+                    : 'text-gray-800 hover:text-orange-500'
+                }`}>
+                {link.label}
+              </Link>
+            );
+          })}
 
           {/* Language switcher */}
           <div className="flex gap-1 ml-2 border-l border-gray-200 pl-3">
             {LOCALES.map(l => (
               <Link key={l} href={getSafeSwitchPath(l, currentPage)}
-                className={`text-xs px-2 py-1 rounded transition-colors ${
+                className={`text-xs px-2 py-1 rounded transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 ${
                   locale === l
                     ? 'text-white font-bold bg-orange-500'
-                    : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
                 }`}>
                 {LOCALE_LABELS[l]}
               </Link>
@@ -136,17 +142,17 @@ function ClientHeaderInner() {
           <div className="flex gap-1">
             {LOCALES.map(l => (
               <Link key={l} href={getSafeSwitchPath(l, currentPage)}
-                className={`text-xs px-1.5 py-1 rounded transition-colors ${
+                className={`text-xs px-1.5 py-1 rounded transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 ${
                   locale === l
                     ? 'text-white font-bold bg-orange-500'
-                    : 'text-gray-500 hover:text-gray-900'
+                    : 'text-gray-600 hover:text-gray-900'
                 }`}>
                 {l.toUpperCase()}
               </Link>
             ))}
           </div>
           <button onClick={() => setMenuOpen(v => !v)}
-            className="p-2 rounded hover:bg-gray-100 transition text-gray-700"
+            className="p-2 rounded hover:bg-gray-100 transition text-gray-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
             aria-label="Menu">
             {menuOpen ? (
               <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
@@ -165,15 +171,23 @@ function ClientHeaderInner() {
       {menuOpen && (
         <div className="md:hidden bg-white border-t border-gray-200 px-4 py-3">
           <nav className="grid grid-cols-2 gap-2">
-            {navLinks.map(link => (
-              <Link key={link.href} href={link.href}
-                onClick={() => setMenuOpen(false)}
-                className={`text-sm py-2 px-3 rounded-lg hover:bg-gray-100 transition font-medium ${
-                  link.highlight ? 'text-orange-500 font-bold' : 'text-gray-700'
-                }`}>
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map(link => {
+              const isActive = pathname === link.href;
+              const isHighlight = link.highlight;
+              return (
+                <Link key={link.href} href={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className={`text-sm py-2 px-3 rounded-lg hover:bg-gray-100 transition font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 ${
+                    isActive
+                      ? 'text-orange-600 font-semibold'
+                      : isHighlight
+                      ? 'text-orange-500 font-bold'
+                      : 'text-gray-800'
+                  }`}>
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
       )}

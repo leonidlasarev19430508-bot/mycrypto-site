@@ -414,7 +414,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div>
             <h1 className="text-xl md:text-2xl font-black text-gray-900">CryptoNavigator Simulator</h1>
-            <p className="text-gray-500 text-sm mt-1">{t.subtitle}</p>
+            <p className="text-gray-600 text-sm mt-1">{t.subtitle}</p>
           </div>
           <button onClick={reset} className="text-sm text-gray-700 hover:text-red-500 underline transition font-semibold">{t.reset}</button>
         </div>
@@ -423,7 +423,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
       <div className="mb-4 border border-gray-200 rounded-xl overflow-hidden">
         <button onClick={() => setHowOpen(!howOpen)} className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition text-left">
           <span className="font-semibold text-gray-800 text-sm">{t.howTitle}</span>
-          <span className="text-gray-400">{howOpen ? '▲' : '▼'}</span>
+          <span className="text-gray-600">{howOpen ? '▲' : '▼'}</span>
         </button>
         {howOpen && (
           <div className="px-4 py-4 bg-white grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -461,7 +461,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
                 </button>
               );
             })}
-            {loading && mode === 'live' && <span className="text-xs text-gray-400 self-center">{t.loading}</span>}
+            {loading && mode === 'live' && <span className="text-xs text-gray-600 self-center">{t.loading}</span>}
           </div>
 
           <div className="flex gap-2 mb-3">
@@ -478,7 +478,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
               {t.replayMode}
             </button>
             {mode === 'replay' && (
-              <span className="text-xs text-gray-500 self-center italic">{t.replayHint}</span>
+              <span className="text-xs text-gray-600 self-center italic">{t.replayHint}</span>
             )}
           </div>
 
@@ -501,7 +501,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
         <div className="space-y-4">
           <div className="bg-white border border-gray-200 rounded-xl p-4">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-sm text-gray-500">{selectedCoin.name}</span>
+              <span className="text-sm text-gray-600">{selectedCoin.name}</span>
               <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
                 mode === 'replay'
                   ? 'bg-orange-100 text-orange-700'
@@ -518,14 +518,14 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
           <div className="bg-white border border-gray-200 rounded-xl p-4">
             <h3 className="font-black text-gray-900 mb-3 text-sm">{t.openTrade}</h3>
             <div className="flex gap-1 mb-3 bg-gray-100 p-1 rounded-lg">
-              <button onClick={() => setAmountType('usd')} className={`flex-1 py-1.5 rounded-md text-xs font-bold transition ${amountType === 'usd' ? 'bg-white shadow text-gray-900' : 'text-gray-500'}`}>{t.inDollars}</button>
-              <button onClick={() => setAmountType('coin')} className={`flex-1 py-1.5 rounded-md text-xs font-bold transition ${amountType === 'coin' ? 'bg-white shadow text-gray-900' : 'text-gray-500'}`}>{t.inCoins}</button>
+              <button onClick={() => setAmountType('usd')} className={`flex-1 py-1.5 rounded-md text-xs font-bold transition ${amountType === 'usd' ? 'bg-white shadow text-gray-900' : 'text-gray-600'}`}>{t.inDollars}</button>
+              <button onClick={() => setAmountType('coin')} className={`flex-1 py-1.5 rounded-md text-xs font-bold transition ${amountType === 'coin' ? 'bg-white shadow text-gray-900' : 'text-gray-600'}`}>{t.inCoins}</button>
             </div>
             <div className="mb-3">
               <input type="number" value={amount} onChange={e => setAmount(e.target.value)}
                 placeholder={amountType === 'usd' ? t.amountUsd : `${selectedCoin.symbol}...`}
                 className="w-full border border-gray-200 rounded-xl px-3 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400" />
-              {usdEquivalent !== null && usdEquivalent > 0 && <p className="text-xs text-gray-500 mt-1">≈ ${usdEquivalent.toFixed(2)}</p>}
+              {usdEquivalent !== null && usdEquivalent > 0 && <p className="text-xs text-gray-600 mt-1">≈ ${usdEquivalent.toFixed(2)}</p>}
             </div>
             <div className="flex gap-1 mb-4">
               {(amountType === 'usd' ? [100, 500, 1000, 2000] : [0.001, 0.01, 0.1]).map(v => (
@@ -549,30 +549,30 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
 
       <div className="mt-3 grid grid-cols-4 gap-2">
         <div className="bg-white border border-gray-100 rounded-lg px-3 py-2 shadow-sm">
-          <p className="text-xs text-gray-500">{t.freeBalance}</p>
+          <p className="text-xs text-gray-600">{t.freeBalance}</p>
           <p className="text-sm font-black text-gray-900">${balance.toFixed(0)}</p>
         </div>
         <div className="bg-white border border-gray-100 rounded-lg px-3 py-2 shadow-sm">
-          <p className="text-xs text-gray-500">{t.portfolio}</p>
+          <p className="text-xs text-gray-600">{t.portfolio}</p>
           <p className="text-sm font-black text-gray-900">${totalPortfolio.toFixed(0)}</p>
           <p className={`text-xs font-bold ${totalReturn >= 0 ? 'text-green-500' : 'text-red-500'}`}>{totalReturn >= 0 ? '+' : ''}{totalReturn.toFixed(2)}%</p>
         </div>
         <div className="bg-white border border-gray-100 rounded-lg px-3 py-2 shadow-sm">
-          <p className="text-xs text-gray-500">{t.openPos}</p>
+          <p className="text-xs text-gray-600">{t.openPos}</p>
           <p className="text-sm font-black text-gray-900">{positions.length}</p>
         </div>
         <div className={`rounded-lg px-3 py-2 shadow-sm border ${totalPnl >= 0 ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
-          <p className="text-xs text-gray-500">{t.floatPnl}</p>
+          <p className="text-xs text-gray-600">{t.floatPnl}</p>
           <p className={`text-sm font-black ${totalPnl >= 0 ? 'text-green-600' : 'text-red-600'}`}>{totalPnl >= 0 ? '+' : ''}${totalPnl.toFixed(2)}</p>
         </div>
       </div>
 
       <div className="mt-4 bg-white border border-gray-100 rounded-xl overflow-hidden">
         <div className="flex border-b border-gray-100">
-          <button onClick={() => setTab('positions')} className={`flex-1 py-3 font-bold text-sm transition ${tab === 'positions' ? 'bg-orange-50 text-orange-600 border-b-2 border-orange-500' : 'text-gray-500 hover:bg-gray-50'}`}>
+          <button onClick={() => setTab('positions')} className={`flex-1 py-3 font-bold text-sm transition ${tab === 'positions' ? 'bg-orange-50 text-orange-600 border-b-2 border-orange-500' : 'text-gray-600 hover:bg-gray-50'}`}>
             {t.posTab} ({positions.length})
           </button>
-          <button onClick={() => setTab('history')} className={`flex-1 py-3 font-bold text-sm transition ${tab === 'history' ? 'bg-orange-50 text-orange-600 border-b-2 border-orange-500' : 'text-gray-500 hover:bg-gray-50'}`}>
+          <button onClick={() => setTab('history')} className={`flex-1 py-3 font-bold text-sm transition ${tab === 'history' ? 'bg-orange-50 text-orange-600 border-b-2 border-orange-500' : 'text-gray-600 hover:bg-gray-50'}`}>
             {t.histTab} ({history.length})
           </button>
         </div>
@@ -581,8 +581,8 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
             positions.length === 0 ? (
               <div className="text-center py-10">
                 <p className="text-4xl mb-2">📊</p>
-                <p className="text-gray-500 font-semibold">{t.noPosTitle}</p>
-                <p className="text-gray-400 text-sm mt-1">{t.noPosHint}</p>
+                <p className="text-gray-600 font-semibold">{t.noPosTitle}</p>
+                <p className="text-gray-600 text-sm mt-1">{t.noPosHint}</p>
               </div>
             ) : (
               <div className="space-y-3">
@@ -599,7 +599,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
                               {pos.type === 'buy' ? '📈 LONG' : '📉 SHORT'}
                             </span>
                             <span className="font-black text-gray-900">{pos.symbol}</span>
-                            <span className="text-xs text-gray-400">{pos.openedAt}</span>
+                            <span className="text-xs text-gray-600">{pos.openedAt}</span>
                           </div>
                           <div className="grid grid-cols-3 gap-2 text-xs">
                             <div><p className="text-gray-600 font-semibold">{t.size}</p><p className="font-bold text-gray-900">${pos.usdAmount.toFixed(0)}</p></div>
@@ -633,8 +633,8 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
               {history.length === 0 ? (
                 <div className="text-center py-10">
                   <p className="text-4xl mb-2">📋</p>
-                  <p className="text-gray-500 font-semibold">{t.noHistTitle}</p>
-                  <p className="text-gray-400 text-sm mt-1">{t.noHistHint}</p>
+                  <p className="text-gray-600 font-semibold">{t.noHistTitle}</p>
+                  <p className="text-gray-600 text-sm mt-1">{t.noHistHint}</p>
                 </div>
               ) : (
                 <div className="space-y-2">
@@ -645,7 +645,7 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
                           <span className={`text-xs font-black px-2 py-0.5 rounded-full ${h.type === 'buy' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                             {h.type === 'buy' ? '📈 LONG' : '📉 SHORT'} {h.symbol}
                           </span>
-                          <span className="text-xs text-gray-500">{h.closedAt}</span>
+                          <span className="text-xs text-gray-600">{h.closedAt}</span>
                         </div>
                         <p className="text-xs text-gray-600 font-medium">${h.usdAmount.toFixed(0)} · {h.entryPrice.toLocaleString()} → {h.exitPrice.toLocaleString()}</p>
                       </div>
@@ -668,3 +668,4 @@ export function SimulatorComponent({ locale = 'uk' }: { locale?: Locale }) {
 export default function SimulatorPage() {
   return <SimulatorComponent locale="uk" />;
 }
+
