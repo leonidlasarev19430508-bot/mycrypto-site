@@ -10,8 +10,8 @@ export const metadata = {
   verification: {
     google: "TlsKtc6ADSMKIRsPoP6Cenvenlw5TsN16Kly2lpSFmo",
   },
+  metadataBase: new URL('https://cryptotop.chat'),
   alternates: {
-    canonical: 'https://cryptotop.chat',
     languages: {
       'uk': 'https://cryptotop.chat',
       'en': 'https://cryptotop.chat/en',

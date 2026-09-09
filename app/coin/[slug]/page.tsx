@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import pool from '../../lib/db';
 import { getAffiliateLink } from '../../lib/affiliates';
@@ -75,6 +76,20 @@ function timeAgo(dateStr: string) {
 }
 
 const AFFILIATE = getAffiliateLink('binance');
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const coin = await getCoinData(slug);
+
+  return {
+    title: `${coin?.name || slug.toUpperCase()} — Ціна, Графік, Капіталізація | CryptoNavigator`,
+    description: coin
+      ? `Актуальна ціна ${coin.name} (${coin.symbol?.toUpperCase()}), графік за 7 днів, капіталізація ринку ${coin.market_data?.market_cap?.usd ? `$${(coin.market_data.market_cap.usd / 1e9).toFixed(2)}B` : ''} та інвестиційні рекомендації на основі AI‑аналізу новин.`
+      : `Дані про криптовалюту ${slug.toUpperCase()}. Ціна, графік, капіталізація та інвестиційні рекомендації на основі AI‑аналізу.`,
+    alternates: {
+      canonical: `/coin/${slug}`,
+    },
+  };
+}
 
 export default async function CoinPage(props: PageProps) {
   const params = await props.params;
