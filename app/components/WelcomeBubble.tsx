@@ -53,7 +53,6 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
   const t = UI[locale as keyof typeof UI] || UI.uk;
 
   const [open, setOpen] = useState(false);
-  const [dismissed, setDismissed] = useState(false);
   const [avatarIndex, setAvatarIndex] = useState(0);
   const [started, setStarted] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -77,12 +76,7 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  useEffect(() => {
-    const wasDismissed = sessionStorage.getItem('welcomeDismissed');
-    if (wasDismissed) return;
-    const timer = setTimeout(() => setOpen(true), 2500);
-    return () => clearTimeout(timer);
-  }, []);
+
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -90,8 +84,6 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
 
   const handleDismiss = () => {
     setOpen(false);
-    setDismissed(true);
-    sessionStorage.setItem('welcomeDismissed', 'true');
   };
 
   const handleBack = () => {
@@ -128,7 +120,7 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
     }
   };
 
-  if (dismissed) return null;
+
 
   // На мобільному: кнопка зліва внизу, щоб не перекривати гамбургер справа
   const btnSize = isMobile ? 56 : 80;
@@ -220,7 +212,7 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
           alignItems: 'center',
           pointerEvents: 'none',
         }}>
-          <button onClick={handleDismiss} style={{
+          <button onClick={handleDismiss} aria-label="Close chat" style={{
             position: 'absolute', top: '8px', right: '8px',
             width: '28px', height: '28px', borderRadius: '50%',
             background: 'rgba(255,255,255,0.95)',
@@ -277,7 +269,7 @@ export default function WelcomeBubble({ locale = 'uk' }: { locale?: string }) {
           }}>
             {/* Close button on mobile (top right of chat) */}
             {isMobile && (
-              <button onClick={handleDismiss} style={{
+              <button onClick={handleDismiss} aria-label="Close chat" style={{
                 position: 'absolute', top: '8px', right: '8px',
                 width: '28px', height: '28px', borderRadius: '50%',
                 background: 'rgba(255,255,255,0.95)',
