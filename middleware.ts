@@ -62,25 +62,20 @@ export function middleware(request: NextRequest) {
       // Do nothing, pathname stays the same
     }
   } else {
-    // No locale prefix - check if it's an unsupported locale (e.g., '/fr/about')
-    // If first segment exists but is not a supported locale, redirect to default locale without prefix
-    if (firstSegment && !supportedLocales.includes(firstSegment as SupportedLocale)) {
-      shouldRedirect = true
-      newPathname = '/' + pathSegments.slice(1).join('/') // Remove the unsupported prefix
-      locale = defaultLocale
-    } else {
-      // No prefix and valid or empty - determine locale from Accept-Language for root path
-      locale = defaultLocale
-      
-      // Only apply Accept-Language redirect for root path '/' to avoid breaking deep links
-      if (pathname === '/') {
-        const preferredLocale = getLocaleFromAcceptLanguage(request.headers.get('accept-language'))
-        if (preferredLocale && preferredLocale !== defaultLocale) {
-          shouldRedirect = true
-          newPathname = `/${preferredLocale}`
-          locale = preferredLocale
-          redirectStatus = 302 // Temporary redirect for language detection
-        }
+    // No locale prefix – keep path unchanged, use default locale
+    locale = defaultLocale
+
+    // Language detection is allowed only for the root homepage
+    if (pathname === '/') {
+      const preferredLocale = getLocaleFromAcceptLanguage(
+        request.headers.get('accept-language')
+      )
+
+      if (preferredLocale && preferredLocale !== defaultLocale) {
+        shouldRedirect = true
+        newPathname = `/${preferredLocale}`
+        locale = preferredLocale
+        redirectStatus = 302
       }
     }
   }

@@ -77,10 +77,4 @@ input::placeholder {
 .bg-gray-900 * {
   color: inherit;
 }
-/* Fix for WelcomeBubble overlay blocking clicks */
-div[style*="z-index: 99999"] {
-  pointer-events: none;
-}
-div[style*="z-index: 99999"] * {
-  pointer-events: auto;
-}
+
