@@ -34,7 +34,7 @@ export default function CryptoPrices({ prices: externalPrices, loading: external
 
     const fetchPrices = async () => {
       try {
-        const res = await fetch('/api/coins?ids=bitcoin,ethereum,solana,bnb');
+        const res = await fetch('/api/coins?ids=bitcoin,ethereum,solana,binancecoin');
         const data = await res.json();
         setInternalPrices(data);
         setInternalError(false);

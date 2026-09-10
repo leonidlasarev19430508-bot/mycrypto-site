@@ -125,7 +125,7 @@ export default function HomePage() {
   useEffect(() => {
     const fetchCoins = async () => {
       try {
-        const res = await fetch('/api/coins?ids=bitcoin,ethereum,solana,bnb');
+        const res = await fetch('/api/coins?ids=bitcoin,ethereum,solana,binancecoin');
         if (!res.ok) throw new Error('Failed to fetch');
         const data = await res.json();
         if (Array.isArray(data)) {
