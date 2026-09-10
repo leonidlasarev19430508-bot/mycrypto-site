@@ -118,6 +118,35 @@ function PopularCoinsSection({ coins, loading, error }: { coins: CoinData[], loa
   );
 }
 export default function HomePage() {
+  const [coinsData, setCoinsData] = useState<CoinData[]>([]);
+  const [coinsLoading, setCoinsLoading] = useState(true);
+  const [coinsError, setCoinsError] = useState(false);
+
+  useEffect(() => {
+    const fetchCoins = async () => {
+      try {
+        const res = await fetch('/api/coins?ids=bitcoin,ethereum,solana,bnb');
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          setCoinsData(data);
+          setCoinsError(false);
+        } else {
+          throw new Error('Invalid response');
+        }
+      } catch (error) {
+        console.error('Error fetching coins:', error);
+        setCoinsError(true);
+      } finally {
+        setCoinsLoading(false);
+      }
+    };
+
+    fetchCoins();
+    const interval = setInterval(fetchCoins, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
       
@@ -154,7 +183,7 @@ export default function HomePage() {
 
 
         {/* TODO Sprint 2C: connect shared homepage market data */}
-        <PopularCoinsSection coins={[]} loading={false} error={true} />
+        <PopularCoinsSection coins={coinsData} loading={coinsLoading} error={coinsError} />
 
         {/* РИНОК ЗАРАЗ */}
         <section className="mb-12">
@@ -162,7 +191,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
             <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
               <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">📈 Криптоціни</h3>
-              <CryptoPrices />
+              <CryptoPrices prices={coinsData} loading={coinsLoading} error={coinsError} />
             </div>
             <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
               <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">😱 Fear & Greed Index</h3>

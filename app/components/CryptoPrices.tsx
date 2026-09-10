@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+
 interface CoinPrice {
   id: string;
   symbol: string;
@@ -8,28 +9,47 @@ interface CoinPrice {
   price_change_percentage_24h: number;
 }
 
+interface CryptoPricesProps {
+  prices?: CoinPrice[];
+  loading?: boolean;
+  error?: boolean;
+}
+
 const SKELETON_COINS = ['Bitcoin', 'Ethereum', 'Solana', 'BNB'];
 
-export default function CryptoPrices() {
-  const [prices, setPrices] = useState<CoinPrice[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function CryptoPrices({ prices: externalPrices, loading: externalLoading, error: externalError }: CryptoPricesProps = {}) {
+  const [internalPrices, setInternalPrices] = useState<CoinPrice[]>([]);
+  const [internalLoading, setInternalLoading] = useState(true);
+  const [internalError, setInternalError] = useState(false);
+
+  // If external props are provided, use them; otherwise use internal state
+  const useExternal = externalPrices !== undefined || externalLoading !== undefined || externalError !== undefined;
+  const prices = useExternal ? (externalPrices || []) : internalPrices;
+  const loading = useExternal ? (externalLoading ?? false) : internalLoading;
+  const error = useExternal ? (externalError ?? false) : internalError;
 
   useEffect(() => {
+    // Skip internal fetch if using external data
+    if (useExternal) return;
+
     const fetchPrices = async () => {
       try {
-        const res = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,solana,bnb&order=market_cap_desc&per_page=4&page=1&sparkline=false');
+        const res = await fetch('/api/coins?ids=bitcoin,ethereum,solana,bnb');
         const data = await res.json();
-        setPrices(data);
+        setInternalPrices(data);
+        setInternalError(false);
       } catch (error) {
         console.error('Error fetching prices:', error);
+        setInternalError(true);
       } finally {
-        setLoading(false);
+        setInternalLoading(false);
       }
     };
+
     fetchPrices();
     const interval = setInterval(fetchPrices, 60000);
     return () => clearInterval(interval);
-  }, []);
+  }, [useExternal]);
 
   return (
     <div className="mt-8 p-4 bg-gray-100 rounded-xl">
