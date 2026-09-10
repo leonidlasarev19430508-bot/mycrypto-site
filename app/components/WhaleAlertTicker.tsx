@@ -13,9 +13,13 @@ function fmtUsd(n: number): string {if(n>=1e9)return'$'+(n/1e9).toFixed(1)+'B';r
 
 export default function WhaleAlertTicker(){
   const [txns,setTxns]=useState(DEMO);
-  useEffect(()=>{
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
     fetch('/api/whale-alerts').then(r=>r.json()).then(d=>{if(Array.isArray(d)&&d.length>0)setTxns(d);}).catch(()=>{});
   },[]);
+  
   const items=[...txns,...txns];
   return(
     <div className='w-full bg-gray-900 border-y border-gray-800 overflow-hidden'>
@@ -31,7 +35,7 @@ export default function WhaleAlertTicker(){
                 <span className='text-xs font-bold px-2 py-0.5 rounded bg-orange-100 text-orange-700'>{tx.symbol}</span>
                 <span className='text-white text-sm font-semibold'>{fmtUsd(tx.amountUsd)}</span>
                 <span className='text-gray-400 text-xs'>{tx.from} to {tx.to}</span>
-                <span className='text-gray-400 text-xs'>{timeAgo(tx.timestamp)}</span>
+                <span className='text-gray-400 text-xs'>{mounted ? timeAgo(tx.timestamp) : ''}</span>
               </div>
             ))}
           </div>

@@ -27,7 +27,11 @@ function getLocaleFromAcceptLanguage(acceptLanguage: string | null): SupportedLo
 
 export function middleware(request: NextRequest) {
   // 1. HTTP -> HTTPS redirect (keep existing functionality)
-  if (request.headers.get('x-forwarded-proto') === 'http') {
+  // Skip HTTPS redirect for localhost/127.0.0.1 to allow local dev access
+  const hostname = request.nextUrl.hostname;
+  const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.');
+  
+  if (!isLocalhost && request.headers.get('x-forwarded-proto') === 'http') {
     const httpsUrl = `https://${request.headers.get('host')}${request.nextUrl.pathname}${request.nextUrl.search}`
     return NextResponse.redirect(httpsUrl, { status: 301 })
   }

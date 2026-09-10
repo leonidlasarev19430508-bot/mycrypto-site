@@ -1,6 +1,7 @@
 'use client';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import t from '../i18n/uk.json';
 import { getAffiliateLink } from '../lib/affiliates';
 
@@ -46,187 +47,196 @@ const OFFERS = [
   },
 ];
 
+interface CoinData {
+  id: string;
+  symbol: string;
+  name: string;
+  current_price: number;
+  price_change_percentage_24h: number;
+}
+
+
+
+function PopularCoinsSection({ coins, loading, error }: { coins: CoinData[], loading: boolean, error: boolean }) {
+
+
+  const coinConfigs = [
+    { id: 'bitcoin', symbol: '₿', name: 'Bitcoin', description: 'Перша криптовалюта' },
+    { id: 'ethereum', symbol: 'Ξ', name: 'Ethereum', description: 'Платформа для смарт-контрактів' },
+    { id: 'solana', symbol: '◎', name: 'Solana', description: 'Швидкі та дешеві транзакції' },
+  ];
+
+  return (
+    <section className="mb-12">
+      <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Популярні монети</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {coinConfigs.map((config) => {
+          const coinData = coins.find(c => c.id === config.id);
+          
+          return (
+            <div key={config.id} className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm text-center">
+              <div className="text-2xl mb-3">{config.symbol}</div>
+              <h3 className="text-base font-bold text-gray-900 mb-2">{config.name}</h3>
+              <p className="text-sm text-gray-600 mb-4">{config.description}</p>
+              
+              {loading ? (
+                <div className="space-y-2">
+                  <div className="animate-pulse bg-gray-200 rounded h-7 w-32 mx-auto"></div>
+                  <div className="animate-pulse bg-gray-200 rounded h-5 w-20 mx-auto"></div>
+                </div>
+              ) : error || !coinData ? (
+                // Show only name and CTA when error or no data
+                <div className="text-gray-400 text-sm">Дані тимчасово недоступні</div>
+              ) : (
+                <>
+                  <div className="text-2xl font-black text-gray-900 mb-2">
+                    ${coinData.current_price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </div>
+                  <div className={`text-sm font-bold ${coinData.price_change_percentage_24h >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {coinData.price_change_percentage_24h >= 0 ? '▲' : '▼'}
+                    {Math.abs(coinData.price_change_percentage_24h).toFixed(2)}%
+                  </div>
+                </>
+              )}
+              
+              <Link 
+                href={`/coin/${config.id}`} 
+                className="mt-4 inline-block px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold rounded-lg"
+              >
+                Аналіз монети
+              </Link>
+            </div>
+          );
+        })}
+      </div>
+      <div className="text-center">
+        <Link href="/coins" className="text-orange-500 hover:text-orange-600 font-bold text-lg">
+          Переглянути всі монети →
+        </Link>
+      </div>
+    </section>
+  );
+}
 export default function HomePage() {
   return (
     <>
-      <WhaleAlertTicker />
-      <main className="max-w-6xl mx-auto px-4 py-8">
+      
+      <main className="max-w-7xl mx-auto px-4 py-6">
+        {/* HERO */}
         <section className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">Кращі крипто-біржі 2026 та AI-аналіз ринку</h1>
-          <p className="text-xl text-gray-600 mb-6 max-w-3xl mx-auto">CryptoNavigator допомагає порівнювати біржі, аналізувати ринок через AI та тренуватися без ризику. Ідеально для новачків та досвідчених трейдерів.</p>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 mb-4">Зрозумій крипторинок перед тим, як вкладати гроші</h1>
+          <p className="text-lg text-gray-600 mb-6 max-w-3xl mx-auto">Ціни, AI‑аналіз, симулятор і порівняння бірж — в одному місці.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/simulator" className="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl shadow-lg text-lg">Спробувати симулятор</Link>
-            <Link href="/markets" className="px-8 py-3 bg-gray-800 hover:bg-gray-900 text-white font-bold rounded-xl shadow-lg text-lg">Аналіз настрою</Link>
+            <Link href="/coins" className="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl shadow-lg text-base transition-all transform hover:scale-105">Обрати монету</Link>
+            <Link href="/simulator" className="px-8 py-3 bg-white border-2 border-gray-300 hover:border-gray-400 text-gray-800 font-bold rounded-xl shadow-lg text-base transition">Спробувати симулятор</Link>
           </div>
         </section>
 
+        {/* ЯК ЦЕ ПРАЦЮЄ (4‑КРОКОВИЙ FLOW) */}
         <section className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">Чому CryptoNavigator?</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Як це працює</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {['🤖 AI-аналіз новин', '📊 Порівняння комісій', '🎮 Безризиковий симулятор', '🔔 Миготливі сповіщення'].map((item, i) => (
-              <div key={i} className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-                <div className="text-3xl mb-3">{item.split(' ')[0]}</div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">{item}</h3>
-                <p className="text-gray-600">{i === 0 ? 'Аналіз сотень новин щодня' : i === 1 ? 'Детальне порівняння бірж' : i === 2 ? 'Тренування на реальних цінах' : 'Сповіщення про ринкові зміни'}</p>
+            {[
+              { icon: '🪙', title: 'Обери монету', description: 'Оберіть криптовалюту зі списку 100+ монет' },
+              { icon: '📊', title: 'Подивись дані та AI‑сентимент', description: 'Аналіз ціни, графіків та ринкового настрою' },
+              { icon: '🎮', title: 'Перевір сценарій у симуляторі', description: 'Протестуйте стратегії на реальних цінах без ризику' },
+              { icon: '🏦', title: 'Порівняй біржі та обери платформу', description: 'Знайдіть найкращі умови для торгівлі' },
+            ].map((step, i) => (
+              <div key={i} className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm text-center">
+                <div className="text-2xl mb-2">{step.icon}</div>
+                <h3 className="text-base font-bold text-gray-900 mb-2">{step.title}</h3>
+                <p className="text-gray-600 text-sm">{step.description}</p>
               </div>
             ))}
           </div>
         </section>
 
-        <section className="mb-12 bg-gradient-to-br from-orange-50 to-yellow-50 border border-orange-200 rounded-2xl p-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">🚀 Безризиковий крипто-симулятор</h2>
-          <p className="text-gray-600 mb-6">Торгуйте на реальних цінах без ризику втратити гроші. Ідеально для новачків.</p>
-          <div>
-            <ul className="space-y-3 mb-6">
-              {['Реальні ціни з CoinGecko', 'Live та Replay режими', 'Віртуальний баланс $10,000', 'Історія угод'].map((f, i) => (
-                <li key={i} className="flex items-center gap-3"><span className="text-green-500 text-xl">✓</span> {f}</li>
-              ))}
-            </ul>
-            <Link href="/simulator" className="inline-flex items-center px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl shadow-lg">
+
+
+        {/* TODO Sprint 2C: connect shared homepage market data */}
+        <PopularCoinsSection coins={[]} loading={false} error={true} />
+
+        {/* РИНОК ЗАРАЗ */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Ринок зараз</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+            <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">📈 Криптоціни</h3>
+              <CryptoPrices />
+            </div>
+            <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">😱 Fear & Greed Index</h3>
+              <FearGreedIndex />
+            </div>
+            <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">⚠️ Whale Alerts</h3>
+              <p className="text-gray-600 mb-4">Великі транзакції на ринку відстежуються в реальному часі.</p>
+              <WhaleAlertTicker />
+            </div>
+          </div>
+          <div className="text-center">
+            <Link href="/markets" className="text-orange-500 hover:text-orange-600 font-bold text-lg">Відкрити AI-аналіз ринку →</Link>
+          </div>
+        </section>
+
+        {/* ПОРІВНЯННЯ БІРЖ */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Де вигідніше купувати криптовалюту?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {OFFERS.map((offer) => (
+              <div key={offer.id} className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
+                <div className="flex items-center gap-2 mb-3">
+                  <span className="text-xl">{offer.id === 'binance' ? '🟡' : offer.id === 'mexc' ? '🔷' : offer.id === 'bybit' ? '🔵' : '⚫'}</span>
+                  <h3 className="font-bold text-base">{offer.name}</h3>
+                </div>
+                <p className="text-sm text-gray-600 mb-4">{offer.description}</p>
+                <ul className="text-xs text-gray-600 space-y-1 mb-5">
+                  {offer.features.slice(0, 3).map((f, i) => (
+                    <li key={i} className="flex items-center gap-2">✓ {f}</li>
+                  ))}
+                </ul>
+                <a href={offer.affiliate} target="_blank" rel="noopener noreferrer"
+                  className="block w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-center py-3 rounded-xl transition">
+                  Перейти до біржі ↗
+                </a>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link href="/bonuses" className="text-orange-500 hover:text-orange-600 font-bold">Дивитися всі бонуси →</Link>
+          </div>
+        </section>
+
+        {/* СИМУЛЯТОР */}
+        <section className="mb-12">
+          <div className="bg-gradient-to-br from-orange-50 to-yellow-50 border border-orange-200 rounded-2xl p-6 text-center">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Перевір ідею без ризику</h2>
+            <p className="text-gray-600 mb-6 max-w-2xl mx-auto">Користувач може протестувати Buy/Sell сценарій на реальних цінах без втрати реальних грошей.</p>
+            <Link href="/simulator" className="inline-flex items-center px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl shadow-lg text-base">
               Запустити симулятор →
             </Link>
           </div>
         </section>
 
-        {/* Popular Exchanges */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-black text-center text-gray-900 mb-6">
-            Популярні біржі
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Binance */}
-            <div className="bg-white border-2 border-orange-500 rounded-2xl p-5 shadow-md">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-3xl">🟡</span>
-                <h3 className="font-black text-lg">Binance</h3>
-              </div>
-              <p className="text-sm text-gray-600 mb-3">Найбільша біржа світу з низькими комісіями 0.1%</p>
-              <ul className="text-xs text-gray-600 space-y-1 mb-4">
-                <li>✓ Низькі комісії</li>
-                <li>✓ Швидка реєстрація</li>
-                <li>✓ Надійна платформа</li>
-              </ul>
-              <a href={getAffiliateLink('binance')} target="_blank" rel="noopener noreferrer"
-                className="block w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-center py-2 rounded-xl transition">
-                Почати торгівлю
-              </a>
-            </div>
-            
-            {/* MEXC */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-5 hover:border-orange-300 transition">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-3xl">🔷</span>
-                <h3 className="font-black text-lg">MEXC</h3>
-              </div>
-              <p className="text-sm text-gray-600 mb-3">Підтримка гривні UAH та 1500+ монет</p>
-              <ul className="text-xs text-gray-600 space-y-1 mb-4">
-                <li>✓ 0% комісія на спот</li>
-                <li>✓ Підтримка UAH</li>
-                <li>✓ 1500+ монет</li>
-              </ul>
-              <a href={getAffiliateLink('mexc')} target="_blank" rel="noopener noreferrer"
-                className="block w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-center py-2 rounded-xl transition">
-                Почати торгівлю
-              </a>
-            </div>
-            
-            {/* Bybit */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-5 hover:border-orange-300 transition">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-3xl">🔵</span>
-                <h3 className="font-black text-lg">Bybit</h3>
-              </div>
-              <p className="text-sm text-gray-600 mb-3">Ідеально для активної торгівлі з плечем до 100x</p>
-              <ul className="text-xs text-gray-600 space-y-1 mb-4">
-                <li>✓ Плече до 100x</li>
-                <li>✓ Copy trading</li>
-                <li>✓ 24/7 підтримка</li>
-              </ul>
-              <a href={getAffiliateLink('bybit')} target="_blank" rel="noopener noreferrer"
-                className="block w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-center py-2 rounded-xl transition">
-                Почати торгівлю
-              </a>
-            </div>
-            
-            {/* OKX */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-5 hover:border-orange-300 transition">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-3xl">⚫</span>
-                <h3 className="font-black text-lg">OKX</h3>
-              </div>
-              <p className="text-sm text-gray-600 mb-3">Найнижчі комісії 0.08% та Web3 гаманець</p>
-              <ul className="text-xs text-gray-600 space-y-1 mb-4">
-                <li>✓ Комісії 0.08%</li>
-                <li>✓ Web3 гаманець</li>
-                <li>✓ Стейкінг до 20%</li>
-              </ul>
-              <a href={getAffiliateLink('okx')} target="_blank" rel="noopener noreferrer"
-                className="block w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-center py-2 rounded-xl transition">
-                Почати торгівлю
-              </a>
-            </div>
-          </div>
-          <div className="text-center mt-8">
-            <Link href="/coins" className="text-orange-500 hover:text-orange-600 font-bold">Дивитися всі криптовалюти →</Link>
-          </div>
-        </section>
-
-        {/* Live Prices */}
-        <div className="bg-gray-50 rounded-2xl p-6 mb-8">
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Bitcoin</p>
-              <p className="text-xl font-black text-gray-900">$79,648</p>
-              <p className="text-xs text-green-600 font-bold">▲ 1.42%</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Ethereum</p>
-              <p className="text-xl font-black text-gray-900">$2,518.88</p>
-              <p className="text-xs text-green-600 font-bold">▲ 1.51%</p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600 mb-1">Solana</p>
-              <p className="text-xl font-black text-gray-900">$104.83</p>
-              <p className="text-xs text-green-600 font-bold">▲ 1.74%</p>
-            </div>
-          </div>
-        </div>
-
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">😱 Fear & Greed Index</h2>
-          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-            <FearGreedIndex />
-          </div>
-        </section>
-
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">💸 Порівняння комісій</h2>
-          <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm">
-            <ComparisonTable />
-          </div>
-          <div className="text-center mt-6">
-            <Link href="/trading-bots" className="text-orange-500 hover:text-orange-600 font-bold">Дізнатись про торгові боти →</Link>
-          </div>
-        </section>
-
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">🧮 Інструменти</h2>
+        {/* ІНСТРУМЕНТИ */}
+        <section className="mb-10">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">🧮 Інструменти</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white border border-gray-100 rounded-2xl shadow-sm"><WhatIfCalculator locale="uk" /></div>
             <div className="bg-white border border-gray-100 rounded-2xl shadow-sm"><ExchangeQuiz /></div>
           </div>
         </section>
 
-        <section className="mb-12">
+        <section className="mb-10">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-3xl font-bold text-gray-900">📰 Останні новини</h2>
+            <h2 className="text-2xl font-bold text-gray-900">📰 Останні новини</h2>
             <Link href="/blog" className="text-orange-500 hover:text-orange-600 font-bold">Всі новини →</Link>
           </div>
           <LatestArticles />
         </section>
 
-        <section className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6 text-center">🔗 Корисні розділи</h2>
+        <section className="mb-10">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">🔗 Корисні розділи</h2>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             {[
               {icon: '🎮', label: 'Симулятор', href: '/simulator'},
@@ -236,14 +246,14 @@ export default function HomePage() {
               {icon: '🤖', label: 'AI Асистент', href: '/assistant'}
             ].map(item => (
               <Link key={item.href} href={item.href} className="p-4 bg-white border border-gray-200 rounded-xl text-center hover:shadow-md transition">
-                <div className="text-2xl mb-2">{item.icon}</div>
+                <div className="text-xl mb-2">{item.icon}</div>
                 <p className="font-bold text-gray-900">{item.label}</p>
               </Link>
             ))}
           </div>
         </section>
 
-        <section className="mb-12">
+        <section className="mb-10">
           <SubscribeForm />
         </section>
       </main>
@@ -252,5 +262,6 @@ export default function HomePage() {
     </>
   );
 }
+
 
 

@@ -104,13 +104,13 @@ function ClientHeaderInner() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-4 flex-wrap">
+        <nav className="hidden md:flex items-center gap-2 flex-wrap">
           {navLinks.map(link => {
             const isActive = pathname === link.href;
             const isHighlight = link.highlight;
             return (
               <Link key={link.href} href={link.href}
-                className={`text-sm font-medium whitespace-nowrap transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 rounded ${
+                className={`text-xs font-medium whitespace-nowrap transition-colors px-2 py-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 rounded ${
                   isActive
                     ? 'text-orange-600 font-semibold'
                     : isHighlight
@@ -123,10 +123,10 @@ function ClientHeaderInner() {
           })}
 
           {/* Language switcher */}
-          <div className="flex gap-1 ml-2 border-l border-gray-200 pl-3">
+          <div className="flex gap-1 ml-2 border-l border-gray-200 pl-2">
             {LOCALES.map(l => (
               <Link key={l} href={getSafeSwitchPath(l, currentPage)}
-                className={`text-xs px-2 py-1 rounded transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 ${
+                className={`text-xs px-1.5 py-0.5 rounded transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 ${
                   locale === l
                     ? 'text-white font-bold bg-orange-500'
                     : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
