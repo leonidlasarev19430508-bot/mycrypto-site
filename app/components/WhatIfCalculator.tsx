@@ -19,6 +19,13 @@ const COINS = [
   { id: 'xrp',      symbol: 'XRP', exchange: 'Bybit'   },
 ];
 
+const COINGECKO_ID: Record<string, string> = {
+  bitcoin: 'bitcoin',
+  ethereum: 'ethereum',
+  solana: 'solana',
+  bnb: 'binancecoin',
+  xrp: 'ripple',
+};
 function fmt(n: number): string {
   if (n >= 1_000_000) return '$' + (n / 1_000_000).toFixed(2) + 'M';
   if (n >= 1_000)     return '$' + Math.round(n).toLocaleString();
@@ -79,16 +86,17 @@ export default function WhatIfCalculator({ locale = 'uk' }: Props) {
       const [y, m, d] = date.split('-');
       const cgDate = `${d}-${m}-${y}`;
 
+      const coinGeckoId = COINGECKO_ID[coin.id] || coin.id;
       const [histRes, nowRes] = await Promise.all([
-        fetch(`/api/coin-history/${coin.id}?date=${cgDate}`),
-        fetch(`/api/coin-price?ids=${coin.id}`),
+        fetch(`/api/coin-history/${coinGeckoId}?date=${cgDate}`),
+        fetch(`/api/coin-price?ids=${coinGeckoId}`),
       ]);
 
       const hist = await histRes.json();
       const now  = await nowRes.json();
 
       const priceThen = hist?.market_data?.current_price?.usd;
-      const priceNow  = now?.[coin.id]?.usd;
+      const priceNow  = now?.[coinGeckoId]?.usd;
 
       if (!priceThen) { setError(c.error_price); setLoading(false); return; }
       if (!priceNow)  { setError(c.error_current); setLoading(false); return; }
