@@ -17,39 +17,55 @@
     "badge_popular": "Beliebteste Börse",
     "cta": "Bei registrieren"
   },
-    "offers": [
+  "offers": [
     {
       "name": "Binance",
       "id": "binance",
       "description": "Die größte Kryptobörse der Welt mit den niedrigsten Gebühren",
-      "features": ["Niedrige Gebühren 0.1%", "Schnelle Registrierung", "Deutsche Benutzeroberfläche"],
+      "features": [
+        "Niedrige Gebühren 0.1%",
+        "Schnelle Registrierung",
+        "Deutsche Benutzeroberfläche"
+      ],
       "badge": "Beliebteste Börse"
     },
     {
       "name": "Bybit",
       "id": "bybit",
       "description": "Ideal für aktive Trader mit fortgeschrittenen Werkzeugen",
-      "features": ["Hebel bis 100x", "Hohe Liquidität", "24/7 Support"],
+      "features": [
+        "Hebel bis 100x",
+        "Hohe Liquidität",
+        "24/7 Support"
+      ],
       "badge": null
     },
     {
       "name": "OKX",
       "id": "okx",
       "description": "Moderne Plattform mit Web3 Integration und Staking",
-      "features": ["Web3 Wallet", "Staking bis 20%", "Niedrige Gebühren"],
+      "features": [
+        "Web3 Wallet",
+        "Staking bis 20%",
+        "Niedrige Gebühren"
+      ],
       "badge": null
     },
     {
       "name": "KuCoin",
       "id": "kucoin",
       "description": "Große Auswahl an Coins mit Staking und Web3",
-      "features": ["700+ Coins", "Staking-Belohnungen", "Niedrige Gebühren"],
+      "features": [
+        "700+ Coins",
+        "Staking-Belohnungen",
+        "Niedrige Gebühren"
+      ],
       "badge": null
     }
   ],
   "subscribe": {
     "title": "🔔 CryptoAlert — Sei der Erste!",
-      "subtitle": "Erhalte sofortige Benachrichtigungen wenn:",
+    "subtitle": "Erhalte sofortige Benachrichtigungen wenn:",
     "alerts": [
       "🐋 Ein Wal mehr als $50M bewegt",
       "😱 Fear & Greed unter 20 fällt",
@@ -81,11 +97,26 @@
     "register": "Registrieren bei",
     "footer": "Daten: CoinGecko API · Keine Finanzberatung",
     "quick_dates": [
-      { "label": "6 Mon.", "months": 6 },
-      { "label": "1 Jahr", "months": 12 },
-      { "label": "2 Jahre", "months": 24 },
-      { "label": "3 Jahre", "months": 36 },
-      { "label": "5 Jahre", "months": 60 }
+      {
+        "label": "6 Mon.",
+        "months": 6
+      },
+      {
+        "label": "1 Jahr",
+        "months": 12
+      },
+      {
+        "label": "2 Jahre",
+        "months": 24
+      },
+      {
+        "label": "3 Jahre",
+        "months": 36
+      },
+      {
+        "label": "5 Jahre",
+        "months": 60
+      }
     ],
     "ago": "vor",
     "details": {
@@ -149,5 +180,113 @@
   "faq": {
     "cta_text": "Weiß nicht, welche Börse du wählen sollst?",
     "cta_button": "🎯 Börsen-Quiz starten"
+  },
+  "home": {
+    "hero": {
+      "title": "Verstehe den Kryptomarkt, bevor du investierst",
+      "subtitle": "Preise, KI-Analyse, ein Simulator und Börsenvergleich — alles an einem Ort.",
+      "ctaCoins": "Münze wählen",
+      "ctaSimulator": "Simulator testen"
+    },
+    "howItWorks": {
+      "title": "So funktioniert es",
+      "steps": [
+        {
+          "icon": "🪙",
+          "title": "Münze wählen",
+          "desc": "Wähle eine Kryptowährung aus über 100 Münzen"
+        },
+        {
+          "icon": "📊",
+          "title": "Daten & KI-Stimmung sehen",
+          "desc": "Preis-, Chart- und Marktstimmungsanalyse"
+        },
+        {
+          "icon": "🎮",
+          "title": "Szenario im Simulator testen",
+          "desc": "Teste Strategien zu echten Preisen ohne Risiko"
+        },
+        {
+          "icon": "🏦",
+          "title": "Börsen vergleichen",
+          "desc": "Finde die besten Handelskonditionen"
+        }
+      ]
+    },
+    "popularCoins": {
+      "title": "Beliebte Münzen",
+      "unavailable": "Daten vorübergehend nicht verfügbar",
+      "analyze": "Münze analysieren",
+      "viewAll": "Alle Münzen ansehen →",
+      "coins": [
+        {
+          "id": "bitcoin",
+          "desc": "Die erste Kryptowährung"
+        },
+        {
+          "id": "ethereum",
+          "desc": "Smart-Contract-Plattform"
+        },
+        {
+          "id": "solana",
+          "desc": "Schnelle und günstige Transaktionen"
+        }
+      ]
+    },
+    "market": {
+      "title": "Markt jetzt",
+      "prices": "📈 Krypto-Preise",
+      "fearGreed": "😱 Fear & Greed Index",
+      "whale": "⚠️ Whale Alerts",
+      "whaleDesc": "Große On-Chain-Transaktionen in Echtzeit verfolgt.",
+      "openAnalysis": "KI-Marktanalyse öffnen →"
+    },
+    "exchangeCompare": {
+      "title": "Wo kauft man Krypto günstiger?",
+      "cta": "Zur Börse ↗",
+      "viewBonuses": "Alle Boni ansehen →"
+    },
+    "simulator": {
+      "title": "Idee ohne Risiko testen",
+      "desc": "Teste ein Kauf-/Verkaufsszenario zu echten Preisen ohne echtes Geld zu riskieren.",
+      "cta": "Simulator starten →"
+    },
+    "tools": {
+      "title": "🧮 Werkzeuge"
+    },
+    "news": {
+      "title": "📰 Neueste Nachrichten",
+      "viewAll": "Alle Nachrichten →"
+    },
+    "useful": {
+      "title": "🔗 Nützliche Bereiche",
+      "items": [
+        {
+          "icon": "🎮",
+          "label": "Simulator",
+          "page": "simulator"
+        },
+        {
+          "icon": "📊",
+          "label": "Kryptowährungen",
+          "page": "coins"
+        },
+        {
+          "icon": "🧠",
+          "label": "Stimmung",
+          "page": "markets"
+        },
+        {
+          "icon": "📰",
+          "label": "Blog",
+          "page": "blog"
+        },
+        {
+          "icon": "🤖",
+          "label": "KI-Assistent",
+          "page": "assistant"
+        }
+      ]
+    }
   }
 }

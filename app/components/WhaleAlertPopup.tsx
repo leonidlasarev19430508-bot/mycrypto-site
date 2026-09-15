@@ -14,12 +14,6 @@ const LABELS = {
   de: { live: 'LIVE Whale Alert', amount: 'Betrag', action: 'Jetzt handeln' },
 };
 
-const FALLBACK_ALERTS = [
-  { symbol: 'BTC', amount_usd: 164000000, direction: 'to_exchange' },
-  { symbol: 'ETH', amount_usd: 111000000, direction: 'from_exchange' },
-  { symbol: 'BTC', amount_usd: 89000000, direction: 'to_exchange' },
-];
-
 const TITLES = {
   uk: (sym: string, dir: string) => dir === 'to_exchange' ? `🚨 Великий переказ ${sym} на біржу!` : `🐋 Кит виводить ${sym} з біржі!`,
   en: (sym: string, dir: string) => dir === 'to_exchange' ? `🚨 Large ${sym} transfer to exchange!` : `🐋 Whale withdrawing ${sym} from exchange!`,
@@ -62,7 +56,9 @@ export default function WhaleAlertPopup() {
     fetch('/api/whale-alerts')
       .then(r => r.json())
       .then(data => {
-        const items = Array.isArray(data) && data.length > 0 ? data : FALLBACK_ALERTS;
+        // Never show fabricated alerts: only surface real whale-alert data.
+        if (!Array.isArray(data) || data.length === 0) return;
+        const items = data;
         const item = items[Math.floor(Math.random() * Math.min(items.length, 3))];
         setTimeout(() => {
           setAlert(item);

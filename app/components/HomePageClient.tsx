@@ -2,7 +2,8 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import t from '../i18n/uk.json';
+import { usePathname } from 'next/navigation';
+import { useTranslation, type Locale } from '../lib/i18n';
 import { getAffiliateLink } from '../lib/exchanges';
 
 const CryptoPrices = dynamic(() => import('./CryptoPrices'));
@@ -16,22 +17,24 @@ const WhaleAlertTicker = dynamic(() => import('./WhaleAlertTicker'));
 const WhaleAlertPopup = dynamic(() => import('./WhaleAlertPopup'));
 const SubscribeForm = dynamic(() => import('./SubscribeForm'));
 
-// Canonical roster driven by the i18n `offers` array (single source of truth).
-const OFFERS = t.offers.map((offer: any) => ({
-  name: offer.name,
-  id: offer.id,
-  description: offer.description,
-  features: offer.features,
-  badge: offer.badge,
-  affiliate: getAffiliateLink(offer.id),
-}));
-
 const OFFER_LOGO: Record<string, string> = {
   binance: '🟡',
   bybit: '🔵',
   okx: '⚫',
   kucoin: '🟢',
 };
+
+function localeFromPath(pathname: string): Locale {
+  if (pathname.startsWith('/en')) return 'en';
+  if (pathname.startsWith('/pl')) return 'pl';
+  if (pathname.startsWith('/de')) return 'de';
+  return 'uk';
+}
+
+// Prefix an internal path with the locale segment (uk = no prefix).
+function localize(path: string, locale: Locale): string {
+  return locale === 'uk' ? path : `/${locale}${path}`;
+}
 
 interface CoinData {
   id: string;
@@ -41,38 +44,45 @@ interface CoinData {
   price_change_percentage_24h: number;
 }
 
-
-
-function PopularCoinsSection({ coins, loading, error }: { coins: CoinData[], loading: boolean, error: boolean }) {
-
-
+function PopularCoinsSection({
+  coins,
+  loading,
+  error,
+  locale,
+  strings,
+}: {
+  coins: CoinData[];
+  loading: boolean;
+  error: boolean;
+  locale: Locale;
+  strings: any;
+}) {
   const coinConfigs = [
-    { id: 'bitcoin', symbol: '₿', name: 'Bitcoin', description: 'Перша криптовалюта' },
-    { id: 'ethereum', symbol: 'Ξ', name: 'Ethereum', description: 'Платформа для смарт-контрактів' },
-    { id: 'solana', symbol: '◎', name: 'Solana', description: 'Швидкі та дешеві транзакції' },
+    { id: 'bitcoin', symbol: '₿', name: 'Bitcoin', description: strings.coins[0].desc },
+    { id: 'ethereum', symbol: 'Ξ', name: 'Ethereum', description: strings.coins[1].desc },
+    { id: 'solana', symbol: '◎', name: 'Solana', description: strings.coins[2].desc },
   ];
 
   return (
     <section className="mb-12">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Популярні монети</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">{strings.title}</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {coinConfigs.map((config) => {
-          const coinData = coins.find(c => c.id === config.id);
-          
+          const coinData = coins.find((c) => c.id === config.id);
+
           return (
             <div key={config.id} className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm text-center">
               <div className="text-2xl mb-3">{config.symbol}</div>
               <h3 className="text-base font-bold text-gray-900 mb-2">{config.name}</h3>
               <p className="text-sm text-gray-600 mb-4">{config.description}</p>
-              
+
               {loading ? (
                 <div className="space-y-2">
                   <div className="animate-pulse bg-gray-200 rounded h-7 w-32 mx-auto"></div>
                   <div className="animate-pulse bg-gray-200 rounded h-5 w-20 mx-auto"></div>
                 </div>
               ) : error || !coinData ? (
-                // Show only name and CTA when error or no data
-                <div className="text-gray-400 text-sm">Дані тимчасово недоступні</div>
+                <div className="text-gray-400 text-sm">{strings.unavailable}</div>
               ) : (
                 <>
                   <div className="text-2xl font-black text-gray-900 mb-2">
@@ -84,26 +94,41 @@ function PopularCoinsSection({ coins, loading, error }: { coins: CoinData[], loa
                   </div>
                 </>
               )}
-              
-              <Link 
-                href={`/coin/${config.id}`} 
+
+              <Link
+                href={localize(`/coin/${config.id}`, locale)}
                 className="mt-4 inline-block px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold rounded-lg"
               >
-                Аналіз монети
+                {strings.analyze}
               </Link>
             </div>
           );
         })}
       </div>
       <div className="text-center">
-        <Link href="/coins" className="text-orange-500 hover:text-orange-600 font-bold text-lg">
-          Переглянути всі монети →
+        <Link href={localize('/coins', locale)} className="text-orange-500 hover:text-orange-600 font-bold text-lg">
+          {strings.viewAll}
         </Link>
       </div>
     </section>
   );
 }
+
 export default function HomePage() {
+  const pathname = usePathname();
+  const locale = localeFromPath(pathname);
+  const t = useTranslation(locale);
+
+  // Canonical roster driven by the i18n `offers` array (single source of truth).
+  const offers = t.offers.map((offer: any) => ({
+    name: offer.name,
+    id: offer.id,
+    description: offer.description,
+    features: offer.features,
+    badge: offer.badge,
+    affiliate: getAffiliateLink(offer.id),
+  }));
+
   const [coinsData, setCoinsData] = useState<CoinData[]>([]);
   const [coinsLoading, setCoinsLoading] = useState(true);
   const [coinsError, setCoinsError] = useState(false);
@@ -133,72 +158,65 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, []);
 
+  const h = t.home;
+
   return (
     <>
-      
       <main className="max-w-7xl mx-auto px-4 py-6">
         {/* HERO */}
         <section className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 mb-4">Зрозумій крипторинок перед тим, як вкладати гроші</h1>
-          <p className="text-lg text-gray-600 mb-6 max-w-3xl mx-auto">Ціни, AI‑аналіз, симулятор і порівняння бірж — в одному місці.</p>
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 mb-4">{h.hero.title}</h1>
+          <p className="text-lg text-gray-600 mb-6 max-w-3xl mx-auto">{h.hero.subtitle}</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/coins" className="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl shadow-lg text-base transition-all transform hover:scale-105">Обрати монету</Link>
-            <Link href="/simulator" className="px-8 py-3 bg-white border-2 border-gray-300 hover:border-gray-400 text-gray-800 font-bold rounded-xl shadow-lg text-base transition">Спробувати симулятор</Link>
+            <Link href={localize('/coins', locale)} className="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl shadow-lg text-base transition-all transform hover:scale-105">{h.hero.ctaCoins}</Link>
+            <Link href={localize('/simulator', locale)} className="px-8 py-3 bg-white border-2 border-gray-300 hover:border-gray-400 text-gray-800 font-bold rounded-xl shadow-lg text-base transition">{h.hero.ctaSimulator}</Link>
           </div>
         </section>
 
-        {/* ЯК ЦЕ ПРАЦЮЄ (4‑КРОКОВИЙ FLOW) */}
+        {/* HOW IT WORKS */}
         <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">Як це працює</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">{h.howItWorks.title}</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-            {[
-              { icon: '🪙', title: 'Обери монету', description: 'Оберіть криптовалюту зі списку 100+ монет' },
-              { icon: '📊', title: 'Подивись дані та AI‑сентимент', description: 'Аналіз ціни, графіків та ринкового настрою' },
-              { icon: '🎮', title: 'Перевір сценарій у симуляторі', description: 'Протестуйте стратегії на реальних цінах без ризику' },
-              { icon: '🏦', title: 'Порівняй біржі та обери платформу', description: 'Знайдіть найкращі умови для торгівлі' },
-            ].map((step, i) => (
+            {h.howItWorks.steps.map((step: any, i: number) => (
               <div key={i} className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm text-center">
                 <div className="text-2xl mb-2">{step.icon}</div>
                 <h3 className="text-base font-bold text-gray-900 mb-2">{step.title}</h3>
-                <p className="text-gray-600 text-sm">{step.description}</p>
+                <p className="text-gray-600 text-sm">{step.desc}</p>
               </div>
             ))}
           </div>
         </section>
 
+        <PopularCoinsSection coins={coinsData} loading={coinsLoading} error={coinsError} locale={locale} strings={h.popularCoins} />
 
-
-        {/* TODO Sprint 2C: connect shared homepage market data */}
-        <PopularCoinsSection coins={coinsData} loading={coinsLoading} error={coinsError} />
-
-        {/* РИНОК ЗАРАЗ */}
+        {/* MARKET NOW */}
         <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Ринок зараз</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">{h.market.title}</h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
             <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
-              <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">📈 Криптоціни</h3>
+              <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">{h.market.prices}</h3>
               <CryptoPrices prices={coinsData} loading={coinsLoading} error={coinsError} />
             </div>
             <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
-              <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">😱 Fear & Greed Index</h3>
-              <FearGreedIndex />
+              <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">{h.market.fearGreed}</h3>
+              <FearGreedIndex locale={locale} />
             </div>
             <div className="bg-white border border-gray-100 rounded-2xl p-5 shadow-sm">
-              <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">⚠️ Whale Alerts</h3>
-              <p className="text-gray-600 mb-4">Великі транзакції на ринку відстежуються в реальному часі.</p>
+              <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">{h.market.whale}</h3>
+              <p className="text-gray-600 mb-4">{h.market.whaleDesc}</p>
               <WhaleAlertTicker />
             </div>
           </div>
           <div className="text-center">
-            <Link href="/markets" className="text-orange-500 hover:text-orange-600 font-bold text-lg">Відкрити AI-аналіз ринку →</Link>
+            <Link href={localize('/markets', locale)} className="text-orange-500 hover:text-orange-600 font-bold text-lg">{h.market.openAnalysis}</Link>
           </div>
         </section>
 
-        {/* ПОРІВНЯННЯ БІРЖ */}
+        {/* EXCHANGE COMPARISON */}
         <section className="mb-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Де вигідніше купувати криптовалюту?</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">{h.exchangeCompare.title}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {OFFERS.map((offer) => (
+            {offers.map((offer) => (
               <div key={offer.id} className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="text-xl">{OFFER_LOGO[offer.id] || '🪙'}</span>
@@ -210,57 +228,54 @@ export default function HomePage() {
                     <li key={i} className="flex items-center gap-2">✓ {f}</li>
                   ))}
                 </ul>
-                <a href={offer.affiliate} target="_blank" rel="noopener noreferrer"
+                <a href={offer.affiliate} target="_blank" rel="sponsored noopener noreferrer"
                   className="block w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-center py-3 rounded-xl transition">
-                  Перейти до біржі ↗
+                  {h.exchangeCompare.cta}
                 </a>
               </div>
             ))}
           </div>
           <div className="text-center mt-8">
-            <Link href="/bonuses" className="text-orange-500 hover:text-orange-600 font-bold">Дивитися всі бонуси →</Link>
+            <Link href={localize('/bonuses', locale)} className="text-orange-500 hover:text-orange-600 font-bold">{h.exchangeCompare.viewBonuses}</Link>
           </div>
         </section>
 
-        {/* СИМУЛЯТОР */}
+        {/* FEE COMPARISON TABLE */}
+        <ComparisonTable locale={locale} />
+
+        {/* SIMULATOR */}
         <section className="mb-12">
           <div className="bg-gradient-to-br from-orange-50 to-yellow-50 border border-orange-200 rounded-2xl p-6 text-center">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Перевір ідею без ризику</h2>
-            <p className="text-gray-600 mb-6 max-w-2xl mx-auto">Користувач може протестувати Buy/Sell сценарій на реальних цінах без втрати реальних грошей.</p>
-            <Link href="/simulator" className="inline-flex items-center px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl shadow-lg text-base">
-              Запустити симулятор →
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">{h.simulator.title}</h2>
+            <p className="text-gray-600 mb-6 max-w-2xl mx-auto">{h.simulator.desc}</p>
+            <Link href={localize('/simulator', locale)} className="inline-flex items-center px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-xl shadow-lg text-base">
+              {h.simulator.cta}
             </Link>
           </div>
         </section>
 
-        {/* ІНСТРУМЕНТИ */}
+        {/* TOOLS */}
         <section className="mb-10">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">🧮 Інструменти</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">{h.tools.title}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white border border-gray-100 rounded-2xl shadow-sm"><WhatIfCalculator locale="uk" /></div>
-            <div className="bg-white border border-gray-100 rounded-2xl shadow-sm"><ExchangeQuiz /></div>
+            <div className="bg-white border border-gray-100 rounded-2xl shadow-sm"><WhatIfCalculator locale={locale} /></div>
+            <div className="bg-white border border-gray-100 rounded-2xl shadow-sm"><ExchangeQuiz locale={locale} /></div>
           </div>
         </section>
 
         <section className="mb-10">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">📰 Останні новини</h2>
-            <Link href="/blog" className="text-orange-500 hover:text-orange-600 font-bold">Всі новини →</Link>
+            <h2 className="text-2xl font-bold text-gray-900">{h.news.title}</h2>
+            <Link href={localize('/blog', locale)} className="text-orange-500 hover:text-orange-600 font-bold">{h.news.viewAll}</Link>
           </div>
           <LatestArticles />
         </section>
 
         <section className="mb-10">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">🔗 Корисні розділи</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">{h.useful.title}</h2>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            {[
-              {icon: '🎮', label: 'Симулятор', href: '/simulator'},
-              {icon: '📊', label: 'Криптовалюти', href: '/coins'},
-              {icon: '🧠', label: 'Настрій', href: '/markets'},
-              {icon: '📰', label: 'Блог', href: '/blog'},
-              {icon: '🤖', label: 'AI Асистент', href: '/assistant'}
-            ].map(item => (
-              <Link key={item.href} href={item.href} className="p-4 bg-white border border-gray-200 rounded-xl text-center hover:shadow-md transition">
+            {h.useful.items.map((item: any) => (
+              <Link key={item.page} href={localize(`/${item.page}`, locale)} className="p-4 bg-white border border-gray-200 rounded-xl text-center hover:shadow-md transition">
                 <div className="text-xl mb-2">{item.icon}</div>
                 <p className="font-bold text-gray-900">{item.label}</p>
               </Link>
@@ -273,10 +288,7 @@ export default function HomePage() {
         </section>
       </main>
       <WhaleAlertPopup />
-      <ChatWidget locale="uk" />
+      <ChatWidget locale={locale} />
     </>
   );
 }
-
-
-

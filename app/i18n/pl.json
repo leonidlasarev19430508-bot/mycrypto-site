@@ -22,32 +22,48 @@
       "name": "Binance",
       "id": "binance",
       "description": "Największa giełda na świecie z najniższymi prowizjami",
-      "features": ["Niskie prowizje 0.1%", "Szybka rejestracja", "Polska obsługa klienta"],
+      "features": [
+        "Niskie prowizje 0.1%",
+        "Szybka rejestracja",
+        "Polska obsługa klienta"
+      ],
       "badge": "Najpopularniejsza"
     },
     {
       "name": "Bybit",
       "id": "bybit",
       "description": "Idealna dla aktywnych traderów z zaawansowanymi narzędziami",
-      "features": ["Dźwignia do 100x", "Wysoka płynność", "Wsparcie 24/7"],
+      "features": [
+        "Dźwignia do 100x",
+        "Wysoka płynność",
+        "Wsparcie 24/7"
+      ],
       "badge": null
     },
     {
       "name": "OKX",
       "id": "okx",
       "description": "Nowoczesna platforma z integracją Web3 i stakingiem",
-      "features": ["Portfel Web3", "Staking do 20%", "Niskie opłaty"],
+      "features": [
+        "Portfel Web3",
+        "Staking do 20%",
+        "Niskie opłaty"
+      ],
       "badge": null
     },
     {
       "name": "KuCoin",
       "id": "kucoin",
       "description": "Szeroki wybór monet ze stakingiem i Web3",
-      "features": ["700+ monet", "Nagrody za staking", "Niskie prowizje"],
+      "features": [
+        "700+ monet",
+        "Nagrody za staking",
+        "Niskie prowizje"
+      ],
       "badge": null
     }
-      ], 
-    "subscribe": {
+  ],
+  "subscribe": {
     "title": "🔔 CryptoAlert — Bądź pierwszy!",
     "subtitle": "Otrzymuj natychmiastowe powiadomienia gdy:",
     "alerts": [
@@ -81,11 +97,26 @@
     "register": "Zarejestruj się na",
     "footer": "Dane: CoinGecko API · Nie jest poradą finansową",
     "quick_dates": [
-      { "label": "6 mies.", "months": 6 },
-      { "label": "1 rok", "months": 12 },
-      { "label": "2 lata", "months": 24 },
-      { "label": "3 lata", "months": 36 },
-      { "label": "5 lat", "months": 60 }
+      {
+        "label": "6 mies.",
+        "months": 6
+      },
+      {
+        "label": "1 rok",
+        "months": 12
+      },
+      {
+        "label": "2 lata",
+        "months": 24
+      },
+      {
+        "label": "3 lata",
+        "months": 36
+      },
+      {
+        "label": "5 lat",
+        "months": 60
+      }
     ],
     "ago": "temu",
     "details": {
@@ -149,5 +180,113 @@
   "faq": {
     "cta_text": "Nie wiesz którą giełdę wybrać?",
     "cta_button": "🎯 Przejdź quiz giełdowy"
+  },
+  "home": {
+    "hero": {
+      "title": "Zrozum rynek krypto, zanim zainwestujesz",
+      "subtitle": "Ceny, analiza AI, symulator i porównanie giełd — wszystko w jednym miejscu.",
+      "ctaCoins": "Wybierz monetę",
+      "ctaSimulator": "Wypróbuj symulator"
+    },
+    "howItWorks": {
+      "title": "Jak to działa",
+      "steps": [
+        {
+          "icon": "🪙",
+          "title": "Wybierz monetę",
+          "desc": "Wybierz kryptowalutę z listy ponad 100 monet"
+        },
+        {
+          "icon": "📊",
+          "title": "Zobacz dane i sentyment AI",
+          "desc": "Analiza cen, wykresów i nastrojów rynku"
+        },
+        {
+          "icon": "🎮",
+          "title": "Przetestuj scenariusz w symulatorze",
+          "desc": "Testuj strategie na realnych cenach bez ryzyka"
+        },
+        {
+          "icon": "🏦",
+          "title": "Porównaj giełdy i wybierz platformę",
+          "desc": "Znajdź najlepsze warunki handlu"
+        }
+      ]
+    },
+    "popularCoins": {
+      "title": "Popularne monety",
+      "unavailable": "Dane tymczasowo niedostępne",
+      "analyze": "Analiza monety",
+      "viewAll": "Zobacz wszystkie monety →",
+      "coins": [
+        {
+          "id": "bitcoin",
+          "desc": "Pierwsza kryptowaluta"
+        },
+        {
+          "id": "ethereum",
+          "desc": "Platforma smart kontraktów"
+        },
+        {
+          "id": "solana",
+          "desc": "Szybkie i tanie transakcje"
+        }
+      ]
+    },
+    "market": {
+      "title": "Rynek teraz",
+      "prices": "📈 Ceny krypto",
+      "fearGreed": "😱 Indeks Strachu i Chciwości",
+      "whale": "⚠️ Whale Alerts",
+      "whaleDesc": "Duże transakcje on-chain śledzone w czasie rzeczywistym.",
+      "openAnalysis": "Otwórz analizę AI rynku →"
+    },
+    "exchangeCompare": {
+      "title": "Gdzie taniej kupić krypto?",
+      "cta": "Przejdź do giełdy ↗",
+      "viewBonuses": "Zobacz wszystkie bonusy →"
+    },
+    "simulator": {
+      "title": "Sprawdź pomysł bez ryzyka",
+      "desc": "Przetestuj scenariusz kupna/sprzedaży na realnych cenach bez ryzyka prawdziwych pieniędzy.",
+      "cta": "Uruchom symulator →"
+    },
+    "tools": {
+      "title": "🧮 Narzędzia"
+    },
+    "news": {
+      "title": "📰 Najnowsze wiadomości",
+      "viewAll": "Wszystkie wiadomości →"
+    },
+    "useful": {
+      "title": "🔗 Przydatne sekcje",
+      "items": [
+        {
+          "icon": "🎮",
+          "label": "Symulator",
+          "page": "simulator"
+        },
+        {
+          "icon": "📊",
+          "label": "Kryptowaluty",
+          "page": "coins"
+        },
+        {
+          "icon": "🧠",
+          "label": "Nastroje",
+          "page": "markets"
+        },
+        {
+          "icon": "📰",
+          "label": "Blog",
+          "page": "blog"
+        },
+        {
+          "icon": "🤖",
+          "label": "Asystent AI",
+          "page": "assistant"
+        }
+      ]
+    }
   }
 }

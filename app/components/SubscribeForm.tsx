@@ -1,9 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import t from '../i18n/uk.json';
+import { usePathname } from 'next/navigation';
+import { useTranslation, type Locale } from '../lib/i18n';
+
+function localeFromPath(pathname: string): Locale {
+  if (pathname.startsWith('/en')) return 'en';
+  if (pathname.startsWith('/pl')) return 'pl';
+  if (pathname.startsWith('/de')) return 'de';
+  return 'uk';
+}
 
 export default function SubscribeForm() {
+  const pathname = usePathname();
+  const t = useTranslation(localeFromPath(pathname));
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState('');
 

@@ -22,28 +22,44 @@
       "name": "Binance",
       "id": "binance",
       "description": "The world's largest exchange with the lowest fees",
-      "features": ["Low fees 0.1%", "Fast registration", "Reliable platform"],
+      "features": [
+        "Low fees 0.1%",
+        "Fast registration",
+        "Reliable platform"
+      ],
       "badge": "Most Popular"
     },
     {
       "name": "Bybit",
       "id": "bybit",
       "description": "Perfect for active traders with advanced tools",
-      "features": ["Up to 100x leverage", "High liquidity", "24/7 support"],
+      "features": [
+        "Up to 100x leverage",
+        "High liquidity",
+        "24/7 support"
+      ],
       "badge": null
     },
     {
       "name": "OKX",
       "id": "okx",
       "description": "Modern platform with Web3 integration and staking",
-      "features": ["Web3 Wallet", "Staking up to 20%", "Low fees"],
+      "features": [
+        "Web3 Wallet",
+        "Staking up to 20%",
+        "Low fees"
+      ],
       "badge": null
     },
     {
       "name": "KuCoin",
       "id": "kucoin",
       "description": "Wide selection of coins with staking and Web3",
-      "features": ["700+ coins", "Staking rewards", "Low fees"],
+      "features": [
+        "700+ coins",
+        "Staking rewards",
+        "Low fees"
+      ],
       "badge": null
     }
   ],
@@ -81,11 +97,26 @@
     "register": "Register on",
     "footer": "Data: CoinGecko API · Not financial advice",
     "quick_dates": [
-      { "label": "6 mo.", "months": 6 },
-      { "label": "1 year", "months": 12 },
-      { "label": "2 years", "months": 24 },
-      { "label": "3 years", "months": 36 },
-      { "label": "5 years", "months": 60 }
+      {
+        "label": "6 mo.",
+        "months": 6
+      },
+      {
+        "label": "1 year",
+        "months": 12
+      },
+      {
+        "label": "2 years",
+        "months": 24
+      },
+      {
+        "label": "3 years",
+        "months": 36
+      },
+      {
+        "label": "5 years",
+        "months": 60
+      }
     ],
     "ago": "ago",
     "details": {
@@ -149,5 +180,113 @@
   "faq": {
     "cta_text": "Don't know which exchange to choose?",
     "cta_button": "🎯 Take exchange quiz"
+  },
+  "home": {
+    "hero": {
+      "title": "Understand the crypto market before you invest",
+      "subtitle": "Prices, AI analysis, a simulator and exchange comparison — all in one place.",
+      "ctaCoins": "Pick a coin",
+      "ctaSimulator": "Try the simulator"
+    },
+    "howItWorks": {
+      "title": "How it works",
+      "steps": [
+        {
+          "icon": "🪙",
+          "title": "Pick a coin",
+          "desc": "Choose a cryptocurrency from 100+ coins"
+        },
+        {
+          "icon": "📊",
+          "title": "See data & AI sentiment",
+          "desc": "Price, chart and market-mood analysis"
+        },
+        {
+          "icon": "🎮",
+          "title": "Test a scenario in the simulator",
+          "desc": "Try strategies on real prices without risk"
+        },
+        {
+          "icon": "🏦",
+          "title": "Compare exchanges & pick a platform",
+          "desc": "Find the best trading conditions"
+        }
+      ]
+    },
+    "popularCoins": {
+      "title": "Popular coins",
+      "unavailable": "Data temporarily unavailable",
+      "analyze": "Analyze coin",
+      "viewAll": "View all coins →",
+      "coins": [
+        {
+          "id": "bitcoin",
+          "desc": "The first cryptocurrency"
+        },
+        {
+          "id": "ethereum",
+          "desc": "Smart-contract platform"
+        },
+        {
+          "id": "solana",
+          "desc": "Fast and cheap transactions"
+        }
+      ]
+    },
+    "market": {
+      "title": "Market right now",
+      "prices": "📈 Crypto prices",
+      "fearGreed": "😱 Fear & Greed Index",
+      "whale": "⚠️ Whale Alerts",
+      "whaleDesc": "Large on-chain transactions tracked in real time.",
+      "openAnalysis": "Open AI market analysis →"
+    },
+    "exchangeCompare": {
+      "title": "Where is it cheaper to buy crypto?",
+      "cta": "Go to exchange ↗",
+      "viewBonuses": "See all bonuses →"
+    },
+    "simulator": {
+      "title": "Test an idea without risk",
+      "desc": "Try a Buy/Sell scenario on real prices without risking real money.",
+      "cta": "Launch simulator →"
+    },
+    "tools": {
+      "title": "🧮 Tools"
+    },
+    "news": {
+      "title": "📰 Latest news",
+      "viewAll": "All news →"
+    },
+    "useful": {
+      "title": "🔗 Useful sections",
+      "items": [
+        {
+          "icon": "🎮",
+          "label": "Simulator",
+          "page": "simulator"
+        },
+        {
+          "icon": "📊",
+          "label": "Cryptocurrencies",
+          "page": "coins"
+        },
+        {
+          "icon": "🧠",
+          "label": "Sentiment",
+          "page": "markets"
+        },
+        {
+          "icon": "📰",
+          "label": "Blog",
+          "page": "blog"
+        },
+        {
+          "icon": "🤖",
+          "label": "AI Assistant",
+          "page": "assistant"
+        }
+      ]
+    }
   }
 }
