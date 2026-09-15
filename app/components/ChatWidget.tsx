@@ -6,7 +6,7 @@ import { getAffiliateLink } from '../lib/affiliates';
 interface Message {
   role: 'user' | 'assistant';
   content: string;
-  cta?: { type: 'binance' | 'whitebit' | 'both' } | null;
+  cta?: { type: 'binance' | 'kucoin' | 'both' } | null;
 }
 
 const AVATARS = [
@@ -41,7 +41,7 @@ const UI_TEXT = {
     placeholder: 'Запитайте про крипту...',
     errorMsg: '😔 Сталася помилка. Спробуйте ще раз.',
     quickQuestions: ['🔥 Яку біржу обрати новачку?', '📈 Як читати графік ціни?', '💡 Що таке стейкінг?', '🛡️ Як безпечно зберігати крипту?'],
-    exchangeDesc: { binance: 'Найбільша біржа світу — ідеально для старту', whitebit: 'Українська біржа — без складної верифікації' },
+    exchangeDesc: { binance: 'Найбільша біржа світу — ідеально для старту', kucoin: '700+ монет — найбільший вибір альткоїнів' },
     openBtn: 'Відкрити →',
   },
   en: {
@@ -62,7 +62,7 @@ const UI_TEXT = {
     placeholder: 'Ask about crypto...',
     errorMsg: '😔 An error occurred. Please try again.',
     quickQuestions: ['🔥 Which exchange for beginners?', '📈 How to read price charts?', '💡 What is staking?', '🛡️ How to store crypto safely?'],
-    exchangeDesc: { binance: 'World\'s largest exchange — perfect for beginners', whitebit: 'Easy verification — great for new users' },
+    exchangeDesc: { binance: 'World\'s largest exchange — perfect for beginners', kucoin: '700+ coins — widest altcoin selection' },
     openBtn: 'Open →',
   },
   pl: {
@@ -83,7 +83,7 @@ const UI_TEXT = {
     placeholder: 'Zapytaj o krypto...',
     errorMsg: '😔 Wystąpił błąd. Spróbuj ponownie.',
     quickQuestions: ['🔥 Którą giełdę wybrać?', '📈 Jak czytać wykres?', '💡 Czym jest staking?', '🛡️ Jak przechowywać krypto?'],
-    exchangeDesc: { binance: 'Największa giełda świata — idealna na start', whitebit: 'Łatwa weryfikacja — świetna dla nowych' },
+    exchangeDesc: { binance: 'Największa giełda świata — idealna na start', kucoin: '700+ monet — największy wybór altcoinów' },
     openBtn: 'Otwórz →',
   },
   de: {
@@ -104,7 +104,7 @@ const UI_TEXT = {
     placeholder: 'Frag nach Krypto...',
     errorMsg: '😔 Ein Fehler ist aufgetreten. Bitte versuche es erneut.',
     quickQuestions: ['🔥 Welche Börse für Anfänger?', '📈 Wie liest man Charts?', '💡 Was ist Staking?', '🛡️ Wie bewahrt man Krypto auf?'],
-    exchangeDesc: { binance: 'Weltgrößte Börse — ideal für Einsteiger', whitebit: 'Einfache Verifizierung — gut für neue Nutzer' },
+    exchangeDesc: { binance: 'Weltgrößte Börse — ideal für Einsteiger', kucoin: '700+ Coins — größte Altcoin-Auswahl' },
     openBtn: 'Öffnen →',
   },
 };
@@ -115,13 +115,13 @@ const BUBBLE_STYLE = {
   boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
 };
 
-function ExchangeCTA({ type, locale }: { type: 'binance' | 'whitebit' | 'both'; locale: string }) {
+function ExchangeCTA({ type, locale }: { type: 'binance' | 'kucoin' | 'both'; locale: string }) {
   const t = UI_TEXT[locale as keyof typeof UI_TEXT] || UI_TEXT.uk;
   const EXCHANGES = {
     binance: { name: 'Binance', desc: t.exchangeDesc.binance, color: 'from-yellow-400 to-orange-500', url: getAffiliateLink('binance'), emoji: '🟡' },
-    whitebit: { name: 'WhiteBIT', desc: t.exchangeDesc.whitebit, color: 'from-blue-500 to-blue-700', url: getAffiliateLink('whitebit'), emoji: '🔵' },
+    kucoin: { name: 'KuCoin', desc: t.exchangeDesc.kucoin, color: 'from-emerald-500 to-green-700', url: getAffiliateLink('kucoin'), emoji: '🟢' },
   };
-  const items = type === 'both' ? [EXCHANGES.binance, EXCHANGES.whitebit] : [EXCHANGES[type]];
+  const items = type === 'both' ? [EXCHANGES.binance, EXCHANGES.kucoin] : [EXCHANGES[type]];
   return (
     <div className="mt-2 space-y-2">
       {items.map((ex) => (

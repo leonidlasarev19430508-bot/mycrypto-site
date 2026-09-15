@@ -11,7 +11,7 @@ function detectExchangeMention(message: string): string | null {
   const lower = message.toLowerCase();
   if (lower.includes('binance')) return 'binance';
   if (lower.includes('bybit')) return 'bybit';
-  if (lower.includes('whitebit')) return 'whitebit';
+  if (lower.includes('kucoin')) return 'kucoin';
   if (lower.includes('okx')) return 'okx';
   if (lower.includes('біржу') || lower.includes('exchange') || lower.includes('börse') || lower.includes('giełd')) return 'general';
   return null;
@@ -137,13 +137,13 @@ RESPONSE STYLE:
 EXCHANGES — RECOMMEND NATURALLY:
 When asked about exchanges or registration, end your response with:
 "[EXCHANGE_CTA:binance]" — if recommending Binance
-"[EXCHANGE_CTA:whitebit]" — if recommending WhiteBIT
+"[EXCHANGE_CTA:kucoin]" — if recommending KuCoin
 "[EXCHANGE_CTA:both]" — if recommending both
 
 WHEN TO RECOMMEND:
 - Questions about choosing an exchange → [EXCHANGE_CTA:binance]
 - Questions about starting in crypto → [EXCHANGE_CTA:binance]
-- Questions about Ukrainian exchanges → [EXCHANGE_CTA:whitebit]
+- Questions about altcoins / new listings → [EXCHANGE_CTA:kucoin]
 - Questions about safety/reliability → [EXCHANGE_CTA:binance]
 
 IMPORTANT: No specific buy/sell advice. Always DYOR.
@@ -165,9 +165,9 @@ ${newsContext}`;
     if (reply.includes('[EXCHANGE_CTA:binance]')) {
       reply = reply.replace('[EXCHANGE_CTA:binance]', '');
       ctaData = { type: 'binance' };
-    } else if (reply.includes('[EXCHANGE_CTA:whitebit]')) {
-      reply = reply.replace('[EXCHANGE_CTA:whitebit]', '');
-      ctaData = { type: 'whitebit' };
+    } else if (reply.includes('[EXCHANGE_CTA:kucoin]')) {
+      reply = reply.replace('[EXCHANGE_CTA:kucoin]', '');
+      ctaData = { type: 'kucoin' };
     } else if (reply.includes('[EXCHANGE_CTA:both]')) {
       reply = reply.replace('[EXCHANGE_CTA:both]', '');
       ctaData = { type: 'both' };
