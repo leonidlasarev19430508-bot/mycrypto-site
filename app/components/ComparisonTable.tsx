@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { getAffiliateLink } from '../lib/affiliates';
+import { EXCHANGES as EXCHANGE_DATA, getAffiliateLink } from '../lib/exchanges';
 
 type Locale = 'uk' | 'en' | 'pl' | 'de';
 
@@ -8,18 +8,24 @@ interface ComparisonTableProps {
   locale?: Locale;
 }
 
-const EXCHANGES = [
-  { name: 'Binance', spot: '0.10%', futures: '0.02% / 0.05%', withdrawal: '$0.5+', bonus: '$600', coins: '350+', rating: 4.8, badge: '🏆', highlight: true, affiliate: getAffiliateLink('binance') },
-  { name: 'Bybit', spot: '0.10%', futures: '0.02% / 0.055%', withdrawal: '$1+', bonus: '$30,000', coins: '300+', rating: 4.6, badge: '⚡', highlight: false, affiliate: getAffiliateLink('bybit') },
-  { name: 'OKX', spot: '0.08%', futures: '0.02% / 0.05%', withdrawal: '$0.5+', bonus: 'Mystery Box', coins: '300+', rating: 4.5, badge: '🌐', highlight: false, affiliate: getAffiliateLink('okx') },
-  { name: 'KuCoin', spot: '0.10%', futures: '0.02% / 0.06%', withdrawal: '$1+', bonus: '$500', coins: '700+', rating: 4.4, badge: '🟢', highlight: false, affiliate: getAffiliateLink('kucoin') },
-];
+const EXCHANGES = EXCHANGE_DATA.map((ex) => ({
+  name: ex.name,
+  spot: ex.spotFee,
+  futures: ex.futuresFee,
+  withdrawal: ex.withdrawalFee,
+  bonus: ex.bonus,
+  coins: ex.coins,
+  rating: ex.rating,
+  badge: ex.logo,
+  highlight: ex.spotlight,
+  affiliate: getAffiliateLink(ex.id),
+}));
 
 const LABELS: Record<Locale, { title: string; subtitle: string; exchange: string; spot: string; futures: string; withdrawal: string; coins: string; bonus: string; register: string; top: string; more: string; bonusLink: string }> = {
-  uk: { title: '📊 Порівняння комісій бірж', subtitle: 'Актуальні тарифи топових криптобірж — Травень 2026', exchange: 'Біржа', spot: 'Спот', futures: 'Ф\'ючерси', withdrawal: 'Виведення', coins: 'Монет', bonus: 'Бонус', register: 'Реєстрація →', top: 'Топ', more: '🎁 Детальніше про бонуси при реєстрації →', bonusLink: '/bonuses' },
-  en: { title: '📊 Exchange Fee Comparison', subtitle: 'Current rates for top crypto exchanges — May 2026', exchange: 'Exchange', spot: 'Spot', futures: 'Futures', withdrawal: 'Withdrawal', coins: 'Coins', bonus: 'Bonus', register: 'Register →', top: 'Top', more: '🎁 More about registration bonuses →', bonusLink: '/en/bonuses' },
-  pl: { title: '📊 Porównanie opłat giełd', subtitle: 'Aktualne stawki topowych giełd krypto — Maj 2026', exchange: 'Giełda', spot: 'Spot', futures: 'Futures', withdrawal: 'Wypłata', coins: 'Monety', bonus: 'Bonus', register: 'Rejestracja →', top: 'Top', more: '🎁 Więcej o bonusach rejestracyjnych →', bonusLink: '/pl/bonuses' },
-  de: { title: '📊 Börsengebühren Vergleich', subtitle: 'Aktuelle Tarife der Top-Kryptobörsen — Mai 2026', exchange: 'Börse', spot: 'Spot', futures: 'Futures', withdrawal: 'Auszahlung', coins: 'Münzen', bonus: 'Bonus', register: 'Registrieren →', top: 'Top', more: '🎁 Mehr über Registrierungsboni →', bonusLink: '/de/bonuses' },
+  uk: { title: '📊 Порівняння комісій бірж', subtitle: 'Актуальні тарифи топових криптобірж — 2026', exchange: 'Біржа', spot: 'Спот', futures: 'Ф\'ючерси', withdrawal: 'Виведення', coins: 'Монет', bonus: 'Бонус', register: 'Реєстрація →', top: 'Топ', more: '🎁 Детальніше про бонуси при реєстрації →', bonusLink: '/bonuses' },
+  en: { title: '📊 Exchange Fee Comparison', subtitle: 'Current rates for top crypto exchanges — 2026', exchange: 'Exchange', spot: 'Spot', futures: 'Futures', withdrawal: 'Withdrawal', coins: 'Coins', bonus: 'Bonus', register: 'Register →', top: 'Top', more: '🎁 More about registration bonuses →', bonusLink: '/en/bonuses' },
+  pl: { title: '📊 Porównanie opłat giełd', subtitle: 'Aktualne stawki topowych giełd krypto — 2026', exchange: 'Giełda', spot: 'Spot', futures: 'Futures', withdrawal: 'Wypłata', coins: 'Monety', bonus: 'Bonus', register: 'Rejestracja →', top: 'Top', more: '🎁 Więcej o bonusach rejestracyjnych →', bonusLink: '/pl/bonuses' },
+  de: { title: '📊 Börsengebühren Vergleich', subtitle: 'Aktuelle Tarife der Top-Kryptobörsen — 2026', exchange: 'Börse', spot: 'Spot', futures: 'Futures', withdrawal: 'Auszahlung', coins: 'Münzen', bonus: 'Bonus', register: 'Registrieren →', top: 'Top', more: '🎁 Mehr über Registrierungsboni →', bonusLink: '/de/bonuses' },
 };
 
 export default function ComparisonTable({ locale = 'uk' }: ComparisonTableProps) {

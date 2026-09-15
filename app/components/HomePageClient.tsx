@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import t from '../i18n/uk.json';
-import { getAffiliateLink } from '../lib/affiliates';
+import { getAffiliateLink } from '../lib/exchanges';
 
 const CryptoPrices = dynamic(() => import('./CryptoPrices'));
 const FearGreedIndex = dynamic(() => import('./FearGreedIndex'));
@@ -16,36 +16,22 @@ const WhaleAlertTicker = dynamic(() => import('./WhaleAlertTicker'));
 const WhaleAlertPopup = dynamic(() => import('./WhaleAlertPopup'));
 const SubscribeForm = dynamic(() => import('./SubscribeForm'));
 
-const OFFERS = [
-  {
-    name: 'Binance', id: 'binance',
-    description: t.offers[0].description,
-    features: t.offers[0].features,
-    badge: t.offers[0].badge,
-    affiliate: getAffiliateLink('binance'),
-  },
-  {
-    name: 'MEXC', id: 'mexc',
-    description: 'Українська біржа з простим інтерфейсом та підтримкою гривні',
-    features: ['Українська підтримка', 'Гривня UAH', 'Швидка верифікація'],
-    badge: '🇺🇦 Для українців',
-    affiliate: getAffiliateLink('mexc'),
-  },
-  {
-    name: 'Bybit', id: 'bybit',
-    description: 'Ідеально для активної торгівлі',
-    features: ['Просунуті інструменти', 'Висока ліквідність', '24/7 підтримка'],
-    badge: null,
-    affiliate: getAffiliateLink('bybit'),
-  },
-  {
-    name: 'OKX', id: 'okx',
-    description: 'Сучасна платформа з широкими можливостями',
-    features: ['Web3 інтеграція', 'Стейкінг', 'Низькі комісії'],
-    badge: null,
-    affiliate: getAffiliateLink('okx'),
-  },
-];
+// Canonical roster driven by the i18n `offers` array (single source of truth).
+const OFFERS = t.offers.map((offer: any) => ({
+  name: offer.name,
+  id: offer.id,
+  description: offer.description,
+  features: offer.features,
+  badge: offer.badge,
+  affiliate: getAffiliateLink(offer.id),
+}));
+
+const OFFER_LOGO: Record<string, string> = {
+  binance: '🟡',
+  bybit: '🔵',
+  okx: '⚫',
+  kucoin: '🟢',
+};
 
 interface CoinData {
   id: string;
@@ -215,12 +201,12 @@ export default function HomePage() {
             {OFFERS.map((offer) => (
               <div key={offer.id} className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm">
                 <div className="flex items-center gap-2 mb-3">
-                  <span className="text-xl">{offer.id === 'binance' ? '🟡' : offer.id === 'mexc' ? '🔷' : offer.id === 'bybit' ? '🔵' : '⚫'}</span>
+                  <span className="text-xl">{OFFER_LOGO[offer.id] || '🪙'}</span>
                   <h3 className="font-bold text-base">{offer.name}</h3>
                 </div>
                 <p className="text-sm text-gray-600 mb-4">{offer.description}</p>
                 <ul className="text-xs text-gray-600 space-y-1 mb-5">
-                  {offer.features.slice(0, 3).map((f, i) => (
+                  {offer.features.slice(0, 3).map((f: string, i: number) => (
                     <li key={i} className="flex items-center gap-2">✓ {f}</li>
                   ))}
                 </ul>

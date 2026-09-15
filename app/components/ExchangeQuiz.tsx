@@ -140,25 +140,25 @@ const EXCHANGES_DATA: Record<string, Record<string, {
   name: string; desc: string; features: string[]; url: string;
 }>> = {
   uk: {
-    whitebit: { name: 'WhiteBIT', desc: 'Найкращий вибір для українського ринку. Проста реєстрація, підтримка гривні.', features: ['Підтримка UAH', 'Низькі комісії', 'Простий інтерфейс', 'UA підтримка'], url: getAffiliateLink('whitebit') },
+    kucoin: { name: 'KuCoin', desc: 'Широкий вибір альткоїнів зі стейкінгом і Web3-інструментами.', features: ['700+ монет', 'Стейкінг', 'Низькі комісії', 'Trading-боти'], url: getAffiliateLink('kucoin') },
     binance: { name: 'Binance', desc: 'Найбільша біржа світу з максимальною кількістю торгових пар.', features: ['350+ монет', 'Futures', 'Binance Earn', 'Мобільний додаток'], url: getAffiliateLink('binance') },
     bybit: { name: 'Bybit', desc: 'Ідеальна платформа для активних трейдерів з просунутими деривативами.', features: ['Деривативи', 'Copy trading', 'Боти', 'Висока ліквідність'], url: getAffiliateLink('bybit') },
     okx: { name: 'OKX', desc: 'Сучасна платформа з потужними Web3 інструментами і DeFi.', features: ['Web3 гаманець', 'DEX', 'NFT', 'Стейкінг'], url: getAffiliateLink('okx') },
   },
   en: {
-    whitebit: { name: 'WhiteBIT', desc: 'Great choice for Eastern European market. Simple registration, high reliability.', features: ['Low fees', 'Simple interface', 'Staking', 'Fast verification'], url: getAffiliateLink('whitebit') },
+    kucoin: { name: 'KuCoin', desc: 'Wide selection of altcoins with staking and Web3 tools.', features: ['700+ coins', 'Staking', 'Low fees', 'Trading bots'], url: getAffiliateLink('kucoin') },
     binance: { name: 'Binance', desc: "World's largest exchange with maximum trading pairs and low fees.", features: ['350+ coins', 'Futures', 'Binance Earn', 'Mobile app'], url: getAffiliateLink('binance') },
     bybit: { name: 'Bybit', desc: 'Perfect platform for active traders with advanced derivatives and bonuses.', features: ['Derivatives', 'Copy trading', 'Bots', 'High liquidity'], url: getAffiliateLink('bybit') },
     okx: { name: 'OKX', desc: 'Modern platform with powerful Web3 tools, built-in DEX and DeFi.', features: ['Web3 wallet', 'DEX', 'NFT marketplace', 'Staking'], url: getAffiliateLink('okx') },
   },
   pl: {
-    whitebit: { name: 'WhiteBIT', desc: 'Świetny wybór dla rynku wschodnioeuropejskiego. Prosta rejestracja, wysoka niezawodność.', features: ['Niskie prowizje', 'Prosty interfejs', 'Staking', 'Szybka weryfikacja'], url: getAffiliateLink('whitebit') },
+    kucoin: { name: 'KuCoin', desc: 'Szeroki wybór altcoinów ze stakingiem i narzędziami Web3.', features: ['700+ monet', 'Staking', 'Niskie prowizje', 'Boty handlowe'], url: getAffiliateLink('kucoin') },
     binance: { name: 'Binance', desc: 'Największa giełda na świecie z maksymalną liczbą par handlowych.', features: ['350+ monet', 'Futures', 'Binance Earn', 'Aplikacja mobilna'], url: getAffiliateLink('binance') },
     bybit: { name: 'Bybit', desc: 'Idealna platforma dla aktywnych traderów z zaawansowanymi derywatami.', features: ['Derywaty', 'Copy trading', 'Boty', 'Wysoka płynność'], url: getAffiliateLink('bybit') },
     okx: { name: 'OKX', desc: 'Nowoczesna platforma z narzędziami Web3, wbudowanym DEX i DeFi.', features: ['Portfel Web3', 'DEX', 'NFT', 'Staking'], url: getAffiliateLink('okx') },
   },
   de: {
-    whitebit: { name: 'WhiteBIT', desc: 'Gute Wahl für den osteuropäischen Markt. Einfache Registrierung, hohe Zuverlässigkeit.', features: ['Niedrige Gebühren', 'Einfache Oberfläche', 'Staking', 'Schnelle Verifizierung'], url: getAffiliateLink('whitebit') },
+    kucoin: { name: 'KuCoin', desc: 'Große Auswahl an Altcoins mit Staking und Web3-Tools.', features: ['700+ Coins', 'Staking', 'Niedrige Gebühren', 'Trading-Bots'], url: getAffiliateLink('kucoin') },
     binance: { name: 'Binance', desc: 'Weltgrößte Börse mit maximaler Anzahl an Handelspaaren und niedrigen Gebühren.', features: ['350+ Coins', 'Futures', 'Binance Earn', 'Mobile App'], url: getAffiliateLink('binance') },
     bybit: { name: 'Bybit', desc: 'Perfekte Plattform für aktive Trader mit fortgeschrittenen Derivaten.', features: ['Derivate', 'Copy Trading', 'Bots', 'Hohe Liquidität'], url: getAffiliateLink('bybit') },
     okx: { name: 'OKX', desc: 'Moderne Plattform mit Web3-Tools, integriertem DEX und DeFi.', features: ['Web3-Wallet', 'DEX', 'NFT', 'Staking'], url: getAffiliateLink('okx') },
@@ -177,19 +177,17 @@ const UI: Record<string, {
 };
 
 function recommend(answers: Record<string, string>) {
-  const scores: Record<string, number> = { whitebit: 0, binance: 0, bybit: 0, okx: 0 };
-  if (answers.region === 'ua') { scores.whitebit += 40; }
-  if (answers.region === 'pl') { scores.whitebit += 20; scores.binance += 15; }
+  const scores: Record<string, number> = { binance: 0, bybit: 0, okx: 0, kucoin: 0 };
   if (answers.region === 'eu') { scores.binance += 20; scores.okx += 15; }
-  if (answers.goal === 'newbie' || answers.experience === 'zero') { scores.whitebit += 25; scores.binance += 10; }
-  if (answers.goal === 'trader' || answers.experience === 'pro') { scores.binance += 25; scores.bybit += 30; }
-  if (answers.goal === 'defi') { scores.okx += 35; scores.binance += 15; }
-  if (answers.goal === 'hodler') { scores.binance += 20; scores.whitebit += 15; }
-  if (answers.priority === 'security') { scores.whitebit += 20; scores.binance += 15; }
-  if (answers.priority === 'fees') { scores.binance += 20; scores.whitebit += 15; }
-  if (answers.priority === 'ux') { scores.whitebit += 25; scores.bybit += 10; }
-  if (answers.priority === 'variety') { scores.binance += 25; scores.okx += 20; }
-  if (answers.budget === 'small') { scores.whitebit += 15; scores.binance += 10; }
+  if (answers.goal === 'newbie' || answers.experience === 'zero') { scores.binance += 25; scores.okx += 10; }
+  if (answers.goal === 'trader' || answers.experience === 'pro') { scores.bybit += 30; scores.binance += 15; }
+  if (answers.goal === 'defi') { scores.okx += 35; scores.kucoin += 20; }
+  if (answers.goal === 'hodler') { scores.binance += 20; scores.kucoin += 15; }
+  if (answers.priority === 'security') { scores.binance += 20; scores.okx += 15; }
+  if (answers.priority === 'fees') { scores.binance += 20; scores.okx += 15; }
+  if (answers.priority === 'ux') { scores.binance += 15; scores.bybit += 10; }
+  if (answers.priority === 'variety') { scores.kucoin += 30; scores.binance += 15; }
+  if (answers.budget === 'small') { scores.binance += 15; scores.kucoin += 10; }
   if (answers.budget === 'whale') { scores.binance += 20; scores.bybit += 15; }
   if (answers.experience === 'advanced' || answers.experience === 'pro') { scores.bybit += 20; }
   return Object.entries(scores).sort((a, b) => b[1] - a[1]);
