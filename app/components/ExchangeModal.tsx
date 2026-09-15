@@ -35,26 +35,6 @@ const EXCHANGES: Record<string, ExchangeInfo> = {
     },
     pageSlug: 'binance',
   },
-  mexc: {
-    founded: '2018',
-    coins: '1500+',
-    volume: { uk: '$2B+/день', en: '$2B+/day', pl: '$2B+/dzień', de: '$2B+/Tag' },
-    users: '10M+',
-    headquarters: { uk: 'Сейшельські острови', en: 'Seychelles', pl: 'Seszele', de: 'Seychellen' },
-    description: {
-      uk: 'Популярна біржа з підтримкою гривні та україномовним інтерфейсом. Одна з найкращих для українців.',
-      en: 'Popular exchange with UAH support and Ukrainian interface. One of the best for Ukrainians.',
-      pl: 'Popularna giełda z obsługą UAH i ukraińskim interfejsem. Jedna z najlepszych dla Ukraińców.',
-      de: 'Beliebte Börse mit UAH-Unterstützung und ukrainischer Oberfläche. Eine der besten für Ukrainer.',
-    },
-    pros: {
-      uk: ['Підтримка гривні UAH', 'Україномовний інтерфейс', '1500+ монет', 'Швидка верифікація'],
-      en: ['UAH support', 'Ukrainian interface', '1500+ coins', 'Fast verification'],
-      pl: ['Obsługa UAH', 'Ukraiński interfejs', '1500+ monet', 'Szybka weryfikacja'],
-      de: ['UAH-Unterstützung', 'Ukrainische Oberfläche', '1500+ Coins', 'Schnelle Verifizierung'],
-    },
-    pageSlug: 'mexc',
-  },
   bybit: {
     founded: '2018',
     coins: '300+',
@@ -162,7 +142,6 @@ const LABELS: Record<Locale, Record<string, string>> = {
 
 const LOGOS: Record<string, string> = {
   binance: '🟡',
-  mexc: '🔷',
   bybit: '🔵',
   kucoin: '🟢',
   okx: '⚫',
@@ -170,7 +149,6 @@ const LOGOS: Record<string, string> = {
 
 const NAMES: Record<string, string> = {
   binance: 'Binance',
-  mexc: 'MEXC',
   bybit: 'Bybit',
   kucoin: 'KuCoin',
   okx: 'OKX',

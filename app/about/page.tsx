@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export const metadata = {
   title: "Про нас — CryptoNavigator | AI-платформа для крипто-інвесторів",
-  description: "CryptoNavigator — AI-платформа для порівняння Binance, Bybit, OKX, WhiteBIT. Аналіз новин, live ціни, Fear & Greed Index та персональний AI-консультант 24/7.",
+  description: "CryptoNavigator — AI-платформа для порівняння Binance, Bybit, OKX, KuCoin. Аналіз новин, live ціни, Fear & Greed Index та персональний AI-консультант 24/7.",
 };
 
 const CONTENT = {
@@ -13,7 +13,7 @@ const CONTENT = {
     featuresTitle: '💡 Що ми пропонуємо',
     features: [
       { icon: '🤖', title: 'AI-аналіз новин', desc: 'Автоматичний аналіз крипто-новин з 4 провідних джерел. Оновлюється кожні 6 годин.' },
-      { icon: '🏆', title: 'Порівняння бірж', desc: 'Детальний аналіз Binance, Bybit, OKX, WhiteBIT за комісіями та надійністю.' },
+      { icon: '🏆', title: 'Порівняння бірж', desc: 'Детальний аналіз Binance, Bybit, OKX, KuCoin за комісіями та надійністю.' },
       { icon: '🎯', title: 'Персональний квіз', desc: 'Відповідай на 5 питань і отримай персональну рекомендацію біржі.' },
       { icon: '💬', title: 'CryptoBot', desc: 'AI-консультант на базі Claude від Anthropic. Відповідає 24/7.' },
       { icon: '📈', title: 'Live ціни', desc: 'Актуальні ціни BTC, ETH, SOL та графіки за 7 днів.' },
@@ -32,7 +32,7 @@ const CONTENT = {
     featuresTitle: '💡 What We Offer',
     features: [
       { icon: '🤖', title: 'AI News Analysis', desc: 'Automatic crypto news analysis from 4 leading sources. Updated every 6 hours.' },
-      { icon: '🏆', title: 'Exchange Comparison', desc: 'Detailed analysis of Binance, Bybit, OKX, WhiteBIT by fees and reliability.' },
+      { icon: '🏆', title: 'Exchange Comparison', desc: 'Detailed analysis of Binance, Bybit, OKX, KuCoin by fees and reliability.' },
       { icon: '🎯', title: 'Personal Quiz', desc: 'Answer 5 questions and get a personalized exchange recommendation.' },
       { icon: '💬', title: 'CryptoBot', desc: 'AI consultant powered by Claude from Anthropic. Available 24/7.' },
       { icon: '📈', title: 'Live Prices', desc: 'Real-time BTC, ETH, SOL prices and 7-day charts.' },
@@ -51,7 +51,7 @@ const CONTENT = {
     featuresTitle: '💡 Co oferujemy',
     features: [
       { icon: '🤖', title: 'Analiza wiadomości AI', desc: 'Automatyczna analiza wiadomości krypto z 4 wiodących źródeł. Aktualizowana co 6 godzin.' },
-      { icon: '🏆', title: 'Porównanie giełd', desc: 'Szczegółowa analiza Binance, Bybit, OKX, WhiteBIT pod względem prowizji i niezawodności.' },
+      { icon: '🏆', title: 'Porównanie giełd', desc: 'Szczegółowa analiza Binance, Bybit, OKX, KuCoin pod względem prowizji i niezawodności.' },
       { icon: '🎯', title: 'Osobisty quiz', desc: 'Odpowiedz na 5 pytań i uzyskaj spersonalizowaną rekomendację giełdy.' },
       { icon: '💬', title: 'CryptoBot', desc: 'Konsultant AI oparty na Claude od Anthropic. Dostępny 24/7.' },
       { icon: '📈', title: 'Ceny na żywo', desc: 'Aktualne ceny BTC, ETH, SOL i wykresy 7-dniowe.' },
@@ -70,7 +70,7 @@ const CONTENT = {
     featuresTitle: '💡 Was wir anbieten',
     features: [
       { icon: '🤖', title: 'KI-Nachrichtenanalyse', desc: 'Automatische Krypto-Nachrichtenanalyse aus 4 führenden Quellen. Alle 6 Stunden aktualisiert.' },
-      { icon: '🏆', title: 'Börsenvergleich', desc: 'Detaillierte Analyse von Binance, Bybit, OKX, WhiteBIT nach Gebühren und Zuverlässigkeit.' },
+      { icon: '🏆', title: 'Börsenvergleich', desc: 'Detaillierte Analyse von Binance, Bybit, OKX, KuCoin nach Gebühren und Zuverlässigkeit.' },
       { icon: '🎯', title: 'Persönliches Quiz', desc: 'Beantworte 5 Fragen und erhalte eine personalisierte Börsenempfehlung.' },
       { icon: '💬', title: 'CryptoBot', desc: 'KI-Berater auf Basis von Claude von Anthropic. Verfügbar 24/7.' },
       { icon: '📈', title: 'Live-Preise', desc: 'Aktuelle BTC, ETH, SOL Preise und 7-Tage-Charts.' },

@@ -5,8 +5,6 @@ declare namespace NodeJS {
     NEXT_PUBLIC_AFFILIATE_BYBIT: string;
     NEXT_PUBLIC_AFFILIATE_OKX: string;
     NEXT_PUBLIC_AFFILIATE_KUCOIN: string;
-    NEXT_PUBLIC_AFFILIATE_MEXC: string;
-    NEXT_PUBLIC_AFFILIATE_WHITEBIT: string;
     NEXT_PUBLIC_ROUTER_WEBHOOK: string;
     N8N_WEBHOOK_BASE: string;
     DATABASE_URL: string;

@@ -66,7 +66,7 @@ export default function DEPage() {
               </button>
               <p className="mt-2 text-gray-500 text-sm">{offer.description}</p>
               <ul className="mt-3 space-y-1.5">{offer.features.map((f: string) => (<li key={f} className="text-sm text-gray-500 flex items-center gap-1.5"><span className="text-green-500 font-bold">✓</span> {f}</li>))}</ul>
-              <a href={['binance', 'bybit', 'okx', 'mexc', 'kucoin', 'whitebit'].includes(offer.id) ? getAffiliateLink(offer.id as any) : '#'} target="_blank" rel="noopener noreferrer" className="mt-5 block bg-orange-500 text-white text-center px-4 py-2.5 rounded-xl hover:bg-orange-600 transition font-semibold text-sm">{t.exchanges.cta} {offer.name}</a>
+              <a href={getAffiliateLink(offer.id as any)} target="_blank" rel="noopener noreferrer" className="mt-5 block bg-orange-500 text-white text-center px-4 py-2.5 rounded-xl hover:bg-orange-600 transition font-semibold text-sm">{t.exchanges.cta} {offer.name}</a>
             </div>
           ))}
         </div>
