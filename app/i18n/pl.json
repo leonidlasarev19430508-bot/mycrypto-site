@@ -288,5 +288,9 @@
         }
       ]
     }
+  },
+  "legal": {
+    "affiliateDisclosure": "Reklama — możemy otrzymywać prowizję, gdy rejestrujesz się lub handlujesz przez nasze linki. Nie wpływa to na nasze oceny.",
+    "howWeRate": "Jak oceniamy giełdy"
   }
 }

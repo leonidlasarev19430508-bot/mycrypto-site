@@ -288,5 +288,9 @@
         }
       ]
     }
+  },
+  "legal": {
+    "affiliateDisclosure": "Anzeige — wir erhalten möglicherweise eine Provision, wenn du dich über unsere Links registrierst oder handelst. Dies beeinflusst unsere Bewertungen nicht.",
+    "howWeRate": "Wie wir Börsen bewerten"
   }
 }

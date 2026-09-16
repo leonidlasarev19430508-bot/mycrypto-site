@@ -1,6 +1,7 @@
 'use client';
 import { ExchangeModal, useExchangeModal } from '../../components/ExchangeModal';
 import { getAffiliateLink } from '../../lib/affiliates';
+import AffiliateDisclosure from '../../components/AffiliateDisclosure';
 
 const EXCHANGES = [
   {
@@ -135,6 +136,8 @@ export default function BonusesPLPage() {
         </div>
       </div>
       <p className="text-center text-xs text-gray-400">* Kwoty bonusów mogą ulec zmianie. Aktualne informacje na stronach giełd. Nie jest poradą finansową.</p>
+
+      <AffiliateDisclosure />
 
       {activeExchange && (
         <ExchangeModal exchangeId={activeExchange} locale="pl" onClose={close} />

@@ -16,6 +16,7 @@ const ChatWidget = dynamic(() => import('./ChatWidget'));
 const WhaleAlertTicker = dynamic(() => import('./WhaleAlertTicker'));
 const WhaleAlertPopup = dynamic(() => import('./WhaleAlertPopup'));
 const SubscribeForm = dynamic(() => import('./SubscribeForm'));
+const AffiliateDisclosure = dynamic(() => import('./AffiliateDisclosure'));
 
 const OFFER_LOGO: Record<string, string> = {
   binance: '🟡',
@@ -242,6 +243,9 @@ export default function HomePage() {
 
         {/* FEE COMPARISON TABLE */}
         <ComparisonTable locale={locale} />
+
+        {/* AFFILIATE DISCLOSURE */}
+        <AffiliateDisclosure />
 
         {/* SIMULATOR */}
         <section className="mb-12">
